@@ -1,0 +1,268 @@
+name: Publish
+
+on:
+  push:
+    branches: [main]
+    paths: ['posts/**']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate posts
+    runs-on: ubuntu-latest
+    outputs:
+      changed_posts: ${{ steps.changed.outputs.posts }}
+      has_posts: ${{ steps.changed.outputs.has_posts }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Find changed posts
+        id: changed
+        run: |
+          POSTS=$(git diff --name-only --diff-filter=ACM HEAD~1 HEAD -- 'posts/*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "posts=$POSTS" >> "$GITHUB_OUTPUT"
+          if [ "$POSTS" = "[]" ]; then
+            echo "has_posts=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_posts=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate front matter
+        if: steps.changed.outputs.has_posts == 'true'
+        run: |
+          ERRORS=0
+          for POST in $(echo '${{ steps.changed.outputs.posts }}' | jq -r '.[]'); do
+            echo "Validating $POST..."
+
+            # Check front matter exists
+            if ! head -1 "$POST" | grep -q "^---$"; then
+              echo "::error file=$POST::Missing front matter"
+              ERRORS=$((ERRORS + 1))
+              continue
+            fi
+
+            # Extract front matter
+            FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
+
+            # Check required fields
+            if ! echo "$FRONT_MATTER" | grep -q "^title:"; then
+              echo "::error file=$POST::Missing required field: title"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            if ! echo "$FRONT_MATTER" | grep -q "^slug:"; then
+              echo "::error file=$POST::Missing required field: slug"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            if ! echo "$FRONT_MATTER" | grep -q "^tags:"; then
+              echo "::error file=$POST::Missing required field: tags"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            # Check slug format (lowercase, hyphenated)
+            SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
+            if echo "$SLUG" | grep -qP '[^a-z0-9-]'; then
+              echo "::error file=$POST::Slug must be lowercase and hyphenated: $SLUG"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            # Check for potential secrets
+            if grep -qPi '(api[_-]?key|secret|token|password|credential)\s*[:=]\s*["\x27]?[A-Za-z0-9+/]{20,}' "$POST"; then
+              echo "::error file=$POST::Potential secret detected in post content"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            # Style guide warnings
+            if grep -q "\u2014" "$POST"; then
+              echo "::warning file=$POST::Em dash detected. Style guide prohibits em dashes."
+            fi
+          done
+
+          if [ $ERRORS -gt 0 ]; then
+            echo "::error::Validation failed with $ERRORS error(s)"
+            exit 1
+          fi
+
+  publish-hashnode:
+    name: Publish to Hashnode
+    needs: validate
+    if: needs.validate.outputs.has_posts == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      published_slugs: ${{ steps.publish.outputs.published_slugs }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish posts to Hashnode
+        id: publish
+        env:
+          HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+        run: |
+          PUBLISHED_SLUGS="[]"
+
+          for POST in $(echo '${{ needs.validate.outputs.changed_posts }}' | jq -r '.[]'); do
+            echo "Processing $POST..."
+
+            # Extract front matter
+            FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
+
+            # Check draft status
+            DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
+            if [ "$DRAFT" = "true" ]; then
+              echo "Skipping draft: $POST"
+              continue
+            fi
+
+            TITLE=$(echo "$FRONT_MATTER" | grep "^title:" | sed 's/^title: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
+            SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
+            SUBTITLE=$(echo "$FRONT_MATTER" | grep "^subtitle:" | sed 's/^subtitle: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
+            TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//')
+
+            # Extract content (everything after second ---)
+            CONTENT=$(sed '1,/^---$/d' "$POST" | sed '1,/^---$/d')
+
+            # Build tags JSON array
+            TAGS_JSON=$(echo "$TAGS" | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R -s -c 'split("\n") | map(select(length > 0)) | map({slug: ., name: .})')
+
+            CANONICAL_URL="https://nuphirho.dev/$SLUG"
+
+            # Escape content for JSON
+            CONTENT_ESCAPED=$(echo "$CONTENT" | jq -R -s '.')
+
+            # Check if post already exists
+            EXISTING=$(curl -s -X POST https://gql.hashnode.com \
+              -H "Content-Type: application/json" \
+              -H "Authorization: $HASHNODE_TOKEN" \
+              -d "{\"query\": \"query { publication(id: \\\"$HASHNODE_PUBLICATION_ID\\\") { post(slug: \\\"$SLUG\\\") { id } } }\"}")
+
+            EXISTING_ID=$(echo "$EXISTING" | jq -r '.data.publication.post.id // empty')
+
+            if [ -n "$EXISTING_ID" ]; then
+              echo "Updating existing post: $SLUG (ID: $EXISTING_ID)"
+              MUTATION="mutation { updatePost(input: { id: \\\"$EXISTING_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON }) { post { url } } }"
+            else
+              echo "Creating new post: $SLUG"
+              MUTATION="mutation { publishPost(input: { publicationId: \\\"$HASHNODE_PUBLICATION_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", slug: \\\"$SLUG\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON, originalArticleURL: \\\"$CANONICAL_URL\\\" }) { post { url } } }"
+            fi
+
+            RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+              -H "Content-Type: application/json" \
+              -H "Authorization: $HASHNODE_TOKEN" \
+              -d "{\"query\": \"$MUTATION\"}")
+
+            POST_URL=$(echo "$RESPONSE" | jq -r '.data.publishPost.post.url // .data.updatePost.post.url // empty')
+
+            if [ -n "$POST_URL" ]; then
+              echo "Published: $POST_URL"
+              PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c ". + [\"$SLUG\"]")
+            else
+              echo "::error::Failed to publish $SLUG: $RESPONSE"
+              exit 1
+            fi
+          done
+
+          echo "published_slugs=$PUBLISHED_SLUGS" >> "$GITHUB_OUTPUT"
+
+  crosspost-devto:
+    name: Cross-post to Dev.to
+    needs: [validate, publish-hashnode]
+    if: needs.validate.outputs.has_posts == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cross-post to Dev.to
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          for POST in $(echo '${{ needs.validate.outputs.changed_posts }}' | jq -r '.[]'); do
+            # Extract front matter
+            FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
+
+            DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
+            if [ "$DRAFT" = "true" ]; then
+              echo "Skipping draft: $POST"
+              continue
+            fi
+
+            TITLE=$(echo "$FRONT_MATTER" | grep "^title:" | sed 's/^title: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
+            SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
+            TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//' | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | head -4 | tr '\n' ',' | sed 's/,$//')
+
+            CANONICAL_URL="https://nuphirho.dev/$SLUG"
+
+            # Extract content
+            CONTENT=$(sed '1,/^---$/d' "$POST" | sed '1,/^---$/d')
+
+            # Check if article already exists on Dev.to
+            EXISTING=$(curl -s "https://dev.to/api/articles/me/all?per_page=100" \
+              -H "api-key: $DEVTO_API_KEY" | jq -r ".[] | select(.canonical_url == \"$CANONICAL_URL\") | .id")
+
+            BODY=$(jq -n \
+              --arg title "$TITLE" \
+              --arg body "$CONTENT" \
+              --arg canonical "$CANONICAL_URL" \
+              --arg tags "$TAGS" \
+              '{article: {title: $title, body_markdown: $body, canonical_url: $canonical, published: true, tags: ($tags | split(",") | map(gsub("\\s"; "")))}}')
+
+            if [ -n "$EXISTING" ]; then
+              echo "Updating existing Dev.to article: $EXISTING"
+              RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT "https://dev.to/api/articles/$EXISTING" \
+                -H "Content-Type: application/json" \
+                -H "api-key: $DEVTO_API_KEY" \
+                -d "$BODY")
+            else
+              echo "Creating new Dev.to article: $TITLE"
+              RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://dev.to/api/articles" \
+                -H "Content-Type: application/json" \
+                -H "api-key: $DEVTO_API_KEY" \
+                -d "$BODY")
+            fi
+
+            HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+            RESPONSE_BODY=$(echo "$RESPONSE" | sed '$d')
+
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              DEVTO_URL=$(echo "$RESPONSE_BODY" | jq -r '.url')
+              echo "Cross-posted to Dev.to: $DEVTO_URL"
+            else
+              echo "::warning::Failed to cross-post $SLUG to Dev.to (HTTP $HTTP_CODE): $RESPONSE_BODY"
+            fi
+          done
+
+  summary:
+    name: Pipeline summary
+    needs: [validate, publish-hashnode, crosspost-devto]
+    if: always() && needs.validate.outputs.has_posts == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate summary
+        run: |
+          echo "## Publish Pipeline Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          for POST in $(echo '${{ needs.validate.outputs.changed_posts }}' | jq -r '.[]'); do
+            FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
+            TITLE=$(echo "$FRONT_MATTER" | grep "^title:" | sed 's/^title: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
+            SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
+            DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
+
+            if [ "$DRAFT" = "true" ]; then
+              echo "- **$TITLE** -- skipped (draft)" >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+
+            CANONICAL_URL="https://nuphirho.dev/$SLUG"
+            echo "- **$TITLE**" >> "$GITHUB_STEP_SUMMARY"
+            echo "  - Hashnode: $CANONICAL_URL" >> "$GITHUB_STEP_SUMMARY"
+            echo "  - Dev.to: cross-posted" >> "$GITHUB_STEP_SUMMARY"
+            echo "  - Medium: import manually from $CANONICAL_URL" >> "$GITHUB_STEP_SUMMARY"
+          done
