@@ -52,7 +52,7 @@ Nu, phi, rho: Greek letters from physics and mathematics. Used as a gaming profi
 
 ### Identity across platforms
 
-- Blog: nuphirho on Hashnode (nuphirho.dev)
+- Blog: nuphirho on Hashnode (blog.nuphirho.dev)
 - Cross-post: nuphirho on Dev.to
 - GitHub: czietsman (existing account, repo is czietsman/nuphirho.dev)
 - LinkedIn: christo-zietsman (existing profile)
@@ -72,7 +72,7 @@ Nu, phi, rho: Greek letters from physics and mathematics. Used as a gaming profi
 | IaC | Terraform + Cloudflare provider | Free |
 | DNS/CDN/SSL | Cloudflare (free tier) | Free |
 | Domain | Cloudflare Registrar | ~$12-15/year |
-| Primary platform | Hashnode (custom domain) | Free (includes custom domain, SSL, CDN) |
+| Primary platform | Hashnode (blog.nuphirho.dev) | Free (includes custom domain, SSL, CDN) |
 | Cross-post | Dev.to (API, automated) | Free |
 | Cross-post | Medium (manual, URL import) | Free |
 | Amplification | LinkedIn | Free |
@@ -98,7 +98,7 @@ The domain is the only cost. Everything else is enterprise-grade tooling at zero
 
 ### Canonical URLs
 
-Always set to nuphirho.dev. Every cross-posted article must reference the canonical URL on the primary domain. This protects SEO and ensures the custom domain builds authority over time.
+Always set to blog.nuphirho.dev. Every cross-posted article must reference the canonical URL on the blog subdomain. This protects SEO and ensures the blog builds authority over time. The root domain is reserved for future applications.
 
 ---
 
@@ -150,7 +150,7 @@ czietsman/nuphirho.dev
 1. Create `.gitignore` and `README.md` for the repo.
 2. Commit `docs/STYLE_GUIDE.md` and `docs/PROJECT_BRIEF.md`.
 3. Write BDD specs (Gherkin) describing the content pipeline behaviour.
-4. Set up Hashnode account, connect nuphirho.dev custom domain.
+4. Set up Hashnode account, connect blog.nuphirho.dev custom domain.
 5. Generate Dev.to API key.
 6. Store API keys and tokens in GitHub Secrets.
 

@@ -6,7 +6,7 @@ A technical blog by [Christo Zietsman](https://www.linkedin.com/in/christo-ziets
 
 ## What is this
 
-This is the source repository for [nuphirho.dev](https://nuphirho.dev), a blog about AI-assisted software delivery, engineering process, and technology innovation. The blog is hosted on Hashnode with cross-posting to Dev.to.
+This is the source repository for [blog.nuphirho.dev](https://blog.nuphirho.dev), a blog about AI-assisted software delivery, engineering process, and technology innovation. The blog is hosted on Hashnode with cross-posting to Dev.to. The root domain is reserved for future applications.
 
 The repository contains:
 
@@ -30,7 +30,7 @@ AI assists in research, drafting, and refinement. The thinking, decisions, direc
 | CI/CD | GitHub Actions |
 | IaC | Terraform + Cloudflare provider |
 | DNS/CDN/SSL | Cloudflare (free tier) |
-| Primary platform | Hashnode (custom domain) |
+| Primary platform | Hashnode (blog.nuphirho.dev) |
 | Cross-post | Dev.to (automated), Medium (manual) |
 | Amplification | LinkedIn |
 
