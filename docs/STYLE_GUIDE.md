@@ -162,7 +162,7 @@ This is a guide, not a rigid template. Let the content shape the structure.
 
 ### Source of truth
 
-- nuphirho.dev (Hashnode, custom domain)
+- blog.nuphirho.dev (Hashnode, custom subdomain)
 
 ### Cross-post targets
 
@@ -171,7 +171,7 @@ This is a guide, not a rigid template. Let the content shape the structure.
 
 ### Canonical URL
 
-- Always set to nuphirho.dev. Every cross-posted article must reference the canonical URL on the primary domain to protect SEO.
+- Always set to blog.nuphirho.dev. Every cross-posted article must reference the canonical URL on the blog subdomain to protect SEO.
 
 ### Amplification
 

@@ -10,7 +10,7 @@ Feature: Cross-post to Dev.to
     Given a post has been successfully published to Hashnode
     When the cross-post pipeline runs
     Then the post is created on Dev.to via the REST API
-    And the canonical URL is set to "https://nuphirho.dev/<slug>"
+    And the canonical URL is set to "https://blog.nuphirho.dev/<slug>"
     And the post is published (not saved as draft)
 
   Scenario: Existing post is updated on Dev.to
@@ -18,7 +18,7 @@ Feature: Cross-post to Dev.to
     And the post already exists on Dev.to
     When the cross-post pipeline runs
     Then the existing post on Dev.to is updated with the new content
-    And the canonical URL remains "https://nuphirho.dev/<slug>"
+    And the canonical URL remains "https://blog.nuphirho.dev/<slug>"
 
   Scenario: Draft posts are not cross-posted
     Given a post was skipped on Hashnode because it is a draft

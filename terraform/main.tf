@@ -32,20 +32,10 @@ data "cloudflare_zone" "nuphirho" {
   name = "nuphirho.dev"
 }
 
-# Root domain CNAME to Hashnode
-resource "cloudflare_record" "root" {
+# Blog subdomain CNAME to Hashnode
+resource "cloudflare_record" "blog" {
   zone_id = data.cloudflare_zone.nuphirho.id
-  name    = "@"
-  content = "hashnode.network"
-  type    = "CNAME"
-  proxied = true
-  ttl     = 1 # Auto when proxied
-}
-
-# www redirect to root (CNAME to Hashnode, Hashnode handles the redirect)
-resource "cloudflare_record" "www" {
-  zone_id = data.cloudflare_zone.nuphirho.id
-  name    = "www"
+  name    = "blog"
   content = "hashnode.network"
   type    = "CNAME"
   proxied = true
