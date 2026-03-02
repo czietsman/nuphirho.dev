@@ -6,14 +6,15 @@ A technical blog by [Christo Zietsman](https://www.linkedin.com/in/christo-ziets
 
 ## What is this
 
-This is the source repository for [blog.nuphirho.dev](https://blog.nuphirho.dev), a blog about AI-assisted software delivery, engineering process, and technology innovation. The blog is hosted on Hashnode with cross-posting to Dev.to. The root domain is reserved for future applications.
+This is the source repository for [nuphirho.dev](https://nuphirho.dev), a technical blog about AI-assisted software delivery, engineering process, and technology innovation. The root domain is a static landing page served via GitHub Pages. The blog lives at [blog.nuphirho.dev](https://blog.nuphirho.dev), hosted on Hashnode with cross-posting to Dev.to.
 
 The repository contains:
 
+- **site/** -- Static landing page (deployed to GitHub Pages)
 - **posts/** -- Markdown blog post source files
 - **specs/** -- BDD feature files describing pipeline behaviour
 - **terraform/** -- Cloudflare DNS configuration as code
-- **.github/workflows/** -- GitHub Actions CI/CD pipeline
+- **.github/workflows/** -- GitHub Actions CI/CD pipelines
 - **docs/** -- Project brief and style guide
 
 ## Philosophy
@@ -30,6 +31,7 @@ AI assists in research, drafting, and refinement. The thinking, decisions, direc
 | CI/CD | GitHub Actions |
 | IaC | Terraform + Cloudflare provider |
 | DNS/CDN/SSL | Cloudflare (free tier) |
+| Landing page | GitHub Pages (nuphirho.dev) |
 | Primary platform | Hashnode (blog.nuphirho.dev) |
 | Cross-post | Dev.to (automated), Medium (manual) |
 | Amplification | LinkedIn |

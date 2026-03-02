@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>nuphirho.dev</title>
+  <meta name="description" content="Enterprise-grade engineering at startup speed. A technical blog by Christo Zietsman.">
+  <link rel="canonical" href="https://nuphirho.dev/">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --colour-bg: #fafafa;
+      --colour-text: #1a1a1a;
+      --colour-muted: #555;
+      --colour-link: #1a6dd4;
+      --colour-link-hover: #0f4c8a;
+      --colour-separator: #ddd;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --colour-bg: #111;
+        --colour-text: #e8e8e8;
+        --colour-muted: #aaa;
+        --colour-link: #6db3f2;
+        --colour-link-hover: #a0d0ff;
+        --colour-separator: #333;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+      background: var(--colour-bg);
+      color: var(--colour-text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    main {
+      text-align: center;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .tagline {
+      color: var(--colour-muted);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .links {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    a {
+      color: var(--colour-link);
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--colour-link-hover);
+      text-decoration: underline;
+    }
+
+    .separator {
+      width: 3rem;
+      border: none;
+      border-top: 1px solid var(--colour-separator);
+      margin: 1.5rem auto;
+    }
+
+    .author {
+      color: var(--colour-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>nuphirho.dev</h1>
+    <p class="tagline">Enterprise-grade engineering at startup speed.</p>
+    <nav class="links" aria-label="External links">
+      <a href="https://blog.nuphirho.dev">Blog</a>
+      <a href="https://github.com/czietsman">GitHub</a>
+      <a href="https://www.linkedin.com/in/christo-zietsman/">LinkedIn</a>
+    </nav>
+    <hr class="separator">
+    <p class="author">Christo Zietsman</p>
+  </main>
+</body>
+</html>
