@@ -41,3 +41,34 @@ resource "cloudflare_record" "blog" {
   proxied = true
   ttl     = 1 # Auto when proxied
 }
+
+# Root domain A records for GitHub Pages
+locals {
+  github_pages_ips = [
+    "185.199.108.153",
+    "185.199.109.153",
+    "185.199.110.153",
+    "185.199.111.153",
+  ]
+}
+
+resource "cloudflare_record" "root" {
+  for_each = toset(local.github_pages_ips)
+
+  zone_id = data.cloudflare_zone.nuphirho.id
+  name    = "@"
+  content = each.value
+  type    = "A"
+  proxied = true
+  ttl     = 1 # Auto when proxied
+}
+
+# www CNAME to GitHub Pages
+resource "cloudflare_record" "www" {
+  zone_id = data.cloudflare_zone.nuphirho.id
+  name    = "www"
+  content = "czietsman.github.io"
+  type    = "CNAME"
+  proxied = true
+  ttl     = 1 # Auto when proxied
+}
