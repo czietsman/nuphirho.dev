@@ -130,7 +130,7 @@ jobs:
             # Build tags JSON array
             TAGS_JSON=$(echo "$TAGS" | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R -s -c 'split("\n") | map(select(length > 0)) | map({slug: ., name: .})')
 
-            CANONICAL_URL="https://nuphirho.dev/$SLUG"
+            CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
 
             # Escape content for JSON
             CONTENT_ESCAPED=$(echo "$CONTENT" | jq -R -s '.')
@@ -195,7 +195,7 @@ jobs:
             SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
             TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//' | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | head -4 | tr '\n' ',' | sed 's/,$//')
 
-            CANONICAL_URL="https://nuphirho.dev/$SLUG"
+            CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
 
             # Extract content
             CONTENT=$(sed '1,/^---$/d' "$POST" | sed '1,/^---$/d')
@@ -260,7 +260,7 @@ jobs:
               continue
             fi
 
-            CANONICAL_URL="https://nuphirho.dev/$SLUG"
+            CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
             echo "- **$TITLE**" >> "$GITHUB_STEP_SUMMARY"
             echo "  - Hashnode: $CANONICAL_URL" >> "$GITHUB_STEP_SUMMARY"
             echo "  - Dev.to: cross-posted" >> "$GITHUB_STEP_SUMMARY"
