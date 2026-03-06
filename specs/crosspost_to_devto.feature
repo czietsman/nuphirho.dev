@@ -20,10 +20,19 @@ Feature: Cross-post to Dev.to
     Then the existing post on Dev.to is updated with the new content
     And the canonical URL remains "https://blog.nuphirho.dev/<slug>"
 
-  Scenario: Draft posts are not cross-posted
-    Given a post was skipped on Hashnode because it is a draft
+  Scenario: Draft post is created as unpublished on Dev.to
+    Given a post has been created on Hashnode as a draft
+    And the front matter contains "draft: true"
     When the cross-post pipeline runs
-    Then no post is created or updated on Dev.to
+    Then the post is created on Dev.to via the REST API with "published: false"
+    And the canonical URL is set to "https://blog.nuphirho.dev/<slug>"
+
+  Scenario: Draft post is published when draft flag is removed
+    Given a post has been published on Hashnode after removing the draft flag
+    And the post already exists on Dev.to as unpublished
+    When the cross-post pipeline runs
+    Then the existing post on Dev.to is updated with "published: true"
+    And the canonical URL remains "https://blog.nuphirho.dev/<slug>"
 
   Scenario: Cross-post failure does not block the pipeline
     Given a post has been successfully published to Hashnode
