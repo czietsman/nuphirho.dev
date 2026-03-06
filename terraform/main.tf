@@ -1,3 +1,6 @@
+# Changelog
+# 2026-03-06  Initial apply: blog CNAME, root A records, www CNAME
+
 terraform {
   required_version = ">= 1.0"
 
