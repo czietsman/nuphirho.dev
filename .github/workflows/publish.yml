@@ -118,8 +118,8 @@ jobs:
             TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//')
             DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
 
-            # Extract content (everything after second ---)
-            CONTENT=$(awk 'BEGIN{c=0} /^---$/{c++;next} c>=2{print}' "$POST")
+            # Extract content (everything after second ---), strip leading H1 title
+            CONTENT=$(awk 'BEGIN{c=0;h=0} /^---$/{c++;next} c>=2{if(!h && /^# /){h=1;next}; print}' "$POST")
 
             # Build tags JSON array
             TAGS_JSON=$(echo "$TAGS" | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R -s -c 'split("\n") | map(select(length > 0)) | map({slug: ., name: .})')
@@ -250,8 +250,8 @@ jobs:
 
             CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
 
-            # Extract content (everything after second ---)
-            CONTENT=$(awk 'BEGIN{c=0} /^---$/{c++;next} c>=2{print}' "$POST")
+            # Extract content (everything after second ---), strip leading H1 title
+            CONTENT=$(awk 'BEGIN{c=0;h=0} /^---$/{c++;next} c>=2{if(!h && /^# /){h=1;next}; print}' "$POST")
 
             # Check if article already exists on Dev.to
             EXISTING=$(curl -s "https://dev.to/api/articles/me/all?per_page=100" \
