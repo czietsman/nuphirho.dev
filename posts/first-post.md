@@ -1,7 +1,6 @@
 ---
 title: "Process Over Technology: Starting With the Blog Itself"
 slug: process-over-technology-starting-with-the-blog-itself
-draft: true
 tags: [process, engineering, ai, devops, infrastructure-as-code]
 ---
 
