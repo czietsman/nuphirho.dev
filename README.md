@@ -16,6 +16,7 @@ The repository contains:
 - **terraform/** -- Cloudflare DNS configuration as code
 - **.github/workflows/** -- GitHub Actions CI/CD pipelines
 - **docs/** -- Project brief and style guide
+- **tests/** -- Shell-based test scripts
 
 ## Philosophy
 
@@ -35,8 +36,31 @@ AI assists in research, drafting, and refinement. The thinking, decisions, direc
 | Primary platform | Hashnode (blog.nuphirho.dev) |
 | Cross-post | Dev.to (automated), Medium (manual) |
 | Amplification | LinkedIn |
+| Secret detection | Husky pre-push hook (grep-based) |
 
 The domain is the only cost.
+
+## Development setup
+
+```bash
+npm install
+```
+
+This installs [husky](https://typicode.github.io/husky/) and configures a `pre-push` git hook that scans for secrets before code leaves your machine. The hook catches:
+
+- AWS / R2 access key IDs (`AKIA...`)
+- GitHub token variants (`ghp_`, `github_pat_`, `gho_`, `ghu_`, `ghr_`, `ghs_`)
+- PEM private key headers
+- Assignments to known secret variables (`CLOUDFLARE_API_TOKEN`, `HASHNODE_TOKEN`, `DEVTO_API_KEY`, and others)
+- Generic secret patterns (`api_key`, `token`, `password`, etc. followed by long values)
+
+Paths listed in `.secretscanignore` are excluded from scanning. To bypass the hook for a known false positive, use `git push --no-verify`.
+
+To run the pattern tests:
+
+```bash
+bash tests/test-secret-patterns.sh
+```
 
 ## Getting started
 
