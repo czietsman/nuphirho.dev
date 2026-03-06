@@ -29,9 +29,19 @@ Feature: Publish to Hashnode
     Then the pipeline fails with a clear error indicating the missing fields
     And no post is created or updated on Hashnode
 
-  Scenario: Post in draft state is not published
+  Scenario: Draft post is created as unpublished on Hashnode
     Given a markdown file "posts/draft-post.md" is pushed to the main branch
     And the front matter contains "draft: true"
     When the publish pipeline runs
-    Then the post is not published to Hashnode
-    And the pipeline reports the post was skipped as a draft
+    Then the post is created on Hashnode as a draft via the GraphQL API
+    And the post is not publicly visible on Hashnode
+    And the pipeline reports the post was pushed as a draft
+
+  Scenario: Draft post is published when draft flag is removed
+    Given a markdown file "posts/draft-post.md" is modified on the main branch
+    And the front matter no longer contains "draft: true"
+    And the post was previously pushed as a draft to Hashnode
+    When the publish pipeline runs
+    Then the post is published on Hashnode with the updated content
+    And the canonical URL is set to "https://blog.nuphirho.dev/<slug>"
+    And the pipeline reports success with the published URL
