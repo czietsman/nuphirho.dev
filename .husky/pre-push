@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+#
+# Pre-push hook: scans added lines for secrets before they leave the machine.
+# Installed via husky. Bypass with: git push --no-verify
+#
+# Husky runs hooks with "sh -e", so re-exec under bash for array support.
+if [ -z "${BASH_VERSION:-}" ]; then
+  exec bash "$0" "$@"
+fi
+
+set -euo pipefail
+
+ZERO_SHA="0000000000000000000000000000000000000000"
+
+# Load exclusion list from .secretscanignore (one path per line, comments and blanks ignored)
+EXCLUDE_PATHS=()
+if [ -f ".secretscanignore" ]; then
+  while IFS= read -r line; do
+    line="${line%%#*}"        # strip comments
+    line="${line// /}"        # strip whitespace
+    [ -z "$line" ] && continue
+    EXCLUDE_PATHS+=("$line")
+  done < ".secretscanignore"
+fi
+
+build_exclude_args() {
+  local args=""
+  # Always exclude package-lock.json and node_modules
+  args=":(exclude)package-lock.json :(exclude)node_modules"
+  for path in "${EXCLUDE_PATHS[@]+"${EXCLUDE_PATHS[@]}"}"; do
+    args="$args :(exclude)$path"
+  done
+  echo "$args"
+}
+
+# -- Secret patterns ----------------------------------------------------------
+#
+# Each pattern is a grep extended regex. They are combined into a single
+# alternation for a single pass over the diff.
+
+PATTERNS=(
+  # AWS / R2 access key IDs
+  'AKIA[0-9A-Z]{16}'
+
+  # GitHub token variants
+  'ghp_[A-Za-z0-9]{36}'
+  'github_pat_[A-Za-z0-9_]{22,}'
+  'gho_[A-Za-z0-9]{36}'
+  'ghu_[A-Za-z0-9]{36}'
+  'ghr_[A-Za-z0-9]{36}'
+  'ghs_[A-Za-z0-9]{36}'
+
+  # PEM private keys
+  '-----BEGIN [A-Z ]*PRIVATE KEY-----'
+
+  # Context-sensitive: secret keyword followed by assignment of a long value
+  '(CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|HASHNODE_TOKEN|HASHNODE_PUBLICATION_ID|DEVTO_API_KEY|R2_ACCESS_KEY_ID|R2_SECRET_ACCESS_KEY)[[:space:]]*[=:][[:space:]]*[A-Za-z0-9_/+.=-]{20,}'
+  '(api_key|api_secret|apikey|secret_key|access_key|auth_token|password|passwd|private_key|token)[[:space:]]*[=:][[:space:]]*['\''"]?[A-Za-z0-9_/+.=-]{20,}'
+)
+
+# Build combined pattern
+COMBINED=""
+for p in "${PATTERNS[@]}"; do
+  if [ -z "$COMBINED" ]; then
+    COMBINED="$p"
+  else
+    COMBINED="$COMBINED|$p"
+  fi
+done
+
+# -- Main loop ----------------------------------------------------------------
+#
+# Git feeds the pre-push hook one line per ref on stdin:
+#   <local ref> <local sha> <remote ref> <remote sha>
+
+found_secrets=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Branch deletion: nothing to scan
+  if [ "$local_sha" = "$ZERO_SHA" ]; then
+    continue
+  fi
+
+  # New branch or existing branch update
+  if [ "$remote_sha" = "$ZERO_SHA" ]; then
+    # New branch: scan all commits not on any remote branch
+    range="$local_sha --not --remotes"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+
+  # Get the diff for the commit range, added lines only
+  # shellcheck disable=SC2086
+  diff_output=$(git diff $range -- . $(build_exclude_args) 2>/dev/null || true)
+
+  if [ -z "$diff_output" ]; then
+    continue
+  fi
+
+  # Scan added lines (lines starting with +, but not the +++ file header)
+  matches=$(echo "$diff_output" \
+    | grep -E '^\+[^+]' \
+    | grep -En "$COMBINED" 2>/dev/null || true)
+
+  if [ -n "$matches" ]; then
+    if [ "$found_secrets" -eq 0 ]; then
+      echo "" >&2
+      echo "SECRET DETECTION: potential secrets found in push" >&2
+      echo "=================================================" >&2
+    fi
+    found_secrets=1
+    echo "" >&2
+    echo "Ref: $local_ref" >&2
+    echo "$matches" | while IFS= read -r match; do
+      echo "  $match" >&2
+    done
+  fi
+done
+
+if [ "$found_secrets" -ne 0 ]; then
+  echo "" >&2
+  echo "Push blocked. Remove the secrets and force-push, or use" >&2
+  echo "  git push --no-verify" >&2
+  echo "to bypass this check (only if you are certain these are false positives)." >&2
+  echo "" >&2
+  exit 1
+fi
