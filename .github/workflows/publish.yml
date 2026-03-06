@@ -119,7 +119,7 @@ jobs:
             DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
 
             # Extract content (everything after second ---)
-            CONTENT=$(sed '1,/^---$/d' "$POST" | sed '1,/^---$/d')
+            CONTENT=$(awk 'BEGIN{c=0} /^---$/{c++;next} c>=2{print}' "$POST")
 
             # Build tags JSON array
             TAGS_JSON=$(echo "$TAGS" | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R -s -c 'split("\n") | map(select(length > 0)) | map({slug: ., name: .})')
