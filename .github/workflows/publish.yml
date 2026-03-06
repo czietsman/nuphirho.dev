@@ -250,8 +250,8 @@ jobs:
 
             CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
 
-            # Extract content
-            CONTENT=$(sed '1,/^---$/d' "$POST" | sed '1,/^---$/d')
+            # Extract content (everything after second ---)
+            CONTENT=$(awk 'BEGIN{c=0} /^---$/{c++;next} c>=2{print}' "$POST")
 
             # Check if article already exists on Dev.to
             EXISTING=$(curl -s "https://dev.to/api/articles/me/all?per_page=100" \
