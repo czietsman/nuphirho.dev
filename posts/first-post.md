@@ -109,3 +109,4 @@ This post is the first in what I hope becomes a regular practice: writing about 
 The entire source for this blog, including the infrastructure, pipeline, specifications, and style guide, is public at [github.com/czietsman/nuphirho.dev](https://github.com/czietsman/nuphirho.dev). If the process interests you, the receipts are there.
 
 The technology was the easy part. The process is what made it work.
+
