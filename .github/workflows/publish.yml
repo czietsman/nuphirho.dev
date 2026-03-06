@@ -126,28 +126,36 @@ jobs:
 
             CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
 
-            # Escape content for JSON
-            CONTENT_ESCAPED=$(echo "$CONTENT" | jq -R -s '.')
-
             if [ "$DRAFT" = "true" ]; then
               # Check for existing draft by listing drafts and filtering by slug
+              PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" \
+                '{query: "query($id: ObjectId!) { publication(id: $id) { drafts(first: 50) { edges { node { id slug } } } } }", variables: {id: $id}}')
+
               DRAFTS_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
                 -H "Content-Type: application/json" \
                 -H "Authorization: $HASHNODE_TOKEN" \
-                -d "{\"query\": \"query { publication(id: \\\"$HASHNODE_PUBLICATION_ID\\\") { drafts(first: 50) { edges { node { id slug } } } } }\"}")
+                -d "$PAYLOAD")
 
-              EXISTING_DRAFT_ID=$(echo "$DRAFTS_RESPONSE" | jq -r "[.data.publication.drafts.edges[] | select(.node.slug == \"$SLUG\") | .node.id] | first // empty")
+              EXISTING_DRAFT_ID=$(echo "$DRAFTS_RESPONSE" | jq -r --arg slug "$SLUG" '[.data.publication.drafts.edges[] | select(.node.slug == $slug) | .node.id] | first // empty')
 
               if [ -n "$EXISTING_DRAFT_ID" ]; then
                 echo "Draft already exists on Hashnode: $SLUG (ID: $EXISTING_DRAFT_ID)"
               else
                 echo "Creating draft on Hashnode: $SLUG"
-                MUTATION="mutation { createDraft(input: { publicationId: \\\"$HASHNODE_PUBLICATION_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", slug: \\\"$SLUG\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON, originalArticleURL: \\\"$CANONICAL_URL\\\", settings: { slugOverridden: true } }) { draft { id slug } } }"
+                PAYLOAD=$(jq -n \
+                  --arg pubId "$HASHNODE_PUBLICATION_ID" \
+                  --arg title "$TITLE" \
+                  --arg subtitle "$SUBTITLE" \
+                  --arg slug "$SLUG" \
+                  --arg content "$CONTENT" \
+                  --argjson tags "$TAGS_JSON" \
+                  --arg canonical "$CANONICAL_URL" \
+                  '{query: "mutation($input: CreateDraftInput!) { createDraft(input: $input) { draft { id slug } } }", variables: {input: {publicationId: $pubId, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags, originalArticleURL: $canonical, settings: {slugOverridden: true}}}}')
 
                 RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
                   -H "Content-Type: application/json" \
                   -H "Authorization: $HASHNODE_TOKEN" \
-                  -d "{\"query\": \"$MUTATION\"}")
+                  -d "$PAYLOAD")
 
                 DRAFT_ID=$(echo "$RESPONSE" | jq -r '.data.createDraft.draft.id // empty')
 
@@ -159,34 +167,51 @@ jobs:
                 fi
               fi
 
-              PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c ". + [\"$SLUG\"]")
+              PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c --arg slug "$SLUG" '. + [$slug]')
             else
               # Check if post already exists
+              PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" --arg slug "$SLUG" \
+                '{query: "query($id: ObjectId!, $slug: String!) { publication(id: $id) { post(slug: $slug) { id } } }", variables: {id: $id, slug: $slug}}')
+
               EXISTING=$(curl -s -X POST https://gql.hashnode.com \
                 -H "Content-Type: application/json" \
                 -H "Authorization: $HASHNODE_TOKEN" \
-                -d "{\"query\": \"query { publication(id: \\\"$HASHNODE_PUBLICATION_ID\\\") { post(slug: \\\"$SLUG\\\") { id } } }\"}")
+                -d "$PAYLOAD")
 
               EXISTING_ID=$(echo "$EXISTING" | jq -r '.data.publication.post.id // empty')
 
               if [ -n "$EXISTING_ID" ]; then
                 echo "Updating existing post: $SLUG (ID: $EXISTING_ID)"
-                MUTATION="mutation { updatePost(input: { id: \\\"$EXISTING_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON }) { post { url } } }"
+                PAYLOAD=$(jq -n \
+                  --arg id "$EXISTING_ID" \
+                  --arg title "$TITLE" \
+                  --arg subtitle "$SUBTITLE" \
+                  --arg content "$CONTENT" \
+                  --argjson tags "$TAGS_JSON" \
+                  '{query: "mutation($input: UpdatePostInput!) { updatePost(input: $input) { post { url } } }", variables: {input: {id: $id, title: $title, subtitle: $subtitle, contentMarkdown: $content, tags: $tags}}}')
               else
                 echo "Creating new post: $SLUG"
-                MUTATION="mutation { publishPost(input: { publicationId: \\\"$HASHNODE_PUBLICATION_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", slug: \\\"$SLUG\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON, originalArticleURL: \\\"$CANONICAL_URL\\\" }) { post { url } } }"
+                PAYLOAD=$(jq -n \
+                  --arg pubId "$HASHNODE_PUBLICATION_ID" \
+                  --arg title "$TITLE" \
+                  --arg subtitle "$SUBTITLE" \
+                  --arg slug "$SLUG" \
+                  --arg content "$CONTENT" \
+                  --argjson tags "$TAGS_JSON" \
+                  --arg canonical "$CANONICAL_URL" \
+                  '{query: "mutation($input: PublishPostInput!) { publishPost(input: $input) { post { url } } }", variables: {input: {publicationId: $pubId, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags, originalArticleURL: $canonical}}}')
               fi
 
               RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
                 -H "Content-Type: application/json" \
                 -H "Authorization: $HASHNODE_TOKEN" \
-                -d "{\"query\": \"$MUTATION\"}")
+                -d "$PAYLOAD")
 
               POST_URL=$(echo "$RESPONSE" | jq -r '.data.publishPost.post.url // .data.updatePost.post.url // empty')
 
               if [ -n "$POST_URL" ]; then
                 echo "Published: $POST_URL"
-                PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c ". + [\"$SLUG\"]")
+                PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c --arg slug "$SLUG" '. + [$slug]')
               else
                 echo "::error::Failed to publish $SLUG: $RESPONSE"
                 exit 1
