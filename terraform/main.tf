@@ -1,5 +1,6 @@
 # Changelog
 # 2026-03-06  Initial apply: blog CNAME, root A records, www CNAME
+# 2026-03-06  Migrate S3 backend endpoint to endpoints.s3
 
 terraform {
   required_version = ">= 1.0"
@@ -16,8 +17,8 @@ terraform {
     key    = "nuphirho.dev/terraform.tfstate"
     region = "auto"
 
-    # Cloudflare R2 endpoint — account ID passed via -backend-config or env
-    # terraform init -backend-config="endpoint=https://<ACCOUNT_ID>.r2.cloudflarestorage.com"
+    # Cloudflare R2 endpoint -- account ID passed via -backend-config or env
+    # terraform init -backend-config="endpoints={s3=\"https://<ACCOUNT_ID>.r2.cloudflarestorage.com\"}"
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true
