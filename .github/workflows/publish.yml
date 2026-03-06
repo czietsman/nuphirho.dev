@@ -112,17 +112,11 @@ jobs:
             # Extract front matter
             FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
 
-            # Check draft status
-            DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
-            if [ "$DRAFT" = "true" ]; then
-              echo "Skipping draft: $POST"
-              continue
-            fi
-
             TITLE=$(echo "$FRONT_MATTER" | grep "^title:" | sed 's/^title: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
             SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
             SUBTITLE=$(echo "$FRONT_MATTER" | grep "^subtitle:" | sed 's/^subtitle: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
             TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//')
+            DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
 
             # Extract content (everything after second ---)
             CONTENT=$(sed '1,/^---$/d' "$POST" | sed '1,/^---$/d')
@@ -135,35 +129,68 @@ jobs:
             # Escape content for JSON
             CONTENT_ESCAPED=$(echo "$CONTENT" | jq -R -s '.')
 
-            # Check if post already exists
-            EXISTING=$(curl -s -X POST https://gql.hashnode.com \
-              -H "Content-Type: application/json" \
-              -H "Authorization: $HASHNODE_TOKEN" \
-              -d "{\"query\": \"query { publication(id: \\\"$HASHNODE_PUBLICATION_ID\\\") { post(slug: \\\"$SLUG\\\") { id } } }\"}")
+            if [ "$DRAFT" = "true" ]; then
+              # Check for existing draft by listing drafts and filtering by slug
+              DRAFTS_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+                -H "Content-Type: application/json" \
+                -H "Authorization: $HASHNODE_TOKEN" \
+                -d "{\"query\": \"query { publication(id: \\\"$HASHNODE_PUBLICATION_ID\\\") { drafts(first: 50) { edges { node { id slug } } } } }\"}")
 
-            EXISTING_ID=$(echo "$EXISTING" | jq -r '.data.publication.post.id // empty')
+              EXISTING_DRAFT_ID=$(echo "$DRAFTS_RESPONSE" | jq -r "[.data.publication.drafts.edges[] | select(.node.slug == \"$SLUG\") | .node.id] | first // empty")
 
-            if [ -n "$EXISTING_ID" ]; then
-              echo "Updating existing post: $SLUG (ID: $EXISTING_ID)"
-              MUTATION="mutation { updatePost(input: { id: \\\"$EXISTING_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON }) { post { url } } }"
-            else
-              echo "Creating new post: $SLUG"
-              MUTATION="mutation { publishPost(input: { publicationId: \\\"$HASHNODE_PUBLICATION_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", slug: \\\"$SLUG\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON, originalArticleURL: \\\"$CANONICAL_URL\\\" }) { post { url } } }"
-            fi
+              if [ -n "$EXISTING_DRAFT_ID" ]; then
+                echo "Draft already exists on Hashnode: $SLUG (ID: $EXISTING_DRAFT_ID)"
+              else
+                echo "Creating draft on Hashnode: $SLUG"
+                MUTATION="mutation { createDraft(input: { publicationId: \\\"$HASHNODE_PUBLICATION_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", slug: \\\"$SLUG\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON, originalArticleURL: \\\"$CANONICAL_URL\\\", settings: { slugOverridden: true } }) { draft { id slug } } }"
 
-            RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
-              -H "Content-Type: application/json" \
-              -H "Authorization: $HASHNODE_TOKEN" \
-              -d "{\"query\": \"$MUTATION\"}")
+                RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+                  -H "Content-Type: application/json" \
+                  -H "Authorization: $HASHNODE_TOKEN" \
+                  -d "{\"query\": \"$MUTATION\"}")
 
-            POST_URL=$(echo "$RESPONSE" | jq -r '.data.publishPost.post.url // .data.updatePost.post.url // empty')
+                DRAFT_ID=$(echo "$RESPONSE" | jq -r '.data.createDraft.draft.id // empty')
 
-            if [ -n "$POST_URL" ]; then
-              echo "Published: $POST_URL"
+                if [ -n "$DRAFT_ID" ]; then
+                  echo "Draft created: $SLUG (ID: $DRAFT_ID)"
+                else
+                  echo "::error::Failed to create draft $SLUG: $RESPONSE"
+                  exit 1
+                fi
+              fi
+
               PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c ". + [\"$SLUG\"]")
             else
-              echo "::error::Failed to publish $SLUG: $RESPONSE"
-              exit 1
+              # Check if post already exists
+              EXISTING=$(curl -s -X POST https://gql.hashnode.com \
+                -H "Content-Type: application/json" \
+                -H "Authorization: $HASHNODE_TOKEN" \
+                -d "{\"query\": \"query { publication(id: \\\"$HASHNODE_PUBLICATION_ID\\\") { post(slug: \\\"$SLUG\\\") { id } } }\"}")
+
+              EXISTING_ID=$(echo "$EXISTING" | jq -r '.data.publication.post.id // empty')
+
+              if [ -n "$EXISTING_ID" ]; then
+                echo "Updating existing post: $SLUG (ID: $EXISTING_ID)"
+                MUTATION="mutation { updatePost(input: { id: \\\"$EXISTING_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON }) { post { url } } }"
+              else
+                echo "Creating new post: $SLUG"
+                MUTATION="mutation { publishPost(input: { publicationId: \\\"$HASHNODE_PUBLICATION_ID\\\", title: \\\"$TITLE\\\", subtitle: \\\"$SUBTITLE\\\", slug: \\\"$SLUG\\\", contentMarkdown: $CONTENT_ESCAPED, tags: $TAGS_JSON, originalArticleURL: \\\"$CANONICAL_URL\\\" }) { post { url } } }"
+              fi
+
+              RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+                -H "Content-Type: application/json" \
+                -H "Authorization: $HASHNODE_TOKEN" \
+                -d "{\"query\": \"$MUTATION\"}")
+
+              POST_URL=$(echo "$RESPONSE" | jq -r '.data.publishPost.post.url // .data.updatePost.post.url // empty')
+
+              if [ -n "$POST_URL" ]; then
+                echo "Published: $POST_URL"
+                PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c ". + [\"$SLUG\"]")
+              else
+                echo "::error::Failed to publish $SLUG: $RESPONSE"
+                exit 1
+              fi
             fi
           done
 
@@ -185,15 +212,16 @@ jobs:
             # Extract front matter
             FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
 
-            DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
-            if [ "$DRAFT" = "true" ]; then
-              echo "Skipping draft: $POST"
-              continue
-            fi
-
             TITLE=$(echo "$FRONT_MATTER" | grep "^title:" | sed 's/^title: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
             SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
             TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//' | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | head -4 | tr '\n' ',' | sed 's/,$//')
+            DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
+
+            if [ "$DRAFT" = "true" ]; then
+              DEVTO_PUBLISHED=false
+            else
+              DEVTO_PUBLISHED=true
+            fi
 
             CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
 
@@ -209,7 +237,8 @@ jobs:
               --arg body "$CONTENT" \
               --arg canonical "$CANONICAL_URL" \
               --arg tags "$TAGS" \
-              '{article: {title: $title, body_markdown: $body, canonical_url: $canonical, published: true, tags: ($tags | split(",") | map(gsub("\\s"; "")))}}')
+              --argjson published "$DEVTO_PUBLISHED" \
+              '{article: {title: $title, body_markdown: $body, canonical_url: $canonical, published: $published, tags: ($tags | split(",") | map(gsub("\\s"; "")))}}')
 
             if [ -n "$EXISTING" ]; then
               echo "Updating existing Dev.to article: $EXISTING"
@@ -255,12 +284,16 @@ jobs:
             SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
             DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
 
+            CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
+
             if [ "$DRAFT" = "true" ]; then
-              echo "- **$TITLE** -- skipped (draft)" >> "$GITHUB_STEP_SUMMARY"
+              echo "- **$TITLE** -- pushed as draft (unpublished)" >> "$GITHUB_STEP_SUMMARY"
+              echo "  - Hashnode: draft created" >> "$GITHUB_STEP_SUMMARY"
+              echo "  - Dev.to: draft created" >> "$GITHUB_STEP_SUMMARY"
+              echo "  - Medium: import manually after publishing" >> "$GITHUB_STEP_SUMMARY"
               continue
             fi
 
-            CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
             echo "- **$TITLE**" >> "$GITHUB_STEP_SUMMARY"
             echo "  - Hashnode: $CANONICAL_URL" >> "$GITHUB_STEP_SUMMARY"
             echo "  - Dev.to: cross-posted" >> "$GITHUB_STEP_SUMMARY"
