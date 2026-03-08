@@ -102,6 +102,16 @@ The domain registration is the only line item. Everything else, the infrastructu
 
 This is the argument made tangible. The economics have changed. The practices that used to require dedicated teams and significant budgets are available to anyone willing to apply the process.
 
+## When the plan met reality
+
+The first deploy hit a snag. Hashnode's custom domain mapping returned a 404 for blog.nuphirho.dev, despite correct DNS configuration. A support ticket submitted on a Friday went unresolved over the weekend.
+
+Rather than wait, I built a fallback: a static frontend using plain HTML, CSS, and vanilla JavaScript, querying Hashnode's GraphQL API client-side. Deployed to GitHub Pages on a separate repo. No frameworks, no build tools, no dependencies. The whole thing took under two hours early on a Sunday morning, and I was not giving it my full attention.
+
+This was possible because the architecture was loosely coupled from the start. The content pipeline publishes to Hashnode via API regardless of which frontend renders it. Hashnode still serves as the CMS and a secondary reading surface at nuphirho.hashnode.dev. The static frontend at blog.nuphirho.dev is the primary experience. If Hashnode resolves the domain issue, the frontend repo can be archived and the subdomain pointed back. Nothing else changes.
+
+The snag turned out to be the most convincing part of the process. Because the concerns were separated, because the content was not tied to the presentation layer, switching frontends was a small, contained task. That is what good architecture buys you: not the absence of problems, but the ability to respond to them without reworking everything.
+
 ## What comes next
 
 This post is the first in what I hope becomes a regular practice: writing about what I am working on, what I am learning, and what I get wrong. The topics will span AI-assisted software delivery, engineering process, organisational transformation, and the practical challenges of introducing new tools and practices to existing teams.
@@ -109,6 +119,3 @@ This post is the first in what I hope becomes a regular practice: writing about 
 The entire source for this blog, including the infrastructure, pipeline, specifications, and style guide, is public at [github.com/czietsman/nuphirho.dev](https://github.com/czietsman/nuphirho.dev). If the process interests you, the receipts are there.
 
 The technology was the easy part. The process is what made it work.
-
-
-
