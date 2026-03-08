@@ -2,6 +2,7 @@
 # 2026-03-06  Initial apply: blog CNAME, root A records, www CNAME
 # 2026-03-06  Migrate S3 backend endpoint to endpoints.s3
 # 2026-03-06  Set blog CNAME to DNS-only (Hashnode/Vercel requires unproxied)
+# 2026-03-08  Point blog CNAME to GitHub Pages (static frontend)
 
 terraform {
   required_version = ">= 1.0"
@@ -37,14 +38,14 @@ data "cloudflare_zone" "nuphirho" {
   name = "nuphirho.dev"
 }
 
-# Blog subdomain CNAME to Hashnode (DNS only, Hashnode/Vercel requires unproxied)
+# Blog subdomain CNAME to GitHub Pages (static frontend)
 resource "cloudflare_record" "blog" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "blog"
-  content = "hashnode.network"
+  content = "czietsman.github.io"
   type    = "CNAME"
-  proxied = false
-  ttl     = 300
+  proxied = true
+  ttl     = 1 # Auto when proxied
 }
 
 # Root domain A records for GitHub Pages
