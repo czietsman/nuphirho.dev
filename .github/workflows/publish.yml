@@ -239,7 +239,16 @@ jobs:
 
             TITLE=$(echo "$FRONT_MATTER" | grep "^title:" | sed 's/^title: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
             SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
-            TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//' | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | head -4 | tr '\n' ',' | sed 's/,$//')
+            RAW_TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//' | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | grep -v '^$')
+
+            # Map tags via glossary (tags.json) -- unmapped tags pass through
+            TAGS=""
+            while IFS= read -r tag; do
+              MAPPED=$(jq -r --arg t "$tag" '.[$t].devto // $t' tags.json)
+              if [ -n "$TAGS" ]; then TAGS="$TAGS,$MAPPED"; else TAGS="$MAPPED"; fi
+            done <<< "$RAW_TAGS"
+            # Dev.to allows max 4 tags
+            TAGS=$(echo "$TAGS" | tr ',' '\n' | head -4 | tr '\n' ',' | sed 's/,$//')
             DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
 
             if [ "$DRAFT" = "true" ]; then
