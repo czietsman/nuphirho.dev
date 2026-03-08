@@ -1,0 +1,6 @@
+{
+  "_comment": "Tag glossary. Canonical tag names used in post frontmatter. Only tags needing platform-specific mapping are listed here; unlisted tags pass through unchanged. Dev.to tags must be alphanumeric (no hyphens).",
+  "infrastructure-as-code": { "devto": "iac" },
+  "spatial-thinking": { "devto": "spatialthinking" },
+  "ai-assisted-development": { "devto": "aidev" }
+}
