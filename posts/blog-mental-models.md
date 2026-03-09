@@ -1,6 +1,6 @@
 ---
 title: "Learning the Map"
-slug: learning-the-map
+slug: "learning-the-map"
 subtitle: "How spatial thinking, competitive gaming, and the right collaborators shaped my approach to software architecture"
 tags: [career, spatial-thinking, collaboration, ai, personal]
 ---

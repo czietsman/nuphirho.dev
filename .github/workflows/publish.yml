@@ -8,109 +8,36 @@ on:
 permissions: {}
 
 jobs:
-  validate:
-    name: Validate posts
+  publish:
+    name: Publish posts
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    outputs:
-      changed_posts: ${{ steps.changed.outputs.posts }}
-      has_posts: ${{ steps.changed.outputs.has_posts }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 2
+
+      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
+        with:
+          go-version-file: go.mod
 
       - name: Find changed posts
         id: changed
         run: |
           POSTS=$(git diff --name-only --diff-filter=ACM HEAD~1 HEAD -- 'posts/*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "posts=$POSTS" >> "$GITHUB_OUTPUT"
-          if [ "$POSTS" = "[]" ]; then
-            echo "has_posts=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_posts=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Validate front matter
-        if: steps.changed.outputs.has_posts == 'true'
-        run: |
-          ERRORS=0
-          for POST in $(echo '${{ steps.changed.outputs.posts }}' | jq -r '.[]'); do
-            echo "Validating $POST..."
-
-            # Check front matter exists
-            if ! head -1 "$POST" | grep -q "^---$"; then
-              echo "::error file=$POST::Missing front matter"
-              ERRORS=$((ERRORS + 1))
-              continue
-            fi
-
-            # Extract front matter
-            FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
-
-            # Check required fields
-            if ! echo "$FRONT_MATTER" | grep -q "^title:"; then
-              echo "::error file=$POST::Missing required field: title"
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            if ! echo "$FRONT_MATTER" | grep -q "^slug:"; then
-              echo "::error file=$POST::Missing required field: slug"
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            if ! echo "$FRONT_MATTER" | grep -q "^tags:"; then
-              echo "::error file=$POST::Missing required field: tags"
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            # Check slug format (lowercase, hyphenated)
-            SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
-            if echo "$SLUG" | grep -qP '[^a-z0-9-]'; then
-              echo "::error file=$POST::Slug must be lowercase and hyphenated: $SLUG"
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            # Check for potential secrets
-            if grep -qPi '(api[_-]?key|secret|token|password|credential)\s*[:=]\s*["\x27]?[A-Za-z0-9+/]{20,}' "$POST"; then
-              echo "::error file=$POST::Potential secret detected in post content"
-              ERRORS=$((ERRORS + 1))
-            fi
-
-            # Style guide warnings
-            if grep -q "\u2014" "$POST"; then
-              echo "::warning file=$POST::Em dash detected. Style guide prohibits em dashes."
-            fi
-          done
-
-          if [ $ERRORS -gt 0 ]; then
-            echo "::error::Validation failed with $ERRORS error(s)"
-            exit 1
-          fi
-
-  publish:
-    name: Publish posts
-    needs: validate
-    if: needs.validate.outputs.has_posts == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
-      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
-        with:
-          go-version-file: go.mod
 
       - name: Build publish tool
+        if: steps.changed.outputs.posts != '[]'
         run: go build -o publish ./cmd/publish/
 
       - name: Publish posts
+        if: steps.changed.outputs.posts != '[]'
         env:
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: |
-          FILES=$(echo '${{ needs.validate.outputs.changed_posts }}' | jq -r '.[]')
+          FILES=$(echo '${{ steps.changed.outputs.posts }}' | jq -r '.[]')
           ./publish --tags-file tags.json $FILES

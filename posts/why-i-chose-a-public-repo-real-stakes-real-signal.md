@@ -1,6 +1,6 @@
 ---
 title: "Why I chose a public repo: real stakes, real signal"
-slug: why-i-chose-a-public-repo-real-stakes-real-signal
+slug: "why-i-chose-a-public-repo-real-stakes-real-signal"
 subtitle: "Simulated environments produce simulated learning. The discomfort of working in public is the point."
 tags: [engineering-process, security, ai, personal-practice, devops]
 draft: true

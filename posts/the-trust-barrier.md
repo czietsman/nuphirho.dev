@@ -1,6 +1,6 @@
 ---
 title: "The Trust Barrier"
-slug: the-trust-barrier
+slug: "the-trust-barrier"
 draft: true
 tags: [ai, process, bdd, trust, software-engineering]
 ---
