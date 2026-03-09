@@ -16,7 +16,7 @@ jobs:
       changed_posts: ${{ steps.changed.outputs.posts }}
       has_posts: ${{ steps.changed.outputs.has_posts }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 2
 
@@ -96,7 +96,7 @@ jobs:
     outputs:
       published_slugs: ${{ steps.publish.outputs.published_slugs }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Publish posts to Hashnode
         id: publish
@@ -227,7 +227,7 @@ jobs:
     if: needs.validate.outputs.has_posts == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Cross-post to Dev.to
         env:
@@ -305,7 +305,7 @@ jobs:
     if: always() && needs.validate.outputs.has_posts == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Generate summary
         run: |
