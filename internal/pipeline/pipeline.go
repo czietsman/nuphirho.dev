@@ -136,22 +136,24 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 		}
 		fr.HashnodeRes = hnResult
 
-		// Cross-post to Dev.to
-		dtInput := devto.ArticleInput{
-			Title:     fr.Post.Title,
-			Slug:      fr.Post.Slug,
-			Content:   fr.Post.Content,
-			Tags:      dtMapResult.Tags,
-			Published: true,
-		}
+		// Cross-post to Dev.to (skip if client is nil)
+		if cfg.DevTo != nil {
+			dtInput := devto.ArticleInput{
+				Title:     fr.Post.Title,
+				Slug:      fr.Post.Slug,
+				Content:   fr.Post.Content,
+				Tags:      dtMapResult.Tags,
+				Published: true,
+			}
 
-		dtResult, err := cfg.DevTo.CreateArticle(dtInput)
-		if err != nil {
-			fr.Error = fmt.Sprintf("devto: %s", err.Error())
-			publishFailed = true
-			continue
+			dtResult, err := cfg.DevTo.CreateArticle(dtInput)
+			if err != nil {
+				fr.Error = fmt.Sprintf("devto: %s", err.Error())
+				publishFailed = true
+				continue
+			}
+			fr.DevToRes = dtResult
 		}
-		fr.DevToRes = dtResult
 	}
 
 	result.Files = parsed
