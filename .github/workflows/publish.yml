@@ -12,6 +12,8 @@ jobs:
   validate:
     name: Validate posts
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       changed_posts: ${{ steps.changed.outputs.posts }}
       has_posts: ${{ steps.changed.outputs.has_posts }}
@@ -93,6 +95,8 @@ jobs:
     needs: validate
     if: needs.validate.outputs.has_posts == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       published_slugs: ${{ steps.publish.outputs.published_slugs }}
     steps:
@@ -226,6 +230,8 @@ jobs:
     needs: [validate, publish-hashnode]
     if: needs.validate.outputs.has_posts == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
@@ -304,6 +310,8 @@ jobs:
     needs: [validate, publish-hashnode, crosspost-devto]
     if: always() && needs.validate.outputs.has_posts == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
