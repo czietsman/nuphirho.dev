@@ -1,6 +1,7 @@
 ---
 title: "When bash gets too wild: rewriting my publish pipeline in Go"
 slug: "when-bash-gets-too-wild-rewriting-publish-pipeline-go"
+subtitle: "How BDD specs, a Go rewrite, and 98 scenarios replaced 400 lines of fragile bash"
 tags: ["go", "bdd", "devops", "software-engineering", "blogging"]
 ---
 
