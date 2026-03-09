@@ -72,3 +72,17 @@ Run `terraform plan` and review the output before every `terraform apply`. Do no
 ## Why this matters
 
 This repository is a deliberate, high-stakes experiment. The author has chosen a public repository with a live publishing pipeline and real infrastructure as the environment for applying and testing engineering and security practices. The low error margin is intentional. It sharpens thinking and produces real signal. The constraints above are not theoretical — they reflect threat modeling applied directly to this system, and they parallel practices under evaluation in a professional context. Treat them accordingly.
+
+---
+
+## blog-nuphirho.dev
+
+These constraints apply when an agent is performing work on the `~/me/blog-nuphirho.dev` repository.
+
+This is a pure static site deployed via GitHub Pages from the repository root. Every file committed to that repository is publicly accessible at blog.nuphirho.dev. There are no secrets, no build pipeline, and no server-side logic.
+
+Before creating or moving any file into `blog-nuphirho.dev`, confirm with the user that public accessibility is intended. Do not assume a file is safe to commit because it contains no secrets -- consider whether its presence or content is appropriate for public access.
+
+All work on blog-nuphirho.dev is performed by agents running in the nuphirho.dev repository context. This is intentional. It keeps agent constraints in a single file that is not subject to public Pages deployment, and ensures the same security context, agent scope, and secret hygiene rules apply without duplication.
+
+Do not create an AGENTS.md in blog-nuphirho.dev. This file is the authoritative source of constraints for both repositories.
