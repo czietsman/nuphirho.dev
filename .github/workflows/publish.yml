@@ -89,8 +89,8 @@ jobs:
             exit 1
           fi
 
-  go-dry-run:
-    name: Go pipeline dry-run
+  publish-hashnode:
+    name: Publish to Hashnode
     needs: validate
     if: needs.validate.outputs.has_posts == 'true'
     runs-on: ubuntu-latest
@@ -106,199 +106,188 @@ jobs:
       - name: Build publish tool
         run: go build -o publish ./cmd/publish/
 
-      - name: Run dry-run
+      - name: Publish posts to Hashnode
         env:
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
-          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: |
           FILES=$(echo '${{ needs.validate.outputs.changed_posts }}' | jq -r '.[]')
-          if [ -n "$FILES" ]; then
-            ./publish --dry-run --tags-file tags.json $FILES | tee dry-run-output.json
-          else
-            echo "[]" > dry-run-output.json
-          fi
+          ./publish --skip-devto --tags-file tags.json $FILES
 
-      - name: Upload dry-run output
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: go-dry-run-output
-          path: dry-run-output.json
-          retention-days: 14
-
-  publish-hashnode:
-    name: Publish to Hashnode
-    needs: validate
-    if: needs.validate.outputs.has_posts == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    outputs:
-      published_slugs: ${{ steps.publish.outputs.published_slugs }}
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
-      - name: Publish posts to Hashnode
-        id: publish
-        env:
-          HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
-          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
-        run: |
-          PUBLISHED_SLUGS="[]"
-
-          for POST in $(echo '${{ needs.validate.outputs.changed_posts }}' | jq -r '.[]'); do
-            echo "Processing $POST..."
-
-            # Extract front matter
-            FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
-
-            TITLE=$(echo "$FRONT_MATTER" | grep "^title:" | sed 's/^title: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
-            SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
-            SUBTITLE=$(echo "$FRONT_MATTER" | grep "^subtitle:" | sed 's/^subtitle: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
-            TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//')
-            DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
-
-            # Extract content (everything after second ---), strip leading H1 title
-            CONTENT=$(awk 'BEGIN{c=0;h=0} /^---$/{c++;next} c>=2{if(!h && /^# /){h=1;next}; print}' "$POST")
-
-            # Build tags JSON array
-            TAGS_JSON=$(echo "$TAGS" | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R -s -c 'split("\n") | map(select(length > 0)) | map({slug: ., name: .})')
-
-            CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
-
-            if [ "$DRAFT" = "true" ]; then
-              # Check for existing draft by listing drafts and filtering by slug
-              PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" \
-                '{query: "query($id: ObjectId!) { publication(id: $id) { drafts(first: 50) { edges { node { id slug } } } } }", variables: {id: $id}}')
-
-              DRAFTS_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
-                -H "Content-Type: application/json" \
-                -H "Authorization: $HASHNODE_TOKEN" \
-                -d "$PAYLOAD")
-
-              EXISTING_DRAFT_ID=$(echo "$DRAFTS_RESPONSE" | jq -r --arg slug "$SLUG" '[.data.publication.drafts.edges[] | select(.node.slug == $slug) | .node.id] | first // empty')
-
-              if [ -n "$EXISTING_DRAFT_ID" ]; then
-                echo "Draft already exists on Hashnode: $SLUG (ID: $EXISTING_DRAFT_ID)"
-              else
-                echo "Creating draft on Hashnode: $SLUG"
-                PAYLOAD=$(jq -n \
-                  --arg pubId "$HASHNODE_PUBLICATION_ID" \
-                  --arg title "$TITLE" \
-                  --arg subtitle "$SUBTITLE" \
-                  --arg slug "$SLUG" \
-                  --arg content "$CONTENT" \
-                  --argjson tags "$TAGS_JSON" \
-                  --arg canonical "$CANONICAL_URL" \
-                  '{query: "mutation($input: CreateDraftInput!) { createDraft(input: $input) { draft { id slug } } }", variables: {input: {publicationId: $pubId, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags, originalArticleURL: $canonical, settings: {slugOverridden: true}}}}')
-
-                RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
-                  -H "Content-Type: application/json" \
-                  -H "Authorization: $HASHNODE_TOKEN" \
-                  -d "$PAYLOAD")
-
-                DRAFT_ID=$(echo "$RESPONSE" | jq -r '.data.createDraft.draft.id // empty')
-
-                if [ -n "$DRAFT_ID" ]; then
-                  echo "Draft created: $SLUG (ID: $DRAFT_ID)"
-                else
-                  echo "::error::Failed to create draft $SLUG: $RESPONSE"
-                  exit 1
-                fi
-              fi
-
-              PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c --arg slug "$SLUG" '. + [$slug]')
-            else
-              # Check if post already exists
-              PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" --arg slug "$SLUG" \
-                '{query: "query($id: ObjectId!, $slug: String!) { publication(id: $id) { post(slug: $slug) { id } } }", variables: {id: $id, slug: $slug}}')
-
-              EXISTING=$(curl -s -X POST https://gql.hashnode.com \
-                -H "Content-Type: application/json" \
-                -H "Authorization: $HASHNODE_TOKEN" \
-                -d "$PAYLOAD")
-
-              EXISTING_ID=$(echo "$EXISTING" | jq -r '.data.publication.post.id // empty')
-
-              if [ -n "$EXISTING_ID" ]; then
-                echo "Updating existing post: $SLUG (ID: $EXISTING_ID)"
-                PAYLOAD=$(jq -n \
-                  --arg id "$EXISTING_ID" \
-                  --arg title "$TITLE" \
-                  --arg subtitle "$SUBTITLE" \
-                  --arg content "$CONTENT" \
-                  --argjson tags "$TAGS_JSON" \
-                  '{query: "mutation($input: UpdatePostInput!) { updatePost(input: $input) { post { url } } }", variables: {input: {id: $id, title: $title, subtitle: $subtitle, contentMarkdown: $content, tags: $tags}}}')
-              else
-                # Check if post exists in deleted state (e.g. removed by AutoMod)
-                DELETED_PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" --arg slug "$SLUG" \
-                  '{query: "query($id: ObjectId!) { publication(id: $id) { posts(first: 50, filter: { deletedOnly: true }) { edges { node { id slug } } } } }", variables: {id: $id}}')
-
-                DELETED_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
-                  -H "Content-Type: application/json" \
-                  -H "Authorization: $HASHNODE_TOKEN" \
-                  -d "$DELETED_PAYLOAD")
-
-                DELETED_ID=$(echo "$DELETED_RESPONSE" | jq -r --arg slug "$SLUG" '[.data.publication.posts.edges[] | select(.node.slug == $slug) | .node.id] | first // empty')
-
-                if [ -n "$DELETED_ID" ]; then
-                  echo "Restoring deleted post: $SLUG (ID: $DELETED_ID)"
-                  RESTORE_PAYLOAD=$(jq -n --arg id "$DELETED_ID" \
-                    '{query: "mutation($input: RestorePostInput!) { restorePost(input: $input) { post { id slug } } }", variables: {input: {id: $id}}}')
-
-                  RESTORE_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
-                    -H "Content-Type: application/json" \
-                    -H "Authorization: $HASHNODE_TOKEN" \
-                    -d "$RESTORE_PAYLOAD")
-
-                  RESTORED_ID=$(echo "$RESTORE_RESPONSE" | jq -r '.data.restorePost.post.id // empty')
-
-                  if [ -z "$RESTORED_ID" ]; then
-                    echo "::error::Failed to restore deleted post $SLUG: $RESTORE_RESPONSE"
-                    exit 1
-                  fi
-
-                  echo "Updating restored post: $SLUG (ID: $RESTORED_ID)"
-                  PAYLOAD=$(jq -n \
-                    --arg id "$RESTORED_ID" \
-                    --arg title "$TITLE" \
-                    --arg subtitle "$SUBTITLE" \
-                    --arg slug "$SLUG" \
-                    --arg content "$CONTENT" \
-                    --argjson tags "$TAGS_JSON" \
-                    '{query: "mutation($input: UpdatePostInput!) { updatePost(input: $input) { post { url } } }", variables: {input: {id: $id, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags}}}')
-                else
-                  echo "Creating new post: $SLUG"
-                  PAYLOAD=$(jq -n \
-                    --arg pubId "$HASHNODE_PUBLICATION_ID" \
-                    --arg title "$TITLE" \
-                    --arg subtitle "$SUBTITLE" \
-                    --arg slug "$SLUG" \
-                    --arg content "$CONTENT" \
-                    --argjson tags "$TAGS_JSON" \
-                    --arg canonical "$CANONICAL_URL" \
-                    '{query: "mutation($input: PublishPostInput!) { publishPost(input: $input) { post { url } } }", variables: {input: {publicationId: $pubId, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags, originalArticleURL: $canonical}}}')
-                fi
-              fi
-
-              RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
-                -H "Content-Type: application/json" \
-                -H "Authorization: $HASHNODE_TOKEN" \
-                -d "$PAYLOAD")
-
-              POST_URL=$(echo "$RESPONSE" | jq -r '.data.publishPost.post.url // .data.updatePost.post.url // empty')
-
-              if [ -n "$POST_URL" ]; then
-                echo "Published: $POST_URL"
-                PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c --arg slug "$SLUG" '. + [$slug]')
-              else
-                echo "::error::Failed to publish $SLUG: $RESPONSE"
-                exit 1
-              fi
-            fi
-          done
-
-          echo "published_slugs=$PUBLISHED_SLUGS" >> "$GITHUB_OUTPUT"
+  # --- Bash Hashnode job (disabled, kept for rollback) ---
+  # publish-hashnode-bash:
+  #   name: Publish to Hashnode (bash)
+  #   needs: validate
+  #   if: needs.validate.outputs.has_posts == 'true'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   outputs:
+  #     published_slugs: ${{ steps.publish.outputs.published_slugs }}
+  #   steps:
+  #     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+  #
+  #     - name: Publish posts to Hashnode
+  #       id: publish
+  #       env:
+  #         HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
+  #         HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+  #       run: |
+  #         PUBLISHED_SLUGS="[]"
+  #
+  #         for POST in $(echo '${{ needs.validate.outputs.changed_posts }}' | jq -r '.[]'); do
+  #           echo "Processing $POST..."
+  #
+  #           # Extract front matter
+  #           FRONT_MATTER=$(sed -n '/^---$/,/^---$/p' "$POST" | sed '1d;$d')
+  #
+  #           TITLE=$(echo "$FRONT_MATTER" | grep "^title:" | sed 's/^title: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
+  #           SLUG=$(echo "$FRONT_MATTER" | grep "^slug:" | sed 's/^slug: *//')
+  #           SUBTITLE=$(echo "$FRONT_MATTER" | grep "^subtitle:" | sed 's/^subtitle: *//' | sed 's/^["'"'"']\(.*\)["'"'"']$/\1/')
+  #           TAGS=$(echo "$FRONT_MATTER" | grep "^tags:" | sed 's/^tags: *//')
+  #           DRAFT=$(echo "$FRONT_MATTER" | grep "^draft:" | sed 's/^draft: *//')
+  #
+  #           # Extract content (everything after second ---), strip leading H1 title
+  #           CONTENT=$(awk 'BEGIN{c=0;h=0} /^---$/{c++;next} c>=2{if(!h && /^# /){h=1;next}; print}' "$POST")
+  #
+  #           # Build tags JSON array
+  #           TAGS_JSON=$(echo "$TAGS" | tr -d '[]' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R -s -c 'split("\n") | map(select(length > 0)) | map({slug: ., name: .})')
+  #
+  #           CANONICAL_URL="https://blog.nuphirho.dev/$SLUG"
+  #
+  #           if [ "$DRAFT" = "true" ]; then
+  #             # Check for existing draft by listing drafts and filtering by slug
+  #             PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" \
+  #               '{query: "query($id: ObjectId!) { publication(id: $id) { drafts(first: 50) { edges { node { id slug } } } } }", variables: {id: $id}}')
+  #
+  #             DRAFTS_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+  #               -H "Content-Type: application/json" \
+  #               -H "Authorization: $HASHNODE_TOKEN" \
+  #               -d "$PAYLOAD")
+  #
+  #             EXISTING_DRAFT_ID=$(echo "$DRAFTS_RESPONSE" | jq -r --arg slug "$SLUG" '[.data.publication.drafts.edges[] | select(.node.slug == $slug) | .node.id] | first // empty')
+  #
+  #             if [ -n "$EXISTING_DRAFT_ID" ]; then
+  #               echo "Draft already exists on Hashnode: $SLUG (ID: $EXISTING_DRAFT_ID)"
+  #             else
+  #               echo "Creating draft on Hashnode: $SLUG"
+  #               PAYLOAD=$(jq -n \
+  #                 --arg pubId "$HASHNODE_PUBLICATION_ID" \
+  #                 --arg title "$TITLE" \
+  #                 --arg subtitle "$SUBTITLE" \
+  #                 --arg slug "$SLUG" \
+  #                 --arg content "$CONTENT" \
+  #                 --argjson tags "$TAGS_JSON" \
+  #                 --arg canonical "$CANONICAL_URL" \
+  #                 '{query: "mutation($input: CreateDraftInput!) { createDraft(input: $input) { draft { id slug } } }", variables: {input: {publicationId: $pubId, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags, originalArticleURL: $canonical, settings: {slugOverridden: true}}}}')
+  #
+  #               RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+  #                 -H "Content-Type: application/json" \
+  #                 -H "Authorization: $HASHNODE_TOKEN" \
+  #                 -d "$PAYLOAD")
+  #
+  #               DRAFT_ID=$(echo "$RESPONSE" | jq -r '.data.createDraft.draft.id // empty')
+  #
+  #               if [ -n "$DRAFT_ID" ]; then
+  #                 echo "Draft created: $SLUG (ID: $DRAFT_ID)"
+  #               else
+  #                 echo "::error::Failed to create draft $SLUG: $RESPONSE"
+  #                 exit 1
+  #               fi
+  #             fi
+  #
+  #             PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c --arg slug "$SLUG" '. + [$slug]')
+  #           else
+  #             # Check if post already exists
+  #             PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" --arg slug "$SLUG" \
+  #               '{query: "query($id: ObjectId!, $slug: String!) { publication(id: $id) { post(slug: $slug) { id } } }", variables: {id: $id, slug: $slug}}')
+  #
+  #             EXISTING=$(curl -s -X POST https://gql.hashnode.com \
+  #               -H "Content-Type: application/json" \
+  #               -H "Authorization: $HASHNODE_TOKEN" \
+  #               -d "$PAYLOAD")
+  #
+  #             EXISTING_ID=$(echo "$EXISTING" | jq -r '.data.publication.post.id // empty')
+  #
+  #             if [ -n "$EXISTING_ID" ]; then
+  #               echo "Updating existing post: $SLUG (ID: $EXISTING_ID)"
+  #               PAYLOAD=$(jq -n \
+  #                 --arg id "$EXISTING_ID" \
+  #                 --arg title "$TITLE" \
+  #                 --arg subtitle "$SUBTITLE" \
+  #                 --arg content "$CONTENT" \
+  #                 --argjson tags "$TAGS_JSON" \
+  #                 '{query: "mutation($input: UpdatePostInput!) { updatePost(input: $input) { post { url } } }", variables: {input: {id: $id, title: $title, subtitle: $subtitle, contentMarkdown: $content, tags: $tags}}}')
+  #             else
+  #               # Check if post exists in deleted state (e.g. removed by AutoMod)
+  #               DELETED_PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" --arg slug "$SLUG" \
+  #                 '{query: "query($id: ObjectId!) { publication(id: $id) { posts(first: 50, filter: { deletedOnly: true }) { edges { node { id slug } } } } }", variables: {id: $id}}')
+  #
+  #               DELETED_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+  #                 -H "Content-Type: application/json" \
+  #                 -H "Authorization: $HASHNODE_TOKEN" \
+  #                 -d "$DELETED_PAYLOAD")
+  #
+  #               DELETED_ID=$(echo "$DELETED_RESPONSE" | jq -r --arg slug "$SLUG" '[.data.publication.posts.edges[] | select(.node.slug == $slug) | .node.id] | first // empty')
+  #
+  #               if [ -n "$DELETED_ID" ]; then
+  #                 echo "Restoring deleted post: $SLUG (ID: $DELETED_ID)"
+  #                 RESTORE_PAYLOAD=$(jq -n --arg id "$DELETED_ID" \
+  #                   '{query: "mutation($input: RestorePostInput!) { restorePost(input: $input) { post { id slug } } }", variables: {input: {id: $id}}}')
+  #
+  #                 RESTORE_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+  #                   -H "Content-Type: application/json" \
+  #                   -H "Authorization: $HASHNODE_TOKEN" \
+  #                   -d "$RESTORE_PAYLOAD")
+  #
+  #                 RESTORED_ID=$(echo "$RESTORE_RESPONSE" | jq -r '.data.restorePost.post.id // empty')
+  #
+  #                 if [ -z "$RESTORED_ID" ]; then
+  #                   echo "::error::Failed to restore deleted post $SLUG: $RESTORE_RESPONSE"
+  #                   exit 1
+  #                 fi
+  #
+  #                 echo "Updating restored post: $SLUG (ID: $RESTORED_ID)"
+  #                 PAYLOAD=$(jq -n \
+  #                   --arg id "$RESTORED_ID" \
+  #                   --arg title "$TITLE" \
+  #                   --arg subtitle "$SUBTITLE" \
+  #                   --arg slug "$SLUG" \
+  #                   --arg content "$CONTENT" \
+  #                   --argjson tags "$TAGS_JSON" \
+  #                   '{query: "mutation($input: UpdatePostInput!) { updatePost(input: $input) { post { url } } }", variables: {input: {id: $id, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags}}}')
+  #               else
+  #                 echo "Creating new post: $SLUG"
+  #                 PAYLOAD=$(jq -n \
+  #                   --arg pubId "$HASHNODE_PUBLICATION_ID" \
+  #                   --arg title "$TITLE" \
+  #                   --arg subtitle "$SUBTITLE" \
+  #                   --arg slug "$SLUG" \
+  #                   --arg content "$CONTENT" \
+  #                   --argjson tags "$TAGS_JSON" \
+  #                   --arg canonical "$CANONICAL_URL" \
+  #                   '{query: "mutation($input: PublishPostInput!) { publishPost(input: $input) { post { url } } }", variables: {input: {publicationId: $pubId, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags, originalArticleURL: $canonical}}}')
+  #               fi
+  #             fi
+  #
+  #             RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+  #               -H "Content-Type: application/json" \
+  #               -H "Authorization: $HASHNODE_TOKEN" \
+  #               -d "$PAYLOAD")
+  #
+  #             POST_URL=$(echo "$RESPONSE" | jq -r '.data.publishPost.post.url // .data.updatePost.post.url // empty')
+  #
+  #             if [ -n "$POST_URL" ]; then
+  #               echo "Published: $POST_URL"
+  #               PUBLISHED_SLUGS=$(echo "$PUBLISHED_SLUGS" | jq -c --arg slug "$SLUG" '. + [$slug]')
+  #             else
+  #               echo "::error::Failed to publish $SLUG: $RESPONSE"
+  #               exit 1
+  #             fi
+  #           fi
+  #         done
+  #
+  #         echo "published_slugs=$PUBLISHED_SLUGS" >> "$GITHUB_OUTPUT"
 
   crosspost-devto:
     name: Cross-post to Dev.to

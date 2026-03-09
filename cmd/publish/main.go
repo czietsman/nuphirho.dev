@@ -34,6 +34,7 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 
 	probeFlag := fs.Bool("probe", false, "Run contract probes and exit")
 	dryRun := fs.Bool("dry-run", false, "Validate and report without publishing (JSON output)")
+	skipDevTo := fs.Bool("skip-devto", false, "Skip Dev.to cross-posting (Hashnode only)")
 	tagsFile := fs.String("tags-file", "tags.json", "Path to tag glossary")
 	hnToken := fs.String("hashnode-token", "", "Hashnode API token (or HASHNODE_TOKEN env)")
 	hnPubID := fs.String("hashnode-publication", "", "Hashnode publication ID (or HASHNODE_PUBLICATION_ID env)")
@@ -63,7 +64,7 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 		fmt.Fprintln(stderr, "error: Hashnode publication ID is required (--hashnode-publication or HASHNODE_PUBLICATION_ID)")
 		return 1
 	}
-	if *dtKey == "" {
+	if *dtKey == "" && !*skipDevTo {
 		fmt.Fprintln(stderr, "error: Dev.to API key is required (--devto-api-key or DEVTO_API_KEY)")
 		return 1
 	}
@@ -121,7 +122,9 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 		hn = hnClient
 	}
 
-	if d != nil && d.DevTo != nil {
+	if *skipDevTo {
+		// Leave dt nil -- pipeline will skip Dev.to
+	} else if d != nil && d.DevTo != nil {
 		dt = d.DevTo
 	} else {
 		dtClient := devto.New(*dtKey, http.DefaultClient)
