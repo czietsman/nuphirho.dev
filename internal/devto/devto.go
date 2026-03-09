@@ -140,16 +140,19 @@ func (c *Client) findByCanonicalURL(canonicalURL string) (int, error) {
 	}
 	defer resp.Body.Close()
 
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return 0, fmt.Errorf("reading response: %w", err)
+	}
+
 	if resp.StatusCode == 401 {
 		return 0, fmt.Errorf("authentication failed")
 	}
 	if resp.StatusCode == 429 {
 		return 0, fmt.Errorf("rate limited")
 	}
-
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return 0, fmt.Errorf("reading response: %w", err)
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return 0, fmt.Errorf("API error (HTTP %d): %s", resp.StatusCode, string(respBody))
 	}
 
 	var articles []map[string]interface{}
@@ -226,16 +229,19 @@ func (c *Client) doRequest(method, path string, body map[string]interface{}) (ma
 	}
 	defer resp.Body.Close()
 
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("reading response: %w", err)
+	}
+
 	if resp.StatusCode == 401 {
 		return nil, fmt.Errorf("authentication failed")
 	}
 	if resp.StatusCode == 429 {
 		return nil, fmt.Errorf("rate limited")
 	}
-
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("reading response: %w", err)
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, fmt.Errorf("API error (HTTP %d): %s", resp.StatusCode, string(respBody))
 	}
 
 	var result map[string]interface{}
