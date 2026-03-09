@@ -306,6 +306,9 @@ jobs:
             # Extract content (everything after second ---), strip leading H1 title
             CONTENT=$(awk 'BEGIN{c=0;h=0} /^---$/{c++;next} c>=2{if(!h && /^# /){h=1;next}; print}' "$POST")
 
+            # Convert Hashnode embeds %[url] to Dev.to Liquid tags {% embed url %}
+            CONTENT=$(echo "$CONTENT" | sed 's/^%\[\(.*\)\]$/{% embed \1 %}/')
+
             # Check if article already exists on Dev.to
             EXISTING=$(curl -s "https://dev.to/api/articles/me/all?per_page=100" \
               -H "api-key: $DEVTO_API_KEY" | jq -r ".[] | select(.canonical_url == \"$CANONICAL_URL\") | .id")
