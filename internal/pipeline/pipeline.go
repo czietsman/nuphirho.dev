@@ -119,6 +119,22 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 		fr.TagWarnings = append(fr.TagWarnings, hnMapResult.Warnings...)
 		fr.TagWarnings = append(fr.TagWarnings, dtMapResult.Warnings...)
 
+		// Validate mapped Dev.to tags
+		skipDevTo := false
+		if cfg.DevTo != nil {
+			validations := cfg.Glossary.ValidateTags(fr.Post.Tags, tags.DevTo)
+			var invalidTags []string
+			for _, v := range validations {
+				if !v.Valid {
+					invalidTags = append(invalidTags, v.Tag)
+				}
+			}
+			if len(invalidTags) > 0 {
+				fr.TagWarnings = append(fr.TagWarnings, fmt.Sprintf("invalid Dev.to tag(s): %s — skipping Dev.to", strings.Join(invalidTags, ", ")))
+				skipDevTo = true
+			}
+		}
+
 		// Publish to Hashnode
 		hnInput := hashnode.PostInput{
 			Title:    fr.Post.Title,
@@ -136,8 +152,8 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 		}
 		fr.HashnodeRes = hnResult
 
-		// Cross-post to Dev.to (skip if client is nil)
-		if cfg.DevTo != nil {
+		// Cross-post to Dev.to (skip if client is nil or tags invalid)
+		if cfg.DevTo != nil && !skipDevTo {
 			dtInput := devto.ArticleInput{
 				Title:     fr.Post.Title,
 				Slug:      fr.Post.Slug,
