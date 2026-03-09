@@ -9,9 +9,7 @@ on:
     paths: ['terraform/**']
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: {}
 
 env:
   TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
