@@ -37,6 +37,16 @@ Feature: Publish to Hashnode
     And the post is not publicly visible on Hashnode
     And the pipeline reports the post was pushed as a draft
 
+  Scenario: Deleted post is restored and updated on Hashnode
+    Given a markdown file "posts/my-restored-post.md" is pushed to the main branch
+    And the file contains valid front matter with title, subtitle, tags, and slug
+    And a post with the same slug exists on Hashnode in a deleted state
+    When the publish pipeline runs
+    Then the deleted post is restored via the restorePost mutation
+    And the restored post is updated with the current content
+    And the canonical URL is set to "https://blog.nuphirho.dev/<slug>"
+    And the pipeline reports success with the published URL
+
   Scenario: Draft post is published when draft flag is removed
     Given a markdown file "posts/draft-post.md" is modified on the main branch
     And the front matter no longer contains "draft: true"
