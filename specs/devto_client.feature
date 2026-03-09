@@ -134,6 +134,17 @@ Feature: Dev.to client
       | published | true                                           |
     Then the error is "rate limited"
 
+  Scenario: Unhandled API error returns status and body
+    Given the Dev.to API returns a 422 error with body '{"error":"Title is too short"}'
+    When the pipeline creates an article:
+      | title     | Bad Post                                       |
+      | slug      | bad-post                                       |
+      | content   | Content.                                       |
+      | tags      | test                                           |
+      | published | true                                           |
+    Then the error contains "API error (HTTP 422)"
+    And the error contains "Title is too short"
+
   Scenario: Network failure returns connection error
     Given the Dev.to API is unreachable
     When the pipeline creates an article:

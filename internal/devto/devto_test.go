@@ -17,12 +17,14 @@ import (
 
 // fakeHTTP implements devto.HTTPClient for testing.
 type fakeHTTP struct {
-	articles    map[string]fakeArticle // canonical_url -> article
-	authError   bool
-	rateLimited bool
-	unreachable bool
-	requests    []*http.Request
-	lastBody    map[string]interface{}
+	articles      map[string]fakeArticle // canonical_url -> article
+	authError     bool
+	rateLimited   bool
+	unreachable   bool
+	customErrCode int
+	customErrBody string
+	requests      []*http.Request
+	lastBody      map[string]interface{}
 }
 
 type fakeArticle struct {
@@ -65,6 +67,14 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: 429,
 			Body:       io.NopCloser(strings.NewReader(`{"error":"rate limited"}`)),
+			Header:     http.Header{"Content-Type": []string{"application/json"}},
+		}, nil
+	}
+
+	if f.customErrCode > 0 {
+		return &http.Response{
+			StatusCode: f.customErrCode,
+			Body:       io.NopCloser(strings.NewReader(f.customErrBody)),
 			Header:     http.Header{"Content-Type": []string{"application/json"}},
 		}, nil
 	}
@@ -186,6 +196,12 @@ func (dc *devtoContext) theDevToAPIReturnsA401UnauthorizedError() error {
 
 func (dc *devtoContext) theDevToAPIReturnsA429RateLimitError() error {
 	dc.fake.rateLimited = true
+	return nil
+}
+
+func (dc *devtoContext) theDevToAPIReturnsAErrorWithBody(code int, body string) error {
+	dc.fake.customErrCode = code
+	dc.fake.customErrBody = body
 	return nil
 }
 
@@ -434,6 +450,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^an article exists with canonical URL "([^"]*)" and ID (\d+)$`, dc.anArticleExistsWithCanonicalURLAndID)
 	ctx.Step(`^the Dev\.to API returns a 401 unauthorized error$`, dc.theDevToAPIReturnsA401UnauthorizedError)
 	ctx.Step(`^the Dev\.to API returns a 429 rate limit error$`, dc.theDevToAPIReturnsA429RateLimitError)
+	ctx.Step(`^the Dev\.to API returns a (\d+) error with body '([^']*)'$`, dc.theDevToAPIReturnsAErrorWithBody)
 	ctx.Step(`^the Dev\.to API is unreachable$`, dc.theDevToAPIIsUnreachable)
 	ctx.Step(`^dry-run mode is enabled$`, dc.dryRunModeIsEnabled)
 
