@@ -21,5 +21,8 @@ Thumbs.db
 *.pem
 *.key
 
+# Go build artefacts
+publish
+
 # Node (if tooling is added later)
 node_modules/
