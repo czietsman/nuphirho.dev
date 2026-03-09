@@ -5,8 +5,7 @@ on:
     branches: [main]
     paths: ['posts/**']
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   validate:
