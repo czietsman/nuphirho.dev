@@ -23,11 +23,11 @@ Every new codebase, every new platform, every new business domain has a map. Not
 
 I've always approached new territory the same way I approached a new Quake level. Walk in, orient fast, build the mental model, find the links. I can almost see it. Not visually, but abstractly. I instinctively know the next connection, and the ones after that.
 
-Early in my career at [Antenna Magus](https://www.3ds.com/products/simulia/antenna-magus), this meant getting to grips with an expert system for antenna design. The domain was technical and deep, but the approach was the same: map the landscape, understand how the pieces connect, find the edges.
+Early in my career at Antenna Magus, this meant getting to grips with an expert system for antenna design. The domain was technical and deep, but the approach was the same: map the landscape, understand how the pieces connect, find the edges.
 
 Later, I had the fortune to dip into the world of business systems, getting to grips with everything from lead to cash. Different domain, same skill. The map was made of processes, tools, handoffs, and data rather than code and microservices, but the cognitive work was identical.
 
-When [CyberSentriq](https://www.cybersentriq.com/) formed from the merger of Redstor and TitanHQ, I got to do it again at scale. A whole new platform, new microservices, new repositories, new tooling, new business processes. I pushed myself to map the full landscape, breadth and depth. Not because anyone asked me to, but because that is how I operate. You cannot make good architectural decisions if you only understand your corner of the system.
+When CyberSentriq formed from the merger of Redstor and TitanHQ, I got to do it again at scale. A whole new platform, new microservices, new repositories, new tooling, new business processes. I pushed myself to map the full landscape, breadth and depth. Not because anyone asked me to, but because that is how I operate. You cannot make good architectural decisions if you only understand your corner of the system.
 
 And I can tell you honestly, this isn't common. Most people stay in their corner. They know their service, their domain, their slice. They don't push themselves to understand the whole. I don't say that as a criticism. There are real pressures that keep people focused narrowly: deadlines, specialisation, team boundaries. But the people who build the broadest mental models tend to be the ones who spot the problems and opportunities that everyone else misses.
 
