@@ -193,16 +193,55 @@ jobs:
                   --argjson tags "$TAGS_JSON" \
                   '{query: "mutation($input: UpdatePostInput!) { updatePost(input: $input) { post { url } } }", variables: {input: {id: $id, title: $title, subtitle: $subtitle, contentMarkdown: $content, tags: $tags}}}')
               else
-                echo "Creating new post: $SLUG"
-                PAYLOAD=$(jq -n \
-                  --arg pubId "$HASHNODE_PUBLICATION_ID" \
-                  --arg title "$TITLE" \
-                  --arg subtitle "$SUBTITLE" \
-                  --arg slug "$SLUG" \
-                  --arg content "$CONTENT" \
-                  --argjson tags "$TAGS_JSON" \
-                  --arg canonical "$CANONICAL_URL" \
-                  '{query: "mutation($input: PublishPostInput!) { publishPost(input: $input) { post { url } } }", variables: {input: {publicationId: $pubId, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags, originalArticleURL: $canonical}}}')
+                # Check if post exists in deleted state (e.g. removed by AutoMod)
+                DELETED_PAYLOAD=$(jq -n --arg id "$HASHNODE_PUBLICATION_ID" --arg slug "$SLUG" \
+                  '{query: "query($id: ObjectId!) { publication(id: $id) { posts(first: 50, filter: { deletedOnly: true }) { edges { node { id slug } } } } }", variables: {id: $id}}')
+
+                DELETED_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+                  -H "Content-Type: application/json" \
+                  -H "Authorization: $HASHNODE_TOKEN" \
+                  -d "$DELETED_PAYLOAD")
+
+                DELETED_ID=$(echo "$DELETED_RESPONSE" | jq -r --arg slug "$SLUG" '[.data.publication.posts.edges[] | select(.node.slug == $slug) | .node.id] | first // empty')
+
+                if [ -n "$DELETED_ID" ]; then
+                  echo "Restoring deleted post: $SLUG (ID: $DELETED_ID)"
+                  RESTORE_PAYLOAD=$(jq -n --arg id "$DELETED_ID" \
+                    '{query: "mutation($input: RestorePostInput!) { restorePost(input: $input) { post { id slug } } }", variables: {input: {id: $id}}}')
+
+                  RESTORE_RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
+                    -H "Content-Type: application/json" \
+                    -H "Authorization: $HASHNODE_TOKEN" \
+                    -d "$RESTORE_PAYLOAD")
+
+                  RESTORED_ID=$(echo "$RESTORE_RESPONSE" | jq -r '.data.restorePost.post.id // empty')
+
+                  if [ -z "$RESTORED_ID" ]; then
+                    echo "::error::Failed to restore deleted post $SLUG: $RESTORE_RESPONSE"
+                    exit 1
+                  fi
+
+                  echo "Updating restored post: $SLUG (ID: $RESTORED_ID)"
+                  PAYLOAD=$(jq -n \
+                    --arg id "$RESTORED_ID" \
+                    --arg title "$TITLE" \
+                    --arg subtitle "$SUBTITLE" \
+                    --arg slug "$SLUG" \
+                    --arg content "$CONTENT" \
+                    --argjson tags "$TAGS_JSON" \
+                    '{query: "mutation($input: UpdatePostInput!) { updatePost(input: $input) { post { url } } }", variables: {input: {id: $id, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags}}}')
+                else
+                  echo "Creating new post: $SLUG"
+                  PAYLOAD=$(jq -n \
+                    --arg pubId "$HASHNODE_PUBLICATION_ID" \
+                    --arg title "$TITLE" \
+                    --arg subtitle "$SUBTITLE" \
+                    --arg slug "$SLUG" \
+                    --arg content "$CONTENT" \
+                    --argjson tags "$TAGS_JSON" \
+                    --arg canonical "$CANONICAL_URL" \
+                    '{query: "mutation($input: PublishPostInput!) { publishPost(input: $input) { post { url } } }", variables: {input: {publicationId: $pubId, title: $title, subtitle: $subtitle, slug: $slug, contentMarkdown: $content, tags: $tags, originalArticleURL: $canonical}}}')
+                fi
               fi
 
               RESPONSE=$(curl -s -X POST https://gql.hashnode.com \
