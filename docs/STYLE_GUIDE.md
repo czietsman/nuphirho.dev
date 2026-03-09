@@ -62,6 +62,13 @@ Process matters more than technology. AI has changed the economics of rigorous e
 - Paragraphs over bullet points where possible. Use lists only when the content genuinely requires enumeration.
 - Keep paragraphs focused. One idea per paragraph.
 
+### External links
+
+- Keep external links minimal. Link only where the reference adds genuine value for the reader.
+- Avoid linking to social media profiles (e.g. LinkedIn) inline. Names are sufficient; readers can search if they want to connect.
+- Company or product links are acceptable when they provide useful context.
+- Excessive outbound links can trigger spam filters on publishing platforms and dilute the reading experience.
+
 ### Code
 
 - Do not embed large code blocks in posts. Link to the public GitHub repository.
