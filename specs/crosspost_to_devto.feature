@@ -34,6 +34,12 @@ Feature: Cross-post to Dev.to
     Then the existing post on Dev.to is updated with "published: true"
     And the canonical URL remains "https://blog.nuphirho.dev/<slug>"
 
+  Scenario: Hashnode embeds are converted to Dev.to Liquid tags
+    Given a post contains Hashnode embed syntax "%[https://twitter.com/user/status/123]"
+    When the cross-post pipeline runs
+    Then the embed is converted to Dev.to Liquid tag syntax "{% embed https://twitter.com/user/status/123 %}"
+    And no Hashnode embed syntax remains in the Dev.to article body
+
   Scenario: Cross-post failure does not block the pipeline
     Given a post has been successfully published to Hashnode
     And the Dev.to API returns an error
