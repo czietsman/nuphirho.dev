@@ -1,6 +1,6 @@
 ---
 title: "When bash gets too wild: rewriting my publish pipeline in Go"
-slug: "when-bash-gets-too-wild-rewriting-publish-pipeline-go"
+slug: when-bash-gets-too-wild-rewriting-publish-pipeline-go
 draft: true
 tags: ["go", "bdd", "devops", "software-engineering", "blogging"]
 ---
@@ -90,5 +90,7 @@ But the same thinking applies at every scale. Pipelines accumulate logic. Untest
 The secret regex bug, the nil-vs-empty GraphQL node, the five failing probe scenarios from a single misplaced padding character -- none of these are dramatic failures. They are exactly the kind of subtle, silent, hard-to-reproduce problems that bash pipelines accumulate over time and that a proper test suite catches before they reach production.
 
 The bash script served its purpose. It got the pipeline working. Now it has earned the right to be replaced by something that can actually be trusted.
+
+One last detail worth recording: the first real test of the new pipeline used this post as the test file. It immediately hit the exact class of bash quoting bug the post describes. The timing was not planned.
 
 I will write a follow-up once the migration is complete -- specifically on running go-mutesting against the frontmatter parser, which is the highest-consequence code in the tool and the place where mutation coverage matters most.
