@@ -1,0 +1,21 @@
+name: Validate PR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Run secret pattern tests
+        run: bash tests/test-secret-patterns.sh
+
+      # BDD scenarios in specs/ are not yet wired to an executor.
+      # They will be added when godog is introduced.
