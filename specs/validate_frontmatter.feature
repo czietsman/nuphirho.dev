@@ -1,0 +1,295 @@
+Feature: Validate frontmatter
+  As the publish pipeline
+  I want to parse and validate post frontmatter
+  So that only well-formed posts are published
+
+  Scenario: Post with valid frontmatter passes validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "My Post Title"
+      slug: my-post-title
+      subtitle: "A subtitle for the post"
+      tags: [go, testing, bdd]
+      ---
+
+      Post content here.
+      """
+    When the frontmatter is parsed
+    Then the title is "My Post Title"
+    And the slug is "my-post-title"
+    And the subtitle is "A subtitle for the post"
+    And the tags are ["go", "testing", "bdd"]
+    And the draft flag is false
+    And the content is "Post content here."
+    And validation passes with no errors
+
+  Scenario: Post with draft flag set
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Draft Post"
+      slug: draft-post
+      tags: [drafts]
+      draft: true
+      ---
+
+      Draft content.
+      """
+    When the frontmatter is parsed
+    Then the draft flag is true
+
+  Scenario: Post missing title fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      slug: no-title
+      tags: [test]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "missing required field: title"
+
+  Scenario: Post missing slug fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "No Slug"
+      tags: [test]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "missing required field: slug"
+
+  Scenario: Post missing tags fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "No Tags"
+      slug: no-tags
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "missing required field: tags"
+
+  Scenario: Slug with uppercase characters fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Bad Slug"
+      slug: Bad-Slug
+      tags: [test]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "slug must be lowercase and hyphenated"
+
+  Scenario: Slug with spaces fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Bad Slug"
+      slug: bad slug
+      tags: [test]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "slug must be lowercase and hyphenated"
+
+  Scenario: Post with potential secrets fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Secrets Post"
+      slug: secrets-post
+      tags: [test]
+      ---
+
+      Here is my api_key: "ghp_ABC123DEF456GHI789JKL012MNO"
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "potential secret detected in post content"
+
+  Scenario: Em dash triggers style warning
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Em Dash Post"
+      slug: em-dash-post
+      tags: [test]
+      ---
+
+      This sentence has an em dash — right here.
+      """
+    When the frontmatter is parsed
+    Then validation passes with warning "em dash detected"
+
+  Scenario: Quoted title value is stripped correctly
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Quoted Title"
+      slug: quoted-title
+      tags: [test]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the title is "Quoted Title"
+
+  Scenario: Unquoted title value is parsed correctly
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: Unquoted Title
+      slug: unquoted-title
+      tags: [test]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the title is "Unquoted Title"
+
+  Scenario: Single-quoted values are parsed correctly
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: 'Single Quoted'
+      slug: single-quoted
+      tags: [test]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the title is "Single Quoted"
+
+  Scenario: Tags in bracket notation are parsed as list
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Bracket Tags"
+      slug: bracket-tags
+      tags: [go, testing, bdd]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the tags are ["go", "testing", "bdd"]
+
+  Scenario: Tags in quoted bracket notation are parsed as list
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Quoted Bracket Tags"
+      slug: quoted-bracket-tags
+      tags: ["go", "testing", "bdd"]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the tags are ["go", "testing", "bdd"]
+
+  Scenario: Tags in YAML list notation are parsed as list
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "YAML List Tags"
+      slug: yaml-list-tags
+      tags:
+        - go
+        - testing
+        - bdd
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the tags are ["go", "testing", "bdd"]
+
+  Scenario: Leading H1 matching title is stripped from content
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "My Post"
+      slug: my-post
+      tags: [test]
+      ---
+
+      # My Post
+
+      The actual content starts here.
+      """
+    When the frontmatter is parsed
+    Then the content starts with "The actual content starts here."
+
+  Scenario: Leading H1 not matching title is preserved
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "My Post"
+      slug: my-post
+      tags: [test]
+      ---
+
+      # A Different Heading
+
+      Content after heading.
+      """
+    When the frontmatter is parsed
+    Then the content starts with "# A Different Heading"
+
+  Scenario: File without frontmatter delimiters fails
+    Given a markdown file with frontmatter:
+      """
+      title: No Delimiters
+      slug: no-delimiters
+      tags: [test]
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "missing frontmatter"
+
+  Scenario: Empty tags list fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Empty Tags"
+      slug: empty-tags
+      tags: []
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "missing required field: tags"
+
+  Scenario: Subtitle is optional
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "No Subtitle"
+      slug: no-subtitle
+      tags: [test]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the subtitle is ""
+    And validation passes with no errors
