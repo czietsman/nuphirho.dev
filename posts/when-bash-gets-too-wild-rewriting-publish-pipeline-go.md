@@ -94,3 +94,4 @@ The bash script served its purpose. It got the pipeline working. Now it has earn
 One last detail worth recording: the first real test of the new pipeline used this post as the test file. It immediately hit the exact class of bash quoting bug the post describes. The timing was not planned.
 
 I will write a follow-up once the migration is complete -- specifically on running go-mutesting against the frontmatter parser, which is the highest-consequence code in the tool and the place where mutation coverage matters most.
+
