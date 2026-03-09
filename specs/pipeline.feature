@@ -71,6 +71,20 @@ Feature: Pipeline orchestrator
     And the summary contains "Hashnode"
     And the summary contains "dt-fail"
 
+  # --- Invalid tags ---
+
+  Scenario: Unmapped hyphenated tag skips Dev.to with warning
+    Given a post file "posts/bad-tags.md" with:
+      | title | Bad Tags                     |
+      | slug  | bad-tags                     |
+      | tags  | go,software-engineering      |
+    When the pipeline runs
+    Then Hashnode publish is called with slug "bad-tags"
+    And Dev.to cross-post is not called
+    And the summary contains "invalid Dev.to tag"
+    And the summary contains "software-engineering"
+    And the exit code is 0
+
   # --- Dry-run ---
 
   Scenario: Dry-run produces JSON with both platform results
