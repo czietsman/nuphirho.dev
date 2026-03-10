@@ -1,7 +1,7 @@
 ---
 title: "The Trust Barrier"
 slug: "the-trust-barrier"
-draft: true
+subtitle: "Why the path forward isn't trusting AI, but building a process that makes trust measurable"
 tags: [ai, process, bdd, trust, software-engineering]
 ---
 
