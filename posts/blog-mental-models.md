@@ -60,5 +60,3 @@ I know today just how little I know. That's not false modesty. That's what happe
 That's uncomfortable. It would be easier to stay in a familiar corner and be the expert in a narrow domain. But I think the people who push themselves to learn the whole map, even knowing they'll never finish it, are the ones who end up making the best decisions. Not because they know everything, but because they know enough to see the connections that others miss.
 
 Push yourself to learn the whole map. Not just your corner of it.
-
-
