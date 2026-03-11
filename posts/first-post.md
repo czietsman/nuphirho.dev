@@ -3,6 +3,7 @@ title: "Process Over Technology: Starting With the Blog Itself"
 slug: "process-over-technology-starting-with-the-blog-itself"
 subtitle: "Building a blog with BDD specs, Terraform, and a CI/CD pipeline"
 tags: [process, engineering, ai, devops, infrastructure-as-code]
+series: "Process Over Technology"
 ---
 
 # Process Over Technology: Starting With the Blog Itself
