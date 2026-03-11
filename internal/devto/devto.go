@@ -24,6 +24,7 @@ type ArticleInput struct {
 	Content   string
 	Tags      []string
 	Published bool
+	Series    string
 }
 
 // PublishResult holds the outcome of a create or update operation.
@@ -90,15 +91,17 @@ func (c *Client) CreateArticle(input ArticleInput) (*PublishResult, error) {
 		return nil, err
 	}
 
-	body := map[string]interface{}{
-		"article": map[string]interface{}{
-			"title":         input.Title,
-			"body_markdown": content,
-			"tags":          input.Tags,
-			"published":     input.Published,
-			"canonical_url": canonicalURL,
-		},
+	articleBody := map[string]interface{}{
+		"title":         input.Title,
+		"body_markdown": content,
+		"tags":          input.Tags,
+		"published":     input.Published,
+		"canonical_url": canonicalURL,
 	}
+	if input.Series != "" {
+		articleBody["series"] = input.Series
+	}
+	body := map[string]interface{}{"article": articleBody}
 
 	if existingID > 0 {
 		if c.DryRun {

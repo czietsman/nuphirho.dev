@@ -19,10 +19,12 @@ type fakeHTTP struct {
 	posts        map[string]string // slug -> id for published posts
 	deletedPosts map[string]string // slug -> id for deleted posts
 	drafts       map[string]string // slug -> id for drafts
+	series       map[string]string // name -> id for series
 	authError    bool
 	pubNotFound  bool
 	unreachable  bool
 	requests     []*http.Request
+	lastVars     map[string]interface{} // last request variables for assertion
 }
 
 func newFakeHTTP() *fakeHTTP {
@@ -30,6 +32,7 @@ func newFakeHTTP() *fakeHTTP {
 		posts:        make(map[string]string),
 		deletedPosts: make(map[string]string),
 		drafts:       make(map[string]string),
+		series:       make(map[string]string),
 	}
 }
 
@@ -45,6 +48,7 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 	json.Unmarshal(body, &payload)
 	query, _ := payload["query"].(string)
 	vars, _ := payload["variables"].(map[string]interface{})
+	f.lastVars = vars
 
 	if f.authError {
 		return jsonResponse(map[string]interface{}{
@@ -76,6 +80,10 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 		return f.handleRestorePost(vars), nil
 	case strings.Contains(query, "createDraft"):
 		return f.handleCreateDraft(vars), nil
+	case strings.Contains(query, "seriesList"):
+		return f.handleSeriesList(), nil
+	case strings.Contains(query, "createSeries"):
+		return f.handleCreateSeries(vars), nil
 	}
 
 	return jsonResponse(map[string]interface{}{"data": nil}), nil
@@ -191,6 +199,34 @@ func (f *fakeHTTP) handleCreateDraft(vars map[string]interface{}) *http.Response
 	})
 }
 
+func (f *fakeHTTP) handleSeriesList() *http.Response {
+	edges := make([]interface{}, 0)
+	for name, id := range f.series {
+		edges = append(edges, map[string]interface{}{
+			"node": map[string]interface{}{"id": id, "name": name},
+		})
+	}
+	return jsonResponse(map[string]interface{}{
+		"data": map[string]interface{}{
+			"publication": map[string]interface{}{
+				"seriesList": map[string]interface{}{"edges": edges},
+			},
+		},
+	})
+}
+
+func (f *fakeHTTP) handleCreateSeries(vars map[string]interface{}) *http.Response {
+	return jsonResponse(map[string]interface{}{
+		"data": map[string]interface{}{
+			"createSeries": map[string]interface{}{
+				"series": map[string]interface{}{
+					"id": "series-001",
+				},
+			},
+		},
+	})
+}
+
 func extractVar(vars map[string]interface{}, key string) string {
 	// Check top-level
 	if v, ok := vars[key]; ok {
@@ -217,12 +253,13 @@ func jsonResponse(data interface{}) *http.Response {
 // --- godog context ---
 
 type hashnodeContext struct {
-	fake   *fakeHTTP
-	client *hashnode.Client
-	result *hashnode.PublishResult
-	err    error
-	postID string
-	found  bool
+	fake     *fakeHTTP
+	client   *hashnode.Client
+	result   *hashnode.PublishResult
+	err      error
+	postID   string
+	found    bool
+	seriesID string
 }
 
 func (hc *hashnodeContext) reset() {
@@ -232,6 +269,7 @@ func (hc *hashnodeContext) reset() {
 	hc.err = nil
 	hc.postID = ""
 	hc.found = false
+	hc.seriesID = ""
 }
 
 func (hc *hashnodeContext) aHashnodeClientConfiguredWithPublicationID(pubID string) error {
@@ -497,6 +535,92 @@ func (hc *hashnodeContext) theDryRunResultDeletedIDIs(id string) error {
 	return nil
 }
 
+// --- Series steps ---
+
+func (hc *hashnodeContext) aSeriesExistsWithNameAndID(name, id string) error {
+	hc.fake.series[name] = id
+	return nil
+}
+
+func (hc *hashnodeContext) noSeriesExistsWithName(name string) error {
+	delete(hc.fake.series, name)
+	return nil
+}
+
+func (hc *hashnodeContext) theClientLooksUpSeries(name string) error {
+	hc.seriesID, hc.err = hc.client.LookupSeries(name)
+	return nil
+}
+
+func (hc *hashnodeContext) theClientCreatesSeries(name string) error {
+	hc.seriesID, hc.err = hc.client.CreateSeries(name)
+	return nil
+}
+
+func (hc *hashnodeContext) theClientResolvesSeries(name string) error {
+	hc.seriesID, hc.err = hc.client.ResolveSeriesID(name)
+	return nil
+}
+
+func (hc *hashnodeContext) theSeriesIsFoundWithID(id string) error {
+	if hc.seriesID != id {
+		return fmt.Errorf("expected series ID %q, got %q", id, hc.seriesID)
+	}
+	return nil
+}
+
+func (hc *hashnodeContext) theSeriesIsNotFound() error {
+	if hc.seriesID != "" {
+		return fmt.Errorf("expected series not found, got ID %q", hc.seriesID)
+	}
+	return nil
+}
+
+func (hc *hashnodeContext) aCreateSeriesMutationIsSent() error {
+	for _, m := range hc.client.MutationsSent() {
+		if m == "createSeries" {
+			return nil
+		}
+	}
+	return fmt.Errorf("expected createSeries mutation, got: %v", hc.client.MutationsSent())
+}
+
+func (hc *hashnodeContext) noCreateSeriesMutationIsSent() error {
+	for _, m := range hc.client.MutationsSent() {
+		if m == "createSeries" {
+			return fmt.Errorf("expected no createSeries mutation, but it was sent")
+		}
+	}
+	return nil
+}
+
+func (hc *hashnodeContext) theSeriesIDIs(id string) error {
+	return hc.theSeriesIsFoundWithID(id)
+}
+
+func (hc *hashnodeContext) thePipelinePublishesAPostWithSeries(table *godog.Table) error {
+	input := tableToPostInput(table)
+	hc.result, hc.err = hc.client.Publish(input)
+	return nil
+}
+
+func (hc *hashnodeContext) thePublishRequestIncludesSeriesID(id string) error {
+	vars := hc.fake.lastVars
+	input, ok := vars["input"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("no input in last request vars")
+	}
+	sid, _ := input["seriesId"].(string)
+	if sid != id {
+		return fmt.Errorf("expected seriesId %q in publish, got %q", id, sid)
+	}
+	return nil
+}
+
+func (hc *hashnodeContext) theUpdateRequestIncludesSeriesID(id string) error {
+	return hc.thePublishRequestIncludesSeriesID(id)
+}
+
 func tableToPostInput(table *godog.Table) hashnode.PostInput {
 	input := hashnode.PostInput{}
 	for _, row := range table.Rows {
@@ -513,6 +637,8 @@ func tableToPostInput(table *godog.Table) hashnode.PostInput {
 			input.Content = val
 		case "tags":
 			input.Tags = strings.Split(val, ",")
+		case "seriesId":
+			input.SeriesID = val
 		}
 	}
 	return input
@@ -538,10 +664,16 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the Hashnode API returns an authentication error$`, hc.theHashnodeAPIReturnsAnAuthenticationError)
 	ctx.Step(`^the Hashnode API returns a publication not found error$`, hc.theHashnodeAPIReturnsAPublicationNotFoundError)
 	ctx.Step(`^the Hashnode API is unreachable$`, hc.theHashnodeAPIIsUnreachable)
+	ctx.Step(`^a series exists with name "([^"]*)" and ID "([^"]*)"$`, hc.aSeriesExistsWithNameAndID)
+	ctx.Step(`^no series exists with name "([^"]*)"$`, hc.noSeriesExistsWithName)
 
 	// When
 	ctx.Step(`^the pipeline publishes a post:$`, hc.thePipelinePublishesAPost)
 	ctx.Step(`^the pipeline creates a draft:$`, hc.thePipelineCreatesADraft)
+	ctx.Step(`^the client looks up series "([^"]*)"$`, hc.theClientLooksUpSeries)
+	ctx.Step(`^the client creates series "([^"]*)"$`, hc.theClientCreatesSeries)
+	ctx.Step(`^the client resolves series "([^"]*)"$`, hc.theClientResolvesSeries)
+	ctx.Step(`^the pipeline publishes a post with series:$`, hc.thePipelinePublishesAPostWithSeries)
 	ctx.Step(`^the client checks for a post with slug "([^"]*)"$`, hc.theClientChecksForAPostWithSlug)
 	ctx.Step(`^the client checks for deleted posts with slug "([^"]*)"$`, hc.theClientChecksForDeletedPostsWithSlug)
 
@@ -566,6 +698,13 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the dry-run result slug is "([^"]*)"$`, hc.theDryRunResultSlugIs)
 	ctx.Step(`^the dry-run result existing ID is "([^"]*)"$`, hc.theDryRunResultExistingIDIs)
 	ctx.Step(`^the dry-run result deleted ID is "([^"]*)"$`, hc.theDryRunResultDeletedIDIs)
+	ctx.Step(`^the series is found with ID "([^"]*)"$`, hc.theSeriesIsFoundWithID)
+	ctx.Step(`^the series is not found$`, hc.theSeriesIsNotFound)
+	ctx.Step(`^a createSeries mutation is sent$`, hc.aCreateSeriesMutationIsSent)
+	ctx.Step(`^no createSeries mutation is sent$`, hc.noCreateSeriesMutationIsSent)
+	ctx.Step(`^the series ID is "([^"]*)"$`, hc.theSeriesIDIs)
+	ctx.Step(`^the publish request includes series ID "([^"]*)"$`, hc.thePublishRequestIncludesSeriesID)
+	ctx.Step(`^the update request includes series ID "([^"]*)"$`, hc.theUpdateRequestIncludesSeriesID)
 }
 
 func TestFeatures(t *testing.T) {

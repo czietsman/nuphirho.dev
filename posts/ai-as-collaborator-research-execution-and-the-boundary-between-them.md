@@ -3,6 +3,7 @@ title: "AI as collaborator: research, execution, and the boundary between them"
 slug: "ai-as-collaborator-research-execution-and-the-boundary-between-them"
 subtitle: "How to use AI safely in a security-sensitive engineering workflow — and why the risk is architectural, not behavioural"
 tags: [ai, security, prompt-injection, agents, engineering-process]
+series: "Threat Modelling"
 draft: true
 ---
 

@@ -132,11 +132,18 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 		dt = dtClient
 	}
 
+	// The Hashnode client also implements SeriesResolver
+	var sr pipeline.SeriesResolver
+	if hnClient, ok := hn.(*hashnode.Client); ok {
+		sr = hnClient
+	}
+
 	cfg := pipeline.Config{
-		Hashnode: hn,
-		DevTo:    dt,
-		Glossary: glossary,
-		DryRun:   *dryRun,
+		Hashnode:       hn,
+		DevTo:          dt,
+		SeriesResolver: sr,
+		Glossary:       glossary,
+		DryRun:         *dryRun,
 	}
 
 	result := pipeline.Run(cfg, postFiles, stdout)

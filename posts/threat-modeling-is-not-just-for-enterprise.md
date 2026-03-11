@@ -3,6 +3,7 @@ title: "Threat modeling is not just for enterprise"
 slug: "threat-modeling-is-not-just-for-enterprise"
 subtitle: "A worked example on a personal blog project — and what GitHub gives you for free"
 tags: [security, threat-modeling, devops, github, engineering-process]
+series: "Threat Modelling"
 draft: true
 ---
 

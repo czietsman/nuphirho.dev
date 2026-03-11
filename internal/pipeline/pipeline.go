@@ -24,6 +24,11 @@ type DevtoPub interface {
 	CreateArticle(input devto.ArticleInput) (*devto.PublishResult, error)
 }
 
+// SeriesResolver resolves a series name to a Hashnode series ID.
+type SeriesResolver interface {
+	ResolveSeriesID(name string) (string, error)
+}
+
 // Prober is the interface for contract probes.
 type Prober interface {
 	Run(w io.Writer) int
@@ -37,10 +42,11 @@ type PostFile struct {
 
 // Config holds the pipeline configuration.
 type Config struct {
-	Hashnode HashnodePub
-	DevTo    DevtoPub
-	Glossary tags.Glossary
-	DryRun   bool
+	Hashnode       HashnodePub
+	DevTo          DevtoPub
+	SeriesResolver SeriesResolver
+	Glossary       tags.Glossary
+	DryRun         bool
 }
 
 // FileResult holds the outcome of processing a single file.
@@ -135,6 +141,18 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 			}
 		}
 
+		// Resolve series
+		var seriesID string
+		if fr.Post.Series != "" && cfg.SeriesResolver != nil {
+			sid, err := cfg.SeriesResolver.ResolveSeriesID(fr.Post.Series)
+			if err != nil {
+				fr.Error = fmt.Sprintf("series: %s", err.Error())
+				publishFailed = true
+				continue
+			}
+			seriesID = sid
+		}
+
 		// Publish to Hashnode
 		hnInput := hashnode.PostInput{
 			Title:    fr.Post.Title,
@@ -142,6 +160,7 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 			Subtitle: fr.Post.Subtitle,
 			Content:  fr.Post.Content,
 			Tags:     hnMapResult.Tags,
+			SeriesID: seriesID,
 		}
 
 		hnResult, err := cfg.Hashnode.Publish(hnInput)
@@ -160,6 +179,7 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 				Content:   fr.Post.Content,
 				Tags:      dtMapResult.Tags,
 				Published: true,
+				Series:    fr.Post.Series,
 			}
 
 			dtResult, err := cfg.DevTo.CreateArticle(dtInput)

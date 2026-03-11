@@ -85,6 +85,43 @@ Feature: Pipeline orchestrator
     And the summary contains "software-engineering"
     And the exit code is 0
 
+  # --- Series ---
+
+  Scenario: Series is resolved and passed to Hashnode and Dev.to
+    Given a post file "posts/series-post.md" with:
+      | title  | Series Post              |
+      | slug   | series-post              |
+      | tags   | go                       |
+      | series | Process Over Technology  |
+    When the pipeline runs
+    Then Hashnode publish is called with slug "series-post"
+    And the Hashnode call for "series-post" includes series ID "series-resolved"
+    And Dev.to cross-post is called with slug "series-post"
+    And the Dev.to call for "series-post" includes series "Process Over Technology"
+    And the exit code is 0
+
+  Scenario: Post without series does not resolve series
+    Given a post file "posts/no-series.md" with:
+      | title | No Series |
+      | slug  | no-series |
+      | tags  | go        |
+    When the pipeline runs
+    Then Hashnode publish is called with slug "no-series"
+    And the Hashnode call for "no-series" does not include series
+    And the exit code is 0
+
+  Scenario: Series resolution failure exits with code 2
+    Given a post file "posts/bad-series.md" with:
+      | title  | Bad Series              |
+      | slug   | bad-series              |
+      | tags   | go                      |
+      | series | Failing Series          |
+    And series resolution will fail with "series API error"
+    When the pipeline runs
+    Then the exit code is 2
+    And Hashnode publish is not called
+    And the summary contains "series"
+
   # --- Dry-run ---
 
   Scenario: Dry-run produces JSON with both platform results
