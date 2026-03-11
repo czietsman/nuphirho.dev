@@ -349,7 +349,7 @@ func (c *Client) createDraft(input PostInput, canonicalURL string) (string, erro
 
 // LookupSeries finds a series by name. Returns the series ID or empty string.
 func (c *Client) LookupSeries(name string) (string, error) {
-	query := `query($id: ObjectId!) { publication(id: $id) { seriesList(first: 50) { edges { node { id name } } } } }`
+	query := `query($id: ObjectId!) { publication(id: $id) { seriesList(first: 20) { edges { node { id name } } } } }`
 	vars := map[string]string{"id": c.PublicationID}
 
 	resp, err := c.doGraphQL(query, vars)
