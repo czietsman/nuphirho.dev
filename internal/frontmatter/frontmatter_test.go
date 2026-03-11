@@ -39,6 +39,13 @@ func (fc *frontmatterContext) theSlugIs(expected string) error {
 	return nil
 }
 
+func (fc *frontmatterContext) theSeriesIs(expected string) error {
+	if fc.post.Series != expected {
+		return fmt.Errorf("expected series %q, got %q", expected, fc.post.Series)
+	}
+	return nil
+}
+
 func (fc *frontmatterContext) theSubtitleIs(expected string) error {
 	if fc.post.Subtitle != expected {
 		return fmt.Errorf("expected subtitle %q, got %q", expected, fc.post.Subtitle)
@@ -128,6 +135,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the title is "([^"]*)"$`, fc.theTitleIs)
 	ctx.Step(`^the slug is "([^"]*)"$`, fc.theSlugIs)
 	ctx.Step(`^the subtitle is "([^"]*)"$`, fc.theSubtitleIs)
+	ctx.Step(`^the series is "([^"]*)"$`, fc.theSeriesIs)
 	ctx.Step(`^the tags are (\[.*\])$`, fc.theTagsAre)
 	ctx.Step(`^the draft flag is (true|false)$`, fc.theDraftFlagIs)
 	ctx.Step(`^the content is "([^"]*)"$`, fc.theContentIs)

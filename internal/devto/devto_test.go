@@ -350,6 +350,40 @@ func (dc *devtoContext) theRequestBodyTagsAre(expected string) error {
 	return nil
 }
 
+func (dc *devtoContext) theRequestBodyHasSeriesSetTo(expected string) error {
+	body := dc.fake.lastBody
+	if body == nil {
+		return fmt.Errorf("no request body captured")
+	}
+	article, ok := body["article"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("no article in body: %+v", body)
+	}
+	series, ok := article["series"].(string)
+	if !ok {
+		return fmt.Errorf("series not a string in body: %+v", article)
+	}
+	if series != expected {
+		return fmt.Errorf("expected series %q, got %q", expected, series)
+	}
+	return nil
+}
+
+func (dc *devtoContext) theRequestBodyDoesNotHaveSeries() error {
+	body := dc.fake.lastBody
+	if body == nil {
+		return fmt.Errorf("no request body captured")
+	}
+	article, ok := body["article"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("no article in body: %+v", body)
+	}
+	if _, exists := article["series"]; exists {
+		return fmt.Errorf("expected no series in body, but found: %v", article["series"])
+	}
+	return nil
+}
+
 func (dc *devtoContext) theErrorIs(expected string) error {
 	if dc.err == nil {
 		return fmt.Errorf("expected error %q, got nil", expected)
@@ -431,6 +465,8 @@ func tableToArticleInput(table *godog.Table) devto.ArticleInput {
 			input.Tags = strings.Split(val, ",")
 		case "published":
 			input.Published = val == "true"
+		case "series":
+			input.Series = val
 		}
 	}
 	return input
@@ -473,6 +509,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the dry-run result published is (true|false)$`, dc.theDryRunResultPublishedIs)
 	ctx.Step(`^the dry-run result existing ID is (\d+)$`, dc.theDryRunResultExistingIDIs)
 	ctx.Step(`^the dry-run result embeds converted is (\d+)$`, dc.theDryRunResultEmbedsConvertedIs)
+	ctx.Step(`^the request body has "series" set to "([^"]*)"$`, dc.theRequestBodyHasSeriesSetTo)
+	ctx.Step(`^the request body does not have "series"$`, dc.theRequestBodyDoesNotHaveSeries)
 }
 
 func TestFeatures(t *testing.T) {

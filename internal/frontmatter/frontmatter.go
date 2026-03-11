@@ -16,6 +16,7 @@ type Post struct {
 	Subtitle string   `yaml:"subtitle"`
 	Tags     []string `yaml:"tags"`
 	Draft    bool     `yaml:"draft"`
+	Series   string   `yaml:"series"`
 	Content  string   `yaml:"-"`
 }
 

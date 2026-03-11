@@ -279,6 +279,37 @@ Feature: Validate frontmatter
     When the frontmatter is parsed
     Then validation fails with error "missing required field: tags"
 
+  Scenario: Series field is parsed from frontmatter
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Series Post"
+      slug: series-post
+      tags: [go, testing]
+      series: "Process Over Technology"
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the series is "Process Over Technology"
+    And validation passes with no errors
+
+  Scenario: Series field is optional
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "No Series"
+      slug: no-series
+      tags: [go]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the series is ""
+    And validation passes with no errors
+
   Scenario: Subtitle is optional
     Given a markdown file with frontmatter:
       """

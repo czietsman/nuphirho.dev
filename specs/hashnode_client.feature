@@ -183,3 +183,57 @@ Feature: Hashnode client
       | tags     | test                       |
     Then no HTTP request is made
     And the dry-run result action is "create_draft"
+
+  # --- Series ---
+
+  Scenario: Lookup existing series by name
+    Given a series exists with name "Process Over Technology" and ID "series-001"
+    When the client looks up series "Process Over Technology"
+    Then the series is found with ID "series-001"
+
+  Scenario: Lookup series returns not found
+    Given no series exists with name "Nonexistent Series"
+    When the client looks up series "Nonexistent Series"
+    Then the series is not found
+
+  Scenario: Create a new series
+    When the client creates series "Process Over Technology"
+    Then a createSeries mutation is sent
+    And the series ID is "series-001"
+
+  Scenario: Resolve series creates when not found
+    Given no series exists with name "New Series"
+    When the client resolves series "New Series"
+    Then a createSeries mutation is sent
+    And the series ID is "series-001"
+
+  Scenario: Resolve series returns existing
+    Given a series exists with name "Process Over Technology" and ID "series-042"
+    When the client resolves series "Process Over Technology"
+    Then no createSeries mutation is sent
+    And the series ID is "series-042"
+
+  Scenario: Publish post with series ID
+    Given no post exists with slug "series-post"
+    And no deleted post exists with slug "series-post"
+    When the pipeline publishes a post with series:
+      | title    | Series Post                |
+      | slug     | series-post                |
+      | subtitle | Subtitle                   |
+      | content  | Content.                   |
+      | tags     | go                         |
+      | seriesId | series-001                 |
+    Then a publishPost mutation is sent
+    And the publish request includes series ID "series-001"
+
+  Scenario: Update post with series ID
+    Given a post exists with slug "existing-series" and ID "post-050"
+    When the pipeline publishes a post with series:
+      | title    | Updated Series             |
+      | slug     | existing-series            |
+      | subtitle | Subtitle                   |
+      | content  | Content.                   |
+      | tags     | go                         |
+      | seriesId | series-002                 |
+    Then an updatePost mutation is sent with ID "post-050"
+    And the update request includes series ID "series-002"

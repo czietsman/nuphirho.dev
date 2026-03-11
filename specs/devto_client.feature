@@ -183,6 +183,31 @@ Feature: Dev.to client
     And the dry-run result action is "update"
     And the dry-run result existing ID is 99999
 
+  # --- Series ---
+
+  Scenario: Series is included in the request body
+    Given no article exists with canonical URL "https://blog.nuphirho.dev/series-post"
+    When the pipeline creates an article:
+      | title     | Series Post                                    |
+      | slug      | series-post                                    |
+      | content   | Content.                                       |
+      | tags      | go                                             |
+      | published | true                                           |
+      | series    | Process Over Technology                        |
+    Then the request body has "series" set to "Process Over Technology"
+
+  Scenario: Series is omitted when empty
+    Given no article exists with canonical URL "https://blog.nuphirho.dev/no-series"
+    When the pipeline creates an article:
+      | title     | No Series Post                                 |
+      | slug      | no-series                                      |
+      | content   | Content.                                       |
+      | tags      | go                                             |
+      | published | true                                           |
+    Then the request body does not have "series"
+
+  # --- Dry-run ---
+
   Scenario: Dry-run reports embed conversion count
     Given no article exists with canonical URL "https://blog.nuphirho.dev/dry-run-embeds"
     And dry-run mode is enabled
