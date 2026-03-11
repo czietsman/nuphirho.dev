@@ -109,6 +109,7 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 
 	// Phase 2: Process each file independently
 	publishFailed := false
+	seriesCache := make(map[string]string) // series name -> resolved ID
 
 	for _, fr := range parsed {
 		// Skip drafts
@@ -141,16 +142,21 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 			}
 		}
 
-		// Resolve series
+		// Resolve series (cached across files in the same run)
 		var seriesID string
 		if fr.Post.Series != "" && cfg.SeriesResolver != nil {
-			sid, err := cfg.SeriesResolver.ResolveSeriesID(fr.Post.Series)
-			if err != nil {
-				fr.Error = fmt.Sprintf("series: %s", err.Error())
-				publishFailed = true
-				continue
+			if cached, ok := seriesCache[fr.Post.Series]; ok {
+				seriesID = cached
+			} else {
+				sid, err := cfg.SeriesResolver.ResolveSeriesID(fr.Post.Series)
+				if err != nil {
+					fr.Error = fmt.Sprintf("series: %s", err.Error())
+					publishFailed = true
+					continue
+				}
+				seriesCache[fr.Post.Series] = sid
+				seriesID = sid
 			}
-			seriesID = sid
 		}
 
 		// Publish to Hashnode

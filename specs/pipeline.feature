@@ -110,6 +110,23 @@ Feature: Pipeline orchestrator
     And the Hashnode call for "no-series" does not include series
     And the exit code is 0
 
+  Scenario: Multiple posts in same series resolve once
+    Given a post file "posts/series-one.md" with:
+      | title  | Series One               |
+      | slug   | series-one               |
+      | tags   | go                       |
+      | series | Process Over Technology  |
+    And a post file "posts/series-two.md" with:
+      | title  | Series Two               |
+      | slug   | series-two               |
+      | tags   | go                       |
+      | series | Process Over Technology  |
+    When the pipeline runs
+    Then Hashnode publish is called with slug "series-one"
+    And Hashnode publish is called with slug "series-two"
+    And the series resolver is called once for "Process Over Technology"
+    And the exit code is 0
+
   Scenario: Series resolution failure exits with code 2
     Given a post file "posts/bad-series.md" with:
       | title  | Bad Series              |

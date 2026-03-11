@@ -94,10 +94,12 @@ func (f *fakeProber) Run(w io.Writer) int {
 }
 
 type fakeSeriesResolver struct {
-	err error
+	err   error
+	calls []string // names resolved
 }
 
 func (f *fakeSeriesResolver) ResolveSeriesID(name string) (string, error) {
+	f.calls = append(f.calls, name)
 	if f.err != nil {
 		return "", f.err
 	}
@@ -344,6 +346,19 @@ func (pc *pipelineCtx) theHashnodeCallDoesNotIncludeSeries(slug string) error {
 	return nil
 }
 
+func (pc *pipelineCtx) theSeriesResolverIsCalledOnceFor(name string) error {
+	count := 0
+	for _, n := range pc.seriesResolver.calls {
+		if n == name {
+			count++
+		}
+	}
+	if count != 1 {
+		return fmt.Errorf("expected series resolver called once for %q, got %d calls", name, count)
+	}
+	return nil
+}
+
 func (pc *pipelineCtx) theDevtoCallIncludesSeries(slug, series string) error {
 	input, ok := pc.dt.lastInputs[slug]
 	if !ok {
@@ -455,6 +470,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the Hashnode call for "([^"]*)" includes series ID "([^"]*)"$`, pc.theHashnodeCallIncludesSeriesID)
 	ctx.Step(`^the Hashnode call for "([^"]*)" does not include series$`, pc.theHashnodeCallDoesNotIncludeSeries)
 	ctx.Step(`^the Dev\.to call for "([^"]*)" includes series "([^"]*)"$`, pc.theDevtoCallIncludesSeries)
+	ctx.Step(`^the series resolver is called once for "([^"]*)"$`, pc.theSeriesResolverIsCalledOnceFor)
 }
 
 func TestFeatures(t *testing.T) {
