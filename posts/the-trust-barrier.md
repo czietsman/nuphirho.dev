@@ -3,6 +3,7 @@ title: "The Trust Barrier"
 slug: "the-trust-barrier"
 subtitle: "Why the path forward isn't trusting AI, but building a process that makes trust measurable"
 tags: [ai, process, bdd, trust, software-engineering]
+series: "Process Over Technology"
 ---
 
 The biggest obstacle to AI in software engineering isn't the technology. It's trust.

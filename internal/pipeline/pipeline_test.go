@@ -22,10 +22,15 @@ type fakeHN struct {
 	publishCalls []string // slugs
 	publishErr   error
 	slugErrors   map[string]error
+	lastInputs   map[string]hashnode.PostInput // slug -> last input
 }
 
 func (f *fakeHN) Publish(input hashnode.PostInput) (*hashnode.PublishResult, error) {
 	f.publishCalls = append(f.publishCalls, input.Slug)
+	if f.lastInputs == nil {
+		f.lastInputs = make(map[string]hashnode.PostInput)
+	}
+	f.lastInputs[input.Slug] = input
 	if err, ok := f.slugErrors[input.Slug]; ok {
 		return nil, err
 	}
@@ -43,10 +48,15 @@ type fakeDT struct {
 	createCalls []string // slugs
 	createErr   error
 	slugErrors  map[string]error
+	lastInputs  map[string]devto.ArticleInput // slug -> last input
 }
 
 func (f *fakeDT) CreateArticle(input devto.ArticleInput) (*devto.PublishResult, error) {
 	f.createCalls = append(f.createCalls, input.Slug)
+	if f.lastInputs == nil {
+		f.lastInputs = make(map[string]devto.ArticleInput)
+	}
+	f.lastInputs[input.Slug] = input
 	if err, ok := f.slugErrors[input.Slug]; ok {
 		return nil, err
 	}
@@ -83,18 +93,30 @@ func (f *fakeProber) Run(w io.Writer) int {
 	return f.exitCode
 }
 
+type fakeSeriesResolver struct {
+	err error
+}
+
+func (f *fakeSeriesResolver) ResolveSeriesID(name string) (string, error) {
+	if f.err != nil {
+		return "", f.err
+	}
+	return "series-resolved", nil
+}
+
 // --- godog context ---
 
 type pipelineCtx struct {
-	glossary tags.Glossary
-	hn       *fakeHN
-	dt       *fakeDT
-	prober   *fakeProber
-	files    []pipeline.PostFile
-	result   *pipeline.RunResult
-	output   string
-	dryRun   bool
-	probeRan bool
+	glossary       tags.Glossary
+	hn             *fakeHN
+	dt             *fakeDT
+	prober         *fakeProber
+	seriesResolver *fakeSeriesResolver
+	files          []pipeline.PostFile
+	result         *pipeline.RunResult
+	output         string
+	dryRun         bool
+	probeRan       bool
 }
 
 func (pc *pipelineCtx) reset() {
@@ -102,6 +124,7 @@ func (pc *pipelineCtx) reset() {
 	pc.hn = &fakeHN{slugErrors: make(map[string]error)}
 	pc.dt = &fakeDT{slugErrors: make(map[string]error)}
 	pc.prober = &fakeProber{}
+	pc.seriesResolver = &fakeSeriesResolver{}
 	pc.files = nil
 	pc.result = nil
 	pc.output = ""
@@ -151,12 +174,18 @@ func (pc *pipelineCtx) dryRunModeIsEnabled() error {
 
 // --- When steps ---
 
+func (pc *pipelineCtx) seriesResolutionWillFailWith(errMsg string) error {
+	pc.seriesResolver.err = fmt.Errorf("%s", errMsg)
+	return nil
+}
+
 func (pc *pipelineCtx) thePipelineRuns() error {
 	cfg := pipeline.Config{
-		Hashnode: pc.hn,
-		DevTo:    pc.dt,
-		Glossary: pc.glossary,
-		DryRun:   pc.dryRun,
+		Hashnode:       pc.hn,
+		DevTo:          pc.dt,
+		SeriesResolver: pc.seriesResolver,
+		Glossary:       pc.glossary,
+		DryRun:         pc.dryRun,
 	}
 
 	var buf bytes.Buffer
@@ -293,6 +322,39 @@ func (pc *pipelineCtx) theJSONResultHasDevtoPublished(file string, val string) e
 	return nil
 }
 
+func (pc *pipelineCtx) theHashnodeCallIncludesSeriesID(slug, id string) error {
+	input, ok := pc.hn.lastInputs[slug]
+	if !ok {
+		return fmt.Errorf("no Hashnode call for slug %q", slug)
+	}
+	if input.SeriesID != id {
+		return fmt.Errorf("expected Hashnode seriesID %q for slug %q, got %q", id, slug, input.SeriesID)
+	}
+	return nil
+}
+
+func (pc *pipelineCtx) theHashnodeCallDoesNotIncludeSeries(slug string) error {
+	input, ok := pc.hn.lastInputs[slug]
+	if !ok {
+		return fmt.Errorf("no Hashnode call for slug %q", slug)
+	}
+	if input.SeriesID != "" {
+		return fmt.Errorf("expected no seriesID for slug %q, got %q", slug, input.SeriesID)
+	}
+	return nil
+}
+
+func (pc *pipelineCtx) theDevtoCallIncludesSeries(slug, series string) error {
+	input, ok := pc.dt.lastInputs[slug]
+	if !ok {
+		return fmt.Errorf("no Dev.to call for slug %q", slug)
+	}
+	if input.Series != series {
+		return fmt.Errorf("expected Dev.to series %q for slug %q, got %q", series, slug, input.Series)
+	}
+	return nil
+}
+
 func (pc *pipelineCtx) probeAllIsCalled() error {
 	if !pc.prober.called {
 		return fmt.Errorf("expected ProbeAll to be called")
@@ -340,6 +402,9 @@ func buildMarkdown(fields map[string]string) string {
 	if draft, ok := fields["draft"]; ok && draft == "true" {
 		sb.WriteString("draft: true\n")
 	}
+	if series, ok := fields["series"]; ok && series != "" {
+		sb.WriteString(fmt.Sprintf("series: %s\n", series))
+	}
 	sb.WriteString("---\n")
 
 	if content, ok := fields["content"]; ok {
@@ -367,6 +432,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^Hashnode publish will fail with "([^"]*)"$`, pc.hashnodePublishWillFailWith)
 	ctx.Step(`^Hashnode publish will fail for slug "([^"]*)" with "([^"]*)"$`, pc.hashnodePublishWillFailForSlugWith)
 	ctx.Step(`^Dev\.to cross-post will fail with "([^"]*)"$`, pc.devtoCrossPostWillFailWith)
+	ctx.Step(`^series resolution will fail with "([^"]*)"$`, pc.seriesResolutionWillFailWith)
 	ctx.Step(`^dry-run mode is enabled$`, pc.dryRunModeIsEnabled)
 
 	// When
@@ -386,6 +452,9 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the JSON result for "([^"]*)" has devto embeds_converted (\d+)$`, pc.theJSONResultHasDevtoEmbedsConverted)
 	ctx.Step(`^the JSON result for "([^"]*)" has devto published (true|false)$`, pc.theJSONResultHasDevtoPublished)
 	ctx.Step(`^ProbeAll is called$`, pc.probeAllIsCalled)
+	ctx.Step(`^the Hashnode call for "([^"]*)" includes series ID "([^"]*)"$`, pc.theHashnodeCallIncludesSeriesID)
+	ctx.Step(`^the Hashnode call for "([^"]*)" does not include series$`, pc.theHashnodeCallDoesNotIncludeSeries)
+	ctx.Step(`^the Dev\.to call for "([^"]*)" includes series "([^"]*)"$`, pc.theDevtoCallIncludesSeries)
 }
 
 func TestFeatures(t *testing.T) {
