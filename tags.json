@@ -9,5 +9,7 @@
   "prompt-injection": { "devto": "promptinjection" },
   "threat-modeling": { "devto": "threatmodeling" },
   "code-review": { "devto": "codereview" },
-  "formal-methods": { "devto": "formalmethods" }
+  "formal-methods": { "devto": "formalmethods" },
+  "scientific-method": { "devto": "scientificmethod" },
+  "specification-driven-development": { "devto": "sdd" }
 }
