@@ -1,0 +1,34 @@
+{
+  "functions": [
+    {
+      "name": "prorate_premium",
+      "file": "corpus/prorate_premium.py",
+      "bug_description": "Uses fixed 365 divisor instead of actual days in year (366 for leap years) per ISDA actual/actual convention",
+      "detection_keywords": ["365", "366", "leap", "day count", "actual/actual", "ISDA", "divisor", "days in year"]
+    },
+    {
+      "name": "apply_tiered_tax",
+      "file": "corpus/apply_tiered_tax.py",
+      "bug_description": "Assignment (=) instead of accumulation (+=) in tax loop — only keeps the last bracket's contribution instead of summing all brackets",
+      "detection_keywords": ["+=", "accumulate", "overwrite", "assignment", "sum", "marginal", "previous bracket", "tax =", "tax +="]
+    },
+    {
+      "name": "schedule_maintenance",
+      "file": "corpus/schedule_maintenance.py",
+      "bug_description": "Uses AND instead of OR for flight hours and cycles check — requires both to exceed limits instead of either one",
+      "detection_keywords": ["and", "or", "either", "any", "both", "independently", "separate"]
+    },
+    {
+      "name": "calculate_dilution",
+      "file": "corpus/calculate_dilution.py",
+      "bug_description": "Option pool calculated on post-money shares instead of pre-money — understates founder dilution per option pool shuffle convention",
+      "detection_keywords": ["pre-money", "post-money", "pool shuffle", "fully diluted", "pool size", "dilution", "before investment"]
+    },
+    {
+      "name": "interpolate_rate",
+      "file": "corpus/interpolate_rate.py",
+      "bug_description": "Uses linear interpolation instead of log-linear (logarithmic) interpolation as specified in the docstring",
+      "detection_keywords": ["log", "logarithm", "log-linear", "ln", "exp", "math.log", "math.exp", "exponential"]
+    }
+  ]
+}

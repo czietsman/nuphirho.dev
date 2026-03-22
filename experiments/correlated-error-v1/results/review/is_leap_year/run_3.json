@@ -1,0 +1,13 @@
+
+
+```json
+{
+  "bugs": [
+    {
+      "description": "Missing the century rule: years divisible by 100 but not by 400 should NOT be leap years (e.g., 1900). The check for year % 100 == 0 returning False is absent, so years like 1900, 1800, 2100 are incorrectly reported as leap years.",
+      "line": "if year % 4 == 0: return True"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

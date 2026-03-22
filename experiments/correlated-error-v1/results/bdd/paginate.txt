@@ -1,0 +1,33 @@
+USING RUNNER: behave.runner:Runner
+Feature: Paginate a list of items # specs/paginate.feature:1
+
+  Scenario: First page of results          # specs/paginate.feature:3
+    Given a list of 10 items               # steps/steps.py:18
+    When I request page 1 with page_size 5 # steps/steps.py:23
+    Then I should get items 1 through 5    # steps/steps.py:28
+
+  Scenario: Middle page of results         # specs/paginate.feature:8
+    Given a list of 15 items               # steps/steps.py:18
+    When I request page 2 with page_size 5 # steps/steps.py:23
+    Then I should get items 6 through 10   # steps/steps.py:28
+
+  Scenario: Last page when items exactly divisible by page_size  # specs/paginate.feature:13
+    Given a list of 10 items                                     # steps/steps.py:18
+    When I request page 2 with page_size 5                       # steps/steps.py:23
+    Then I should get items 6 through 10                         # steps/steps.py:28
+      ASSERT FAILED: Expected [6, 7, 8, 9, 10], got []
+
+
+  Scenario: Page beyond total pages returns empty  # specs/paginate.feature:18
+    Given a list of 10 items                       # steps/steps.py:18
+    When I request page 4 with page_size 5         # steps/steps.py:23
+    Then I should get an empty list                # steps/steps.py:34
+
+
+Failing scenarios:
+  specs/paginate.feature:13  Last page when items exactly divisible by page_size
+
+0 features passed, 1 failed, 0 skipped
+3 scenarios passed, 1 failed, 0 skipped
+11 steps passed, 1 failed, 0 skipped
+Took 0min 0.001s

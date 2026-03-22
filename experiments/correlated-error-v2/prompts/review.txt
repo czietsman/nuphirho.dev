@@ -1,0 +1,18 @@
+You are a code reviewer. Review the following Python function for correctness.
+
+Return your response as JSON in this exact format:
+{
+  "bugs": [
+    {
+      "description": "brief description of the bug",
+      "line": "the line or expression where the bug occurs"
+    }
+  ],
+  "verdict": "buggy" or "correct"
+}
+
+If you find no bugs, return an empty bugs array and verdict "correct".
+
+Function to review:
+
+{function_source}

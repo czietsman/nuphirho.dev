@@ -1,0 +1,51 @@
+USING RUNNER: behave.runner:Runner
+Feature: Aircraft maintenance scheduling # specs/schedule_maintenance.feature:1
+
+  Scenario: Both hours and cycles exceed limits          # specs/schedule_maintenance.feature:3
+    Given last service was "2024-01-15"                  # steps/steps.py:60
+    And the aircraft has 520 flight hours and 310 cycles # steps/steps.py:65
+    When I check maintenance status on "2024-06-15"      # steps/steps.py:71
+    Then maintenance should be due                       # steps/steps.py:81
+    And the reasons should include "flight_hours"        # steps/steps.py:93
+    And the reasons should include "cycles"              # steps/steps.py:93
+
+  Scenario: Only flight hours exceed limit               # specs/schedule_maintenance.feature:11
+    Given last service was "2024-01-15"                  # steps/steps.py:60
+    And the aircraft has 520 flight hours and 200 cycles # steps/steps.py:65
+    When I check maintenance status on "2024-06-15"      # steps/steps.py:71
+    Then maintenance should be due                       # steps/steps.py:81
+      ASSERT FAILED: Expected maintenance due, got {'due': False, 'reasons': []}
+
+    And the reasons should include "flight_hours"        # None
+
+  Scenario: Only cycles exceed limit                     # specs/schedule_maintenance.feature:18
+    Given last service was "2024-01-15"                  # steps/steps.py:60
+    And the aircraft has 400 flight hours and 310 cycles # steps/steps.py:65
+    When I check maintenance status on "2024-06-15"      # steps/steps.py:71
+    Then maintenance should be due                       # steps/steps.py:81
+      ASSERT FAILED: Expected maintenance due, got {'due': False, 'reasons': []}
+
+    And the reasons should include "cycles"              # None
+
+  Scenario: Calendar limit exceeded                     # specs/schedule_maintenance.feature:25
+    Given last service was "2023-01-01"                 # steps/steps.py:60
+    And the aircraft has 100 flight hours and 50 cycles # steps/steps.py:65
+    When I check maintenance status on "2024-06-15"     # steps/steps.py:71
+    Then maintenance should be due                      # steps/steps.py:81
+    And the reasons should include "calendar"           # steps/steps.py:93
+
+  Scenario: No thresholds exceeded                      # specs/schedule_maintenance.feature:32
+    Given last service was "2024-06-01"                 # steps/steps.py:60
+    And the aircraft has 100 flight hours and 50 cycles # steps/steps.py:65
+    When I check maintenance status on "2024-06-15"     # steps/steps.py:71
+    Then maintenance should not be due                  # steps/steps.py:87
+
+
+Failing scenarios:
+  specs/schedule_maintenance.feature:11  Only flight hours exceed limit
+  specs/schedule_maintenance.feature:18  Only cycles exceed limit
+
+0 features passed, 1 failed, 0 skipped
+3 scenarios passed, 2 failed, 0 skipped
+21 steps passed, 2 failed, 2 skipped
+Took 0min 0.001s

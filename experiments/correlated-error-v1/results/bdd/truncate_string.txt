@@ -1,0 +1,33 @@
+USING RUNNER: behave.runner:Runner
+Feature: Truncate a string to a maximum length # specs/truncate_string.feature:1
+
+  Scenario: String shorter than max_len         # specs/truncate_string.feature:3
+    Given the string "hello" with max_len 10    # steps/steps.py:76
+    When I truncate the string                  # steps/steps.py:82
+    Then the truncated result should be "hello" # steps/steps.py:87
+
+  Scenario: String longer than max_len                             # specs/truncate_string.feature:8
+    Given the string "hello world, this is a test" with max_len 10 # steps/steps.py:76
+    When I truncate the string                                     # steps/steps.py:82
+    Then the truncated result should be "hello w..."               # steps/steps.py:87
+
+  Scenario: String exactly max_len characters        # specs/truncate_string.feature:13
+    Given the string "hello worl" with max_len 10    # steps/steps.py:76
+    When I truncate the string                       # steps/steps.py:82
+    Then the truncated result should be "hello worl" # steps/steps.py:87
+      ASSERT FAILED: Expected 'hello worl', got 'hello w...'
+
+
+  Scenario: String one character longer than max_len  # specs/truncate_string.feature:18
+    Given the string "hello world" with max_len 10    # steps/steps.py:76
+    When I truncate the string                        # steps/steps.py:82
+    Then the truncated result should be "hello w..."  # steps/steps.py:87
+
+
+Failing scenarios:
+  specs/truncate_string.feature:13  String exactly max_len characters
+
+0 features passed, 1 failed, 0 skipped
+3 scenarios passed, 1 failed, 0 skipped
+11 steps passed, 1 failed, 0 skipped
+Took 0min 0.001s
