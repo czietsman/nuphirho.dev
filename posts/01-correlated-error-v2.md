@@ -306,6 +306,6 @@ papers.*
 
 *Series: The Specification as Quality Gate*
 *Part 1: The Echo Chamber in Your Pipeline (this post)*
-*Part 2: From Complex to Complicated, coming soon*
+*[Part 2: From Complex to Complicated](/executable-specifications-cynefin-domain-transition)*
 *Part 3: What Specifications Cannot Catch, coming soon*
 *Part 4: The Practitioner Paper, coming soon*
