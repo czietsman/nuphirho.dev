@@ -134,6 +134,35 @@ Feature: Validate frontmatter
     When the frontmatter is parsed
     Then validation fails with error "em dash detected"
 
+  Scenario: Double hyphen as em dash substitute fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Double Hyphen Post"
+      slug: double-hyphen-post
+      tags: [test]
+      ---
+
+      A title -- with a double hyphen.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "em dash detected"
+
+  Scenario: Double hyphen allowed when allow_emdash is true
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Citation Post"
+      slug: citation-double-hyphen
+      tags: [test]
+      allow_emdash: true
+      ---
+
+      A cited paper title -- with a double hyphen.
+      """
+    When the frontmatter is parsed
+    Then validation passes with no errors
+
   Scenario: Em dash allowed when allow_emdash is true
     Given a markdown file with frontmatter:
       """
