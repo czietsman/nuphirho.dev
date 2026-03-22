@@ -120,7 +120,7 @@ Feature: Validate frontmatter
     When the frontmatter is parsed
     Then validation fails with error "potential secret detected in post content"
 
-  Scenario: Em dash triggers style warning
+  Scenario: Em dash fails validation
     Given a markdown file with frontmatter:
       """
       ---
@@ -132,7 +132,7 @@ Feature: Validate frontmatter
       This sentence has an em dash — right here.
       """
     When the frontmatter is parsed
-    Then validation passes with warning "em dash detected"
+    Then validation fails with error "em dash detected"
 
   Scenario: Quoted title value is stripped correctly
     Given a markdown file with frontmatter:

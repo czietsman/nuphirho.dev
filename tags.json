@@ -7,5 +7,6 @@
   "engineering-process": { "devto": "engineeringprocess" },
   "personal-practice": { "devto": "personalpractice" },
   "prompt-injection": { "devto": "promptinjection" },
-  "threat-modeling": { "devto": "threatmodeling" }
+  "threat-modeling": { "devto": "threatmodeling" },
+  "code-review": { "devto": "codereview" }
 }
