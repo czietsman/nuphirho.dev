@@ -1,0 +1,34 @@
+USING RUNNER: behave.runner:Runner
+Feature: Progressive marginal tax calculation # specs/apply_tiered_tax.feature:1
+
+  Scenario: Income within the first bracket                      # specs/apply_tiered_tax.feature:3
+    Given tax brackets [(0, 0.10), (10000, 0.20), (40000, 0.30)] # steps/steps.py:37
+    And an income of 5000                                        # steps/steps.py:42
+    When I calculate the tax                                     # steps/steps.py:47
+    Then the tax should be 500.00                                # steps/steps.py:52
+
+  Scenario: Income spanning two brackets                         # specs/apply_tiered_tax.feature:9
+    Given tax brackets [(0, 0.10), (10000, 0.20), (40000, 0.30)] # steps/steps.py:37
+    And an income of 25000                                       # steps/steps.py:42
+    When I calculate the tax                                     # steps/steps.py:47
+    Then the tax should be 4000.00                               # steps/steps.py:52
+      ASSERT FAILED: Expected 4000.0, got 3000.0
+
+
+  Scenario: Income spanning all three brackets                   # specs/apply_tiered_tax.feature:15
+    Given tax brackets [(0, 0.10), (10000, 0.20), (40000, 0.30)] # steps/steps.py:37
+    And an income of 60000                                       # steps/steps.py:42
+    When I calculate the tax                                     # steps/steps.py:47
+    Then the tax should be 13000.00                              # steps/steps.py:52
+      ASSERT FAILED: Expected 13000.0, got 6000.0
+
+
+
+Failing scenarios:
+  specs/apply_tiered_tax.feature:9  Income spanning two brackets
+  specs/apply_tiered_tax.feature:15  Income spanning all three brackets
+
+0 features passed, 1 failed, 0 skipped
+1 scenario passed, 2 failed, 0 skipped
+10 steps passed, 2 failed, 0 skipped
+Took 0min 0.001s

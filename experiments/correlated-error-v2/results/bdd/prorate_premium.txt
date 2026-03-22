@@ -1,0 +1,36 @@
+USING RUNNER: behave.runner:Runner
+Feature: Insurance premium proration using ISDA actual/actual convention # specs/prorate_premium.feature:1
+
+  Scenario: Full year in a standard year             # specs/prorate_premium.feature:3
+    Given an annual premium of 1200.00               # steps/steps.py:19
+    When I prorate from "2023-01-01" to "2023-12-31" # steps/steps.py:24
+    Then the prorated premium should be 1196.71      # steps/steps.py:29
+
+  Scenario: Quarter in a standard year               # specs/prorate_premium.feature:8
+    Given an annual premium of 3650.00               # steps/steps.py:19
+    When I prorate from "2023-01-01" to "2023-04-01" # steps/steps.py:24
+    Then the prorated premium should be 900.00       # steps/steps.py:29
+
+  Scenario: Full year in a leap year                 # specs/prorate_premium.feature:13
+    Given an annual premium of 1200.00               # steps/steps.py:19
+    When I prorate from "2024-01-01" to "2024-12-31" # steps/steps.py:24
+    Then the prorated premium should be 1196.72      # steps/steps.py:29
+      ASSERT FAILED: Expected 1196.72, got 1200.0
+
+
+  Scenario: Period in a leap year uses 366 divisor   # specs/prorate_premium.feature:18
+    Given an annual premium of 3660.00               # steps/steps.py:19
+    When I prorate from "2024-01-01" to "2024-04-01" # steps/steps.py:24
+    Then the prorated premium should be 910.00       # steps/steps.py:29
+      ASSERT FAILED: Expected 910.0, got 912.49
+
+
+
+Failing scenarios:
+  specs/prorate_premium.feature:13  Full year in a leap year
+  specs/prorate_premium.feature:18  Period in a leap year uses 366 divisor
+
+0 features passed, 1 failed, 0 skipped
+2 scenarios passed, 2 failed, 0 skipped
+10 steps passed, 2 failed, 0 skipped
+Took 0min 0.001s

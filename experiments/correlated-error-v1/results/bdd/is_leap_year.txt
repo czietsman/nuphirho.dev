@@ -1,0 +1,41 @@
+USING RUNNER: behave.runner:Runner
+Feature: Leap year determination # specs/is_leap_year.feature:1
+
+  Scenario: Common year                       # specs/is_leap_year.feature:3
+    Given the year 2023                       # steps/steps.py:58
+    When I check if it is a leap year         # steps/steps.py:63
+    Then the leap year result should be False # steps/steps.py:68
+
+  Scenario: Year divisible by 4              # specs/is_leap_year.feature:8
+    Given the year 2024                      # steps/steps.py:58
+    When I check if it is a leap year        # steps/steps.py:63
+    Then the leap year result should be True # steps/steps.py:68
+
+  Scenario: Century year not divisible by 400  # specs/is_leap_year.feature:13
+    Given the year 1900                        # steps/steps.py:58
+    When I check if it is a leap year          # steps/steps.py:63
+    Then the leap year result should be False  # steps/steps.py:68
+      ASSERT FAILED: Expected False, got True
+
+
+  Scenario: Century year divisible by 400    # specs/is_leap_year.feature:18
+    Given the year 2000                      # steps/steps.py:58
+    When I check if it is a leap year        # steps/steps.py:63
+    Then the leap year result should be True # steps/steps.py:68
+
+  Scenario: Another century year not divisible by 400  # specs/is_leap_year.feature:23
+    Given the year 1800                                # steps/steps.py:58
+    When I check if it is a leap year                  # steps/steps.py:63
+    Then the leap year result should be False          # steps/steps.py:68
+      ASSERT FAILED: Expected False, got True
+
+
+
+Failing scenarios:
+  specs/is_leap_year.feature:13  Century year not divisible by 400
+  specs/is_leap_year.feature:23  Another century year not divisible by 400
+
+0 features passed, 1 failed, 0 skipped
+3 scenarios passed, 2 failed, 0 skipped
+13 steps passed, 2 failed, 0 skipped
+Took 0min 0.001s

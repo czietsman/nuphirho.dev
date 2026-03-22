@@ -1,0 +1,31 @@
+USING RUNNER: behave.runner:Runner
+Feature: Rate curve interpolation using log-linear convention # specs/interpolate_rate.feature:1
+
+  Scenario: Exact tenor match returns the rate directly                # specs/interpolate_rate.feature:3
+    Given a rate curve [(1, 0.02), (2, 0.025), (5, 0.035), (10, 0.04)] # steps/steps.py:150
+    When I interpolate at tenor 2.0                                    # steps/steps.py:155
+    Then the interpolated rate should be 0.025000                      # steps/steps.py:160
+
+  Scenario: Interpolation between close tenors                         # specs/interpolate_rate.feature:8
+    Given a rate curve [(1, 0.02), (2, 0.025), (5, 0.035), (10, 0.04)] # steps/steps.py:150
+    When I interpolate at tenor 1.5                                    # steps/steps.py:155
+    Then the interpolated rate should be 0.022361                      # steps/steps.py:160
+      ASSERT FAILED: Expected 0.022361, got 0.0225
+
+
+  Scenario: Interpolation across wide tenor gap           # specs/interpolate_rate.feature:13
+    Given a rate curve [(1, 0.02), (5, 0.04), (10, 0.06)] # steps/steps.py:150
+    When I interpolate at tenor 3.0                       # steps/steps.py:155
+    Then the interpolated rate should be 0.028284         # steps/steps.py:160
+      ASSERT FAILED: Expected 0.028284, got 0.03
+
+
+
+Failing scenarios:
+  specs/interpolate_rate.feature:8  Interpolation between close tenors
+  specs/interpolate_rate.feature:13  Interpolation across wide tenor gap
+
+0 features passed, 1 failed, 0 skipped
+1 scenario passed, 2 failed, 0 skipped
+7 steps passed, 2 failed, 0 skipped
+Took 0min 0.001s

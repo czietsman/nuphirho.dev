@@ -1,0 +1,38 @@
+USING RUNNER: behave.runner:Runner
+Feature: Binary search on a sorted list # specs/binary_search.feature:1
+
+  Scenario: Target is the first element  # specs/binary_search.feature:3
+    Given a sorted list [1, 3, 5, 7, 9]  # steps/steps.py:41
+    When I search for 1                  # steps/steps.py:46
+    Then the result should be index 0    # steps/steps.py:51
+
+  Scenario: Target is in the middle     # specs/binary_search.feature:8
+    Given a sorted list [1, 3, 5, 7, 9] # steps/steps.py:41
+    When I search for 5                 # steps/steps.py:46
+    Then the result should be index 2   # steps/steps.py:51
+
+  Scenario: Target is not in the list   # specs/binary_search.feature:13
+    Given a sorted list [1, 3, 5, 7, 9] # steps/steps.py:41
+    When I search for 4                 # steps/steps.py:46
+    Then the result should be index -1  # steps/steps.py:51
+
+  Scenario: Single element list where target is present  # specs/binary_search.feature:18
+    Given a sorted list [42]                             # steps/steps.py:41
+    When I search for 42                                 # steps/steps.py:46
+    Then the result should be index 0                    # steps/steps.py:51
+      ASSERT FAILED: Expected 0, got -1
+
+
+  Scenario: Empty list                 # specs/binary_search.feature:23
+    Given a sorted list []             # steps/steps.py:41
+    When I search for 1                # steps/steps.py:46
+    Then the result should be index -1 # steps/steps.py:51
+
+
+Failing scenarios:
+  specs/binary_search.feature:18  Single element list where target is present
+
+0 features passed, 1 failed, 0 skipped
+4 scenarios passed, 1 failed, 0 skipped
+14 steps passed, 1 failed, 0 skipped
+Took 0min 0.002s
