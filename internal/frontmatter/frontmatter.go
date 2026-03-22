@@ -5,9 +5,25 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
+
+// Date is a date-only type (no time component) for YAML frontmatter.
+type Date struct {
+	time.Time
+}
+
+// UnmarshalYAML parses a YYYY-MM-DD date string from YAML.
+func (d *Date) UnmarshalYAML(value *yaml.Node) error {
+	t, err := time.Parse("2006-01-02", value.Value)
+	if err != nil {
+		return fmt.Errorf("invalid publish_date: expected YYYY-MM-DD, got %q", value.Value)
+	}
+	d.Time = t
+	return nil
+}
 
 // Post holds the parsed frontmatter and body content of a markdown post file.
 type Post struct {
@@ -18,6 +34,7 @@ type Post struct {
 	Draft      bool     `yaml:"draft"`
 	Series     string   `yaml:"series"`
 	AllowEmdash bool   `yaml:"allow_emdash"`
+	PublishDate *Date  `yaml:"publish_date"`
 	Content    string   `yaml:"-"`
 }
 

@@ -115,6 +115,24 @@ func (fc *frontmatterContext) validationPassesWithWarning(warning string) error 
 	return fmt.Errorf("expected warning containing %q, got warnings: %v", warning, fc.result.Warnings)
 }
 
+func (fc *frontmatterContext) thePublishDateIs(expected string) error {
+	if fc.post.PublishDate == nil {
+		return fmt.Errorf("expected publish_date %q, got nil", expected)
+	}
+	actual := fc.post.PublishDate.Format("2006-01-02")
+	if actual != expected {
+		return fmt.Errorf("expected publish_date %q, got %q", expected, actual)
+	}
+	return nil
+}
+
+func (fc *frontmatterContext) thePublishDateIsEmpty() error {
+	if fc.post.PublishDate != nil {
+		return fmt.Errorf("expected no publish_date, got %s", fc.post.PublishDate.Format("2006-01-02"))
+	}
+	return nil
+}
+
 func (fc *frontmatterContext) validationFailsWithError(errMsg string) error {
 	if fc.result.Passed() {
 		return fmt.Errorf("expected validation to fail with %q, but it passed", errMsg)
@@ -142,6 +160,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the content starts with "([^"]*)"$`, fc.theContentStartsWith)
 	ctx.Step(`^validation passes with no errors$`, fc.validationPassesWithNoErrors)
 	ctx.Step(`^validation passes with warning "([^"]*)"$`, fc.validationPassesWithWarning)
+	ctx.Step(`^the publish date is "([^"]*)"$`, fc.thePublishDateIs)
+	ctx.Step(`^the publish date is empty$`, fc.thePublishDateIsEmpty)
 	ctx.Step(`^validation fails with error "([^"]*)"$`, fc.validationFailsWithError)
 }
 

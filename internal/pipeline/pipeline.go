@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"time"
 
 	"github.com/czietsman/nuphirho.dev/internal/devto"
 	"github.com/czietsman/nuphirho.dev/internal/frontmatter"
@@ -47,6 +48,7 @@ type Config struct {
 	SeriesResolver SeriesResolver
 	Glossary       tags.Glossary
 	DryRun         bool
+	Now            func() time.Time
 }
 
 // FileResult holds the outcome of processing a single file.
@@ -111,11 +113,24 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 	publishFailed := false
 	seriesCache := make(map[string]string) // series name -> resolved ID
 
+	now := cfg.Now
+	if now == nil {
+		now = time.Now
+	}
+	today := now().Format("2006-01-02")
+
 	for _, fr := range parsed {
 		// Skip drafts
 		if fr.Post.Draft {
 			fr.Skipped = true
 			fr.SkipReason = "draft"
+			continue
+		}
+
+		// Skip scheduled (future publish_date)
+		if fr.Post.PublishDate != nil && fr.Post.PublishDate.Format("2006-01-02") > today {
+			fr.Skipped = true
+			fr.SkipReason = "scheduled"
 			continue
 		}
 
