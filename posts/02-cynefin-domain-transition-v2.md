@@ -249,4 +249,4 @@ Systematic Literature Review," arXiv:2509.11446.*
 *[Part 1: The Echo Chamber in Your Pipeline](/echo-chamber-ai-code-review-correlated-error)*
 *Part 2: From Complex to Complicated (this post)*
 *[Part 3: What Specifications Cannot Catch](/what-specifications-cannot-catch-residual-defect-taxonomy)*
-*Part 4: The Practitioner Paper, coming soon*
+*[Part 4: The Specification as Quality Gate](/specification-as-quality-gate-three-hypotheses)*
