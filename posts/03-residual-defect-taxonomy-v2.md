@@ -2,7 +2,7 @@
 title: "What Specifications Cannot Catch: A Proposed Taxonomy of the Residual"
 slug: "what-specifications-cannot-catch-residual-defect-taxonomy"
 draft: false
-tags: ["specifications", "testing", "bdd", "software-engineering", "ai", "formal-methods"]
+tags: ["specifications", "testing", "ai", "bdd", "software-engineering", "formal-methods"]
 series: "The Specification as Quality Gate"
 ---
 
