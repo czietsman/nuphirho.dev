@@ -36,6 +36,54 @@ Feature: Pipeline orchestrator
     And the summary contains "skipped (draft)"
     And the exit code is 0
 
+  # --- Scheduled ---
+
+  Scenario: Future publish_date post is skipped
+    Given a post file "posts/future-post.md" with:
+      | title        | Future Post |
+      | slug         | future-post |
+      | tags         | go          |
+      | publish_date | 2099-12-31  |
+    When the pipeline runs
+    Then Hashnode publish is not called
+    And Dev.to cross-post is not called
+    And the summary contains "skipped (scheduled)"
+    And the exit code is 0
+
+  Scenario: Past publish_date post is published normally
+    Given a post file "posts/past-post.md" with:
+      | title        | Past Post  |
+      | slug         | past-post  |
+      | tags         | go         |
+      | publish_date | 2020-01-01 |
+    When the pipeline runs
+    Then Hashnode publish is called with slug "past-post"
+    And Dev.to cross-post is called with slug "past-post"
+    And the exit code is 0
+
+  Scenario: Today publish_date post is published
+    Given a post file "posts/today-post.md" with:
+      | title        | Today Post |
+      | slug         | today-post |
+      | tags         | go         |
+      | publish_date | today      |
+    When the pipeline runs
+    Then Hashnode publish is called with slug "today-post"
+    And Dev.to cross-post is called with slug "today-post"
+    And the exit code is 0
+
+  Scenario: Draft with publish_date is skipped as draft
+    Given a post file "posts/draft-scheduled.md" with:
+      | title        | Draft Scheduled |
+      | slug         | draft-scheduled |
+      | tags         | go              |
+      | draft        | true            |
+      | publish_date | 2020-01-01      |
+    When the pipeline runs
+    Then Hashnode publish is not called
+    And the summary contains "skipped (draft)"
+    And the exit code is 0
+
   # --- Validation ---
 
   Scenario: Validation failure exits with code 1 and no API calls
