@@ -1,0 +1,13 @@
+
+
+```json
+{
+  "bugs": [
+    {
+      "description": "Missing absolute value: the docstring promises 'the absolute number of days' but the implementation returns a signed difference (negative when date2 < date1)",
+      "line": "return (date2 - date1).days"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

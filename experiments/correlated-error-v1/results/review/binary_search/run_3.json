@@ -1,0 +1,13 @@
+
+
+```json
+{
+  "bugs": [
+    {
+      "description": "Loop condition `while low < high` should be `while low <= high`. When low == high, the single remaining element is never checked, so the function returns -1 even if that element is the target. This affects single-element arrays and cases where the target is at the final narrowed-down position.",
+      "line": "while low < high:"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

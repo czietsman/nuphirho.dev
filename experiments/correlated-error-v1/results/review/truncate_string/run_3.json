@@ -1,0 +1,17 @@
+
+
+```json
+{
+  "bugs": [
+    {
+      "description": "Off-by-one: uses >= instead of >. A string exactly max_len characters long will be truncated unnecessarily (e.g. truncate_string(\"hello\", 5) returns \"he...\" instead of \"hello\").",
+      "line": "if len(s) >= max_len:"
+    },
+    {
+      "description": "No guard for max_len < 3. If max_len is 0, 1, or 2, the slice s[:max_len - 3] uses a negative index, producing wrong results (e.g. truncate_string(\"hello\", 2) returns \"hel...\" instead of raising an error or returning \"..\" ).",
+      "line": "return s[:max_len - 3] + \"...\""
+    }
+  ],
+  "verdict": "buggy"
+}
+```

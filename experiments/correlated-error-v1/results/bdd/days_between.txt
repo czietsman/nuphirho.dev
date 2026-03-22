@@ -1,0 +1,33 @@
+USING RUNNER: behave.runner:Runner
+Feature: Calculate days between two dates # specs/days_between.feature:1
+
+  Scenario: Dates in chronological order                  # specs/days_between.feature:3
+    Given date1 is "2024-01-01" and date2 is "2024-01-10" # steps/steps.py:94
+    When I calculate the days between them                # steps/steps.py:100
+    Then the days result should be 9                      # steps/steps.py:105
+
+  Scenario: Dates in reverse order                        # specs/days_between.feature:8
+    Given date1 is "2024-01-10" and date2 is "2024-01-01" # steps/steps.py:94
+    When I calculate the days between them                # steps/steps.py:100
+    Then the days result should be 9                      # steps/steps.py:105
+      ASSERT FAILED: Expected 9, got -9
+
+
+  Scenario: Same date                                     # specs/days_between.feature:13
+    Given date1 is "2024-06-15" and date2 is "2024-06-15" # steps/steps.py:94
+    When I calculate the days between them                # steps/steps.py:100
+    Then the days result should be 0                      # steps/steps.py:105
+
+  Scenario: Dates spanning a year boundary                # specs/days_between.feature:18
+    Given date1 is "2023-12-31" and date2 is "2024-01-01" # steps/steps.py:94
+    When I calculate the days between them                # steps/steps.py:100
+    Then the days result should be 1                      # steps/steps.py:105
+
+
+Failing scenarios:
+  specs/days_between.feature:8  Dates in reverse order
+
+0 features passed, 1 failed, 0 skipped
+3 scenarios passed, 1 failed, 0 skipped
+11 steps passed, 1 failed, 0 skipped
+Took 0min 0.001s
