@@ -64,7 +64,8 @@ func Parse(raw string) (*Post, *ValidationResult) {
 	validate(post, result)
 
 	// Content checks
-	if strings.Contains(post.Content, "\u2014") && !post.AllowEmdash {
+	hasEmdash := strings.Contains(post.Content, "\u2014") || strings.Contains(post.Content, " -- ")
+	if hasEmdash && !post.AllowEmdash {
 		result.Errors = append(result.Errors, "em dash detected")
 	}
 
