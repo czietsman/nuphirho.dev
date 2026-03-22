@@ -8,6 +8,7 @@ import (
 	"io"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/cucumber/godog"
 	"github.com/czietsman/nuphirho.dev/internal/devto"
@@ -119,6 +120,7 @@ type pipelineCtx struct {
 	output         string
 	dryRun         bool
 	probeRan       bool
+	now            time.Time
 }
 
 func (pc *pipelineCtx) reset() {
@@ -132,6 +134,7 @@ func (pc *pipelineCtx) reset() {
 	pc.output = ""
 	pc.dryRun = false
 	pc.probeRan = false
+	pc.now = time.Date(2026, 3, 23, 0, 0, 0, 0, time.UTC)
 }
 
 // --- Given steps ---
@@ -147,6 +150,9 @@ func (pc *pipelineCtx) aTagGlossary(glossaryJSON *godog.DocString) error {
 
 func (pc *pipelineCtx) aPostFileWith(path string, table *godog.Table) error {
 	fields := tableToMap(table)
+	if pd, ok := fields["publish_date"]; ok && pd == "today" {
+		fields["publish_date"] = pc.now.Format("2006-01-02")
+	}
 	pc.files = append(pc.files, pipeline.PostFile{
 		Path:    path,
 		Content: buildMarkdown(fields),
@@ -188,6 +194,7 @@ func (pc *pipelineCtx) thePipelineRuns() error {
 		SeriesResolver: pc.seriesResolver,
 		Glossary:       pc.glossary,
 		DryRun:         pc.dryRun,
+		Now:            func() time.Time { return pc.now },
 	}
 
 	var buf bytes.Buffer
@@ -419,6 +426,9 @@ func buildMarkdown(fields map[string]string) string {
 	}
 	if series, ok := fields["series"]; ok && series != "" {
 		sb.WriteString(fmt.Sprintf("series: %s\n", series))
+	}
+	if pd, ok := fields["publish_date"]; ok && pd != "" {
+		sb.WriteString(fmt.Sprintf("publish_date: %s\n", pd))
 	}
 	sb.WriteString("---\n")
 

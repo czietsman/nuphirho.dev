@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
     paths: ['posts/**']
+  schedule:
+    - cron: '0 6 * * *'
   workflow_dispatch:
     inputs:
       posts:
@@ -31,7 +33,9 @@ jobs:
       - name: Find changed posts
         id: changed
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "push" ]; then
+            POSTS=$(git diff --name-only --diff-filter=ACM HEAD~1 HEAD -- 'posts/*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             INPUT="${{ github.event.inputs.posts }}"
             if [ -n "$INPUT" ]; then
               POSTS=$(echo "$INPUT" | tr ' ' '\n' | jq -R -s -c 'split("\n") | map(select(length > 0))')
@@ -39,7 +43,8 @@ jobs:
               POSTS=$(find posts -name '*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
             fi
           else
-            POSTS=$(git diff --name-only --diff-filter=ACM HEAD~1 HEAD -- 'posts/*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            # schedule: process all posts, pipeline skips drafts and future-dated
+            POSTS=$(find posts -name '*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
           fi
           echo "posts=$POSTS" >> "$GITHUB_OUTPUT"
 
