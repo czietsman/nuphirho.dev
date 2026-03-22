@@ -297,10 +297,10 @@ Repair," arXiv:2510.21513, October 2025; Mi, Z. et al., "CoopetitiveV:
 Leveraging LLM-powered Coopetitive Multi-Agent Prompting for High-quality
 Verilog Generation," arXiv:2412.11014, v2 June 2025; Pappu, A. et al.,
 "Multi-Agent Teams Hold Experts Back," arXiv:2602.01011, February 2026;
-and Wang, K., Mao, B. et al., "SGCR: A Specification-Grounded Framework
-for Trustworthy LLM Code Review," arXiv:2512.17540, December 2025, v2
-January 2026. Author lists and findings verified against the original
-papers.*
+and Wang, K., Mao, B., Jia, S., Ding, Y., Han, D., Ma, T., and Cao, B.,
+"SGCR: A Specification-Grounded Framework for Trustworthy LLM Code
+Review," arXiv:2512.17540, December 2025, v2 January 2026. Author lists
+and findings verified against the original papers.*
 
 ---
 
@@ -308,4 +308,4 @@ papers.*
 *Part 1: The Echo Chamber in Your Pipeline (this post)*
 *[Part 2: From Complex to Complicated](/executable-specifications-cynefin-domain-transition)*
 *[Part 3: What Specifications Cannot Catch](/what-specifications-cannot-catch-residual-defect-taxonomy)*
-*Part 4: The Practitioner Paper, coming soon*
+*[Part 4: The Specification as Quality Gate](/specification-as-quality-gate-three-hypotheses)*
