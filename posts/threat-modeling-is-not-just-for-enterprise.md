@@ -5,6 +5,7 @@ subtitle: "A worked example on a personal blog project — and what GitHub gives
 tags: [security, threat-modeling, devops, github, engineering-process]
 series: "Threat Modelling"
 draft: true
+allow_emdash: true
 ---
 
 I run a personal blog. It has a public GitHub repository, a live publishing pipeline, a custom domain on Cloudflare, and posts that go to Hashnode and Dev.to automatically when I push markdown to main. It is not a bank. It is not a SaaS product. It does not hold customer data.

@@ -5,6 +5,7 @@ subtitle: "Simulated environments produce simulated learning. The discomfort of 
 tags: [engineering-process, security, ai, personal-practice, devops]
 series: "Threat Modelling"
 draft: true
+allow_emdash: true
 ---
 
 *This is part three of a three-part series. Part one covers the threat model: [Threat modeling is not just for enterprise](<!-- POST_1_URL -->). Part two covers the AI collaboration layer: [AI as collaborator: research, execution, and the boundary between them](<!-- POST_2_URL -->).*
