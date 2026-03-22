@@ -217,7 +217,7 @@ Feature: Pipeline orchestrator
     Then the summary contains "tags dropped"
     And the exit code is 0
 
-  Scenario: Em dash warning appears in summary
+  Scenario: Em dash fails validation in pipeline
     Given a post file "posts/em-dash.md" with:
       | title   | Em Dash Post                          |
       | slug    | em-dash                               |
@@ -225,7 +225,7 @@ Feature: Pipeline orchestrator
       | content | Some text with an — em dash. |
     When the pipeline runs
     Then the summary contains "em dash"
-    And the exit code is 0
+    And the exit code is 1
 
   # --- Probe ---
 

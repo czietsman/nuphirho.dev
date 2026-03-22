@@ -64,7 +64,7 @@ func Parse(raw string) (*Post, *ValidationResult) {
 
 	// Content checks
 	if strings.Contains(post.Content, "\u2014") {
-		result.Warnings = append(result.Warnings, "em dash detected")
+		result.Errors = append(result.Errors, "em dash detected")
 	}
 
 	if secretPattern.MatchString(post.Content) {
