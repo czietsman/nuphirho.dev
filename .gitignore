@@ -26,3 +26,9 @@ publish
 
 # Node (if tooling is added later)
 node_modules/
+
+# Experiments (Python)
+experiments/**/__pycache__/
+experiments/**/*.pyc
+experiments/**/.venv/
+experiments/**/.claude/

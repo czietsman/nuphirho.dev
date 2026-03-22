@@ -1,0 +1,13 @@
+
+
+```json
+{
+  "bugs": [
+    {
+      "description": "Off-by-one error: `page >= total_pages` should be `page > total_pages`. Since page is 1-based, the last valid page equals total_pages, but the condition incorrectly rejects it, returning [] for the last page.",
+      "line": "if page >= total_pages:"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

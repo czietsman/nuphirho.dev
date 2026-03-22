@@ -1,0 +1,34 @@
+{
+  "functions": [
+    {
+      "name": "paginate",
+      "file": "corpus/paginate.py",
+      "bug_description": "Off-by-one: rejects the last valid page when item count is exactly divisible by page_size",
+      "detection_keywords": ["off-by-one", "last page", "exactly divisible", ">=", "greater than or equal", "total_pages", "boundary"]
+    },
+    {
+      "name": "binary_search",
+      "file": "corpus/binary_search.py",
+      "bug_description": "Incorrect loop termination: while low < high misses the case where target is at index 0",
+      "detection_keywords": ["low < high", "low <= high", "index 0", "first element", "loop termination", "off-by-one", "boundary"]
+    },
+    {
+      "name": "is_leap_year",
+      "file": "corpus/is_leap_year.py",
+      "bug_description": "Missing century year check: returns True for years divisible by 100 but not 400 (e.g., 1900)",
+      "detection_keywords": ["century", "100", "1900", "divisible by 100", "missing check", "% 100"]
+    },
+    {
+      "name": "truncate_string",
+      "file": "corpus/truncate_string.py",
+      "bug_description": "Off-by-one: uses >= instead of > so strings of exactly max_len are incorrectly truncated",
+      "detection_keywords": [">=", "greater than or equal", "exactly max_len", "equal to max_len", "off-by-one", "boundary"]
+    },
+    {
+      "name": "days_between",
+      "file": "corpus/days_between.py",
+      "bug_description": "Missing abs(): returns negative days when date2 is before date1",
+      "detection_keywords": ["abs", "absolute", "negative", "date2 before date1", "date2 < date1", "order"]
+    }
+  ]
+}
