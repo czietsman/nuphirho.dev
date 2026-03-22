@@ -326,7 +326,7 @@ IEEE Transactions on Software Engineering, 41(5), 507-525,
 doi:10.1109/TSE.2014.2372785; Santos, S., Pimentel, T., Rocha, F., and
 Soares, M.S. (2024), "Using Behaviour-Driven Development (BDD) for
 Non-Functional Requirements," Software, 3(3), 271-283,
-doi:10.3390/software3030014; and Maaz, M. et al. (2025), "Agentic
+doi:10.3390/software3030014; and Maaz, M., DeVoe, L., Hatfield-Dodds, Z., and Carlini, N. (2025), "Agentic
 Property-Based Testing: Finding Bugs Across the Python Ecosystem,"
 arXiv:2510.09907.*
 
@@ -336,4 +336,4 @@ arXiv:2510.09907.*
 *[Part 1: The Echo Chamber in Your Pipeline](/echo-chamber-ai-code-review-correlated-error)*
 *[Part 2: From Complex to Complicated](/executable-specifications-cynefin-domain-transition)*
 *Part 3: What Specifications Cannot Catch (this post)*
-*Part 4: The Practitioner Paper, coming soon*
+*[Part 4: The Specification as Quality Gate](/specification-as-quality-gate-three-hypotheses)*
