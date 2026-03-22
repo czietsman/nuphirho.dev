@@ -134,6 +134,35 @@ Feature: Validate frontmatter
     When the frontmatter is parsed
     Then validation fails with error "em dash detected"
 
+  Scenario: Em dash allowed when allow_emdash is true
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Citation Post"
+      slug: citation-post
+      tags: [test]
+      allow_emdash: true
+      ---
+
+      A cited paper title — with an em dash.
+      """
+    When the frontmatter is parsed
+    Then validation passes with no errors
+
+  Scenario: allow_emdash is optional and defaults to false
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Normal Post"
+      slug: normal-post
+      tags: [test]
+      ---
+
+      Clean content.
+      """
+    When the frontmatter is parsed
+    Then validation passes with no errors
+
   Scenario: Quoted title value is stripped correctly
     Given a markdown file with frontmatter:
       """
