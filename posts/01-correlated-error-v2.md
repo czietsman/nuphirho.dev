@@ -2,7 +2,7 @@
 title: "The Echo Chamber in Your Pipeline"
 slug: "echo-chamber-ai-code-review-correlated-error"
 draft: false
-tags: ["ai", "code-review", "specifications", "software-engineering", "bdd"]
+tags: ["ai", "code-review", "specifications", "bdd", "software-engineering"]
 series: "The Specification as Quality Gate"
 ---
 
