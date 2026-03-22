@@ -15,9 +15,10 @@ type Post struct {
 	Slug     string   `yaml:"slug"`
 	Subtitle string   `yaml:"subtitle"`
 	Tags     []string `yaml:"tags"`
-	Draft    bool     `yaml:"draft"`
-	Series   string   `yaml:"series"`
-	Content  string   `yaml:"-"`
+	Draft      bool     `yaml:"draft"`
+	Series     string   `yaml:"series"`
+	AllowEmdash bool   `yaml:"allow_emdash"`
+	Content    string   `yaml:"-"`
 }
 
 // ValidationResult holds errors and warnings from frontmatter validation.
@@ -63,7 +64,7 @@ func Parse(raw string) (*Post, *ValidationResult) {
 	validate(post, result)
 
 	// Content checks
-	if strings.Contains(post.Content, "\u2014") {
+	if strings.Contains(post.Content, "\u2014") && !post.AllowEmdash {
 		result.Errors = append(result.Errors, "em dash detected")
 	}
 
