@@ -22,7 +22,8 @@ Feature: Content validation
     When the content validation step runs
     Then the post is checked for em dash usage
     And the post is checked for emoji usage
-    And any violations are reported as warnings
+    And em dash violations fail validation
+    And emoji violations are reported as warnings
 
   Scenario: Only changed posts are validated and published
     Given multiple markdown files exist in "posts/"
