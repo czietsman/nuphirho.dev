@@ -368,6 +368,52 @@ Feature: Validate frontmatter
     Then the series is ""
     And validation passes with no errors
 
+  Scenario: publish_date field is parsed from frontmatter
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Scheduled Post"
+      slug: scheduled-post
+      tags: [go, testing]
+      publish_date: 2026-03-25
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the publish date is "2026-03-25"
+    And validation passes with no errors
+
+  Scenario: publish_date field is optional
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "No Date"
+      slug: no-date
+      tags: [go]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the publish date is empty
+    And validation passes with no errors
+
+  Scenario: Invalid publish_date fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Bad Date"
+      slug: bad-date
+      tags: [go]
+      publish_date: not-a-date
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "invalid publish_date"
+
   Scenario: Subtitle is optional
     Given a markdown file with frontmatter:
       """
