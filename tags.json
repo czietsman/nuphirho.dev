@@ -8,5 +8,6 @@
   "personal-practice": { "devto": "personalpractice" },
   "prompt-injection": { "devto": "promptinjection" },
   "threat-modeling": { "devto": "threatmodeling" },
-  "code-review": { "devto": "codereview" }
+  "code-review": { "devto": "codereview" },
+  "formal-methods": { "devto": "formalmethods" }
 }
