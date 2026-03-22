@@ -5,6 +5,7 @@ subtitle: "How to use AI safely in a security-sensitive engineering workflow —
 tags: [ai, security, prompt-injection, agents, engineering-process]
 series: "Threat Modelling"
 draft: true
+allow_emdash: true
 ---
 
 *This is part two of a three-part series. Part one covers the threat model itself: [Threat modeling is not just for enterprise](<!-- POST_1_URL -->).*
