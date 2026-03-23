@@ -1,0 +1,38 @@
+USING RUNNER: behave.runner:Runner
+Feature: Diagnosis sequence validation per ICD-10-CM Guidelines Section I.C.20.a # specs/validate_diagnosis_sequence.feature:1
+
+  Scenario: Valid diagnosis sequence with no external cause codes  # specs/validate_diagnosis_sequence.feature:3
+    Given a diagnosis sequence of ["S72001A", "M80051A"]           # steps/steps.py:60
+    When I validate the diagnosis sequence                         # steps/steps.py:65
+    Then the sequence should be valid                              # steps/steps.py:70
+
+  Scenario: External cause code V00-Y99 is rejected as principal diagnosis                # specs/validate_diagnosis_sequence.feature:8
+    Given a diagnosis sequence of ["V031XXA", "S61001A"]                                  # steps/steps.py:60
+    When I validate the diagnosis sequence                                                # steps/steps.py:65
+    Then the sequence should be invalid                                                   # steps/steps.py:76
+      ASSERT FAILED: Expected invalid, got {'valid': True, 'errors': []}
+
+    And the errors should include "external cause code cannot be the principal diagnosis" # None
+
+  Scenario: External cause code is accepted in secondary position  # specs/validate_diagnosis_sequence.feature:14
+    Given a diagnosis sequence of ["S61001A", "V031XXA"]           # steps/steps.py:60
+    When I validate the diagnosis sequence                         # steps/steps.py:65
+    Then the sequence should be valid                              # steps/steps.py:70
+
+  Scenario: External cause code Y93 is rejected as principal diagnosis                    # specs/validate_diagnosis_sequence.feature:19
+    Given a diagnosis sequence of ["Y9389", "S72001A"]                                    # steps/steps.py:60
+    When I validate the diagnosis sequence                                                # steps/steps.py:65
+    Then the sequence should be invalid                                                   # steps/steps.py:76
+      ASSERT FAILED: Expected invalid, got {'valid': True, 'errors': []}
+
+    And the errors should include "external cause code cannot be the principal diagnosis" # None
+
+
+Failing scenarios:
+  specs/validate_diagnosis_sequence.feature:8  External cause code V00-Y99 is rejected as principal diagnosis
+  specs/validate_diagnosis_sequence.feature:19  External cause code Y93 is rejected as principal diagnosis
+
+0 features passed, 1 failed, 0 skipped
+2 scenarios passed, 2 failed, 0 skipped
+10 steps passed, 2 failed, 2 skipped
+Took 0min 0.000s

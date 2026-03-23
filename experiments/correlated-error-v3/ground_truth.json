@@ -1,0 +1,54 @@
+{
+  "functions": [
+    {
+      "name": "calculate_final_reserve_fuel",
+      "file": "corpus/calculate_final_reserve_fuel.py",
+      "domain": "Aviation",
+      "convention": "ICAO Annex 6 Part I Section 4.3.6.3",
+      "bug_description": "Reserve durations swapped: jet assigned 45 minutes, piston assigned 30 minutes. Correct values are jet 30 minutes, piston 45 minutes.",
+      "detection_keywords": ["30", "45", "swap", "jet", "piston", "turbojet", "reserve", "reversed", "wrong duration", "incorrect duration"],
+      "convention_public": true,
+      "intuition_misleads": true
+    },
+    {
+      "name": "get_gas_day",
+      "file": "corpus/get_gas_day.py",
+      "domain": "Energy trading",
+      "convention": "NAESB WGQ 1.3.2 / FERC Order 698",
+      "bug_description": "Gas day starts at midnight instead of 09:00 Central Time as required by NAESB WGQ 1.3.2 / FERC Order 698.",
+      "detection_keywords": ["09:00", "9:00", "9 am", "9am", "central", "NAESB", "FERC", "gas day", "midnight", "start time"],
+      "convention_public": true,
+      "intuition_misleads": false
+    },
+    {
+      "name": "validate_diagnosis_sequence",
+      "file": "corpus/validate_diagnosis_sequence.py",
+      "domain": "Healthcare coding",
+      "convention": "ICD-10-CM Guidelines Section I.C.20.a",
+      "bug_description": "Allows V00-Y99 external cause codes as principal diagnosis. ICD-10-CM Guidelines Section I.C.20.a prohibits external cause codes from being the principal diagnosis.",
+      "detection_keywords": ["external cause", "principal", "primary", "first position", "V00", "Y99", "cannot be principal", "supplementary", "secondary", "not allowed as principal"],
+      "convention_public": true,
+      "intuition_misleads": false
+    },
+    {
+      "name": "validate_imo_number",
+      "file": "corpus/validate_imo_number.py",
+      "domain": "Maritime",
+      "convention": "IMO Resolution A.1079(28)",
+      "bug_description": "Check digit uses ascending weights 2-7 instead of descending weights 7-2 as specified by IMO Resolution A.1079(28).",
+      "detection_keywords": ["descending", "7-2", "7,6,5", "weight order", "reversed", "wrong weight", "ascending", "2-7", "check digit"],
+      "convention_public": true,
+      "intuition_misleads": false
+    },
+    {
+      "name": "electricity_cost",
+      "file": "corpus/electricity_cost.py",
+      "domain": "Utility billing",
+      "convention": "Standard inclining block tariff",
+      "bug_description": "Applies flat rate of the tier the total consumption falls into instead of progressive application across tiers (first N kWh at tier 1 rate, next M kWh at tier 2 rate, etc.).",
+      "detection_keywords": ["progressive", "marginal", "tiered", "block", "bracket", "cumulative", "first", "flat rate", "single rate", "each tier", "per tier"],
+      "convention_public": true,
+      "intuition_misleads": false
+    }
+  ]
+}
