@@ -1,0 +1,40 @@
+USING RUNNER: behave.runner:Runner
+Feature: Electricity billing using progressive inclining block tariff # specs/electricity_cost.feature:1
+
+  Scenario: Consumption within the first tier                       # specs/electricity_cost.feature:3
+    Given electricity tiers [(100, 0.05), (300, 0.10), (inf, 0.15)] # steps/steps.py:117
+    And consumption of 80 kWh                                       # steps/steps.py:130
+    When I calculate the electricity cost                           # steps/steps.py:135
+    Then the electricity cost should be 4.00                        # steps/steps.py:142
+
+  Scenario: Consumption spanning two tiers applies each rate progressively  # specs/electricity_cost.feature:9
+    Given electricity tiers [(100, 0.05), (300, 0.10), (inf, 0.15)]         # steps/steps.py:117
+    And consumption of 200 kWh                                              # steps/steps.py:130
+    When I calculate the electricity cost                                   # steps/steps.py:135
+    Then the electricity cost should be 15.00                               # steps/steps.py:142
+      ASSERT FAILED: Expected 15.0, got 20.0
+
+
+  Scenario: Consumption spanning all tiers applies each rate to its block  # specs/electricity_cost.feature:15
+    Given electricity tiers [(100, 0.05), (300, 0.10), (inf, 0.15)]        # steps/steps.py:117
+    And consumption of 400 kWh                                             # steps/steps.py:130
+    When I calculate the electricity cost                                  # steps/steps.py:135
+    Then the electricity cost should be 40.00                              # steps/steps.py:142
+      ASSERT FAILED: Expected 40.0, got 60.0
+
+
+  Scenario: Exact tier boundary applies lower rate to full block    # specs/electricity_cost.feature:21
+    Given electricity tiers [(100, 0.05), (300, 0.10), (inf, 0.15)] # steps/steps.py:117
+    And consumption of 100 kWh                                      # steps/steps.py:130
+    When I calculate the electricity cost                           # steps/steps.py:135
+    Then the electricity cost should be 5.00                        # steps/steps.py:142
+
+
+Failing scenarios:
+  specs/electricity_cost.feature:9  Consumption spanning two tiers applies each rate progressively
+  specs/electricity_cost.feature:15  Consumption spanning all tiers applies each rate to its block
+
+0 features passed, 1 failed, 0 skipped
+2 scenarios passed, 2 failed, 0 skipped
+14 steps passed, 2 failed, 0 skipped
+Took 0min 0.001s

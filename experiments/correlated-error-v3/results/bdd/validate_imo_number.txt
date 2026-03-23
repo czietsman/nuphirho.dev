@@ -1,0 +1,39 @@
+USING RUNNER: behave.runner:Runner
+Feature: IMO number validation per IMO Resolution A.1079(28) # specs/validate_imo_number.feature:1
+
+  Scenario: Valid IMO number with descending weights 7 to 2  # specs/validate_imo_number.feature:3
+    Given an IMO number "IMO9074729"                         # steps/steps.py:93
+    When I validate the IMO number                           # steps/steps.py:98
+    Then the IMO number should be valid                      # steps/steps.py:103
+      ASSERT FAILED: Expected IMO number to be valid
+
+
+  Scenario: Another valid IMO number    # specs/validate_imo_number.feature:8
+    Given an IMO number "IMO9000027"    # steps/steps.py:93
+    When I validate the IMO number      # steps/steps.py:98
+    Then the IMO number should be valid # steps/steps.py:103
+      ASSERT FAILED: Expected IMO number to be valid
+
+
+  Scenario: Invalid check digit is rejected  # specs/validate_imo_number.feature:13
+    Given an IMO number "IMO9074720"         # steps/steps.py:93
+    When I validate the IMO number           # steps/steps.py:98
+    Then the IMO number should be invalid    # steps/steps.py:109
+
+  Scenario: IMO number without prefix   # specs/validate_imo_number.feature:18
+    Given an IMO number "9074729"       # steps/steps.py:93
+    When I validate the IMO number      # steps/steps.py:98
+    Then the IMO number should be valid # steps/steps.py:103
+      ASSERT FAILED: Expected IMO number to be valid
+
+
+
+Failing scenarios:
+  specs/validate_imo_number.feature:3  Valid IMO number with descending weights 7 to 2
+  specs/validate_imo_number.feature:8  Another valid IMO number
+  specs/validate_imo_number.feature:18  IMO number without prefix
+
+0 features passed, 1 failed, 0 skipped
+1 scenario passed, 3 failed, 0 skipped
+9 steps passed, 3 failed, 0 skipped
+Took 0min 0.000s
