@@ -1,0 +1,42 @@
+USING RUNNER: behave.runner:Runner
+Feature: Final reserve fuel per ICAO Annex 6 Part I Section 4.3.6.3 # specs/calculate_final_reserve_fuel.feature:1
+
+  Scenario: Turbojet aircraft requires 30 minutes of reserve fuel  # specs/calculate_final_reserve_fuel.feature:3
+    Given a "jet" engine with a fuel burn rate of 2400 kg per hour # steps/steps.py:20
+    When I calculate the final reserve fuel                        # steps/steps.py:26
+    Then the reserve fuel should be 1200.00 kg                     # steps/steps.py:33
+      ASSERT FAILED: Expected 1200.0 kg, got 1800.0 kg
+
+
+  Scenario: Piston aircraft requires 45 minutes of reserve fuel     # specs/calculate_final_reserve_fuel.feature:8
+    Given a "piston" engine with a fuel burn rate of 80 kg per hour # steps/steps.py:20
+    When I calculate the final reserve fuel                         # steps/steps.py:26
+    Then the reserve fuel should be 60.00 kg                        # steps/steps.py:33
+      ASSERT FAILED: Expected 60.0 kg, got 40.0 kg
+
+
+  Scenario: Turbojet at lower burn rate still uses 30 minutes      # specs/calculate_final_reserve_fuel.feature:13
+    Given a "jet" engine with a fuel burn rate of 1800 kg per hour # steps/steps.py:20
+    When I calculate the final reserve fuel                        # steps/steps.py:26
+    Then the reserve fuel should be 900.00 kg                      # steps/steps.py:33
+      ASSERT FAILED: Expected 900.0 kg, got 1350.0 kg
+
+
+  Scenario: Piston at higher burn rate still uses 45 minutes         # specs/calculate_final_reserve_fuel.feature:18
+    Given a "piston" engine with a fuel burn rate of 120 kg per hour # steps/steps.py:20
+    When I calculate the final reserve fuel                          # steps/steps.py:26
+    Then the reserve fuel should be 90.00 kg                         # steps/steps.py:33
+      ASSERT FAILED: Expected 90.0 kg, got 60.0 kg
+
+
+
+Failing scenarios:
+  specs/calculate_final_reserve_fuel.feature:3  Turbojet aircraft requires 30 minutes of reserve fuel
+  specs/calculate_final_reserve_fuel.feature:8  Piston aircraft requires 45 minutes of reserve fuel
+  specs/calculate_final_reserve_fuel.feature:13  Turbojet at lower burn rate still uses 30 minutes
+  specs/calculate_final_reserve_fuel.feature:18  Piston at higher burn rate still uses 45 minutes
+
+0 features passed, 1 failed, 0 skipped
+0 scenarios passed, 4 failed, 0 skipped
+8 steps passed, 4 failed, 0 skipped
+Took 0min 0.001s
