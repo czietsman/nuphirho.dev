@@ -153,6 +153,13 @@ correlated miss problem, but both point to the same structural weakness:
 without a deterministic ground truth, the review is unreliable in both
 directions.
 
+Wang et al. (arXiv:2512.17540, 2025) proposed a specification-grounded
+code review framework deployed in a live industrial environment and found
+that grounding review in human-authored specifications improved developer
+adoption of review suggestions by 90.9% relative to a baseline LLM
+reviewer. Note: the 90.9% figure refers to adoption rate, not defect
+detection rate.
+
 None of these papers tested the exact configuration the hypothesis
 describes: a pure generator-then-reviewer pipeline without any external
 grounding, measuring shared failure modes directly. The contrived
@@ -753,9 +760,6 @@ A Human-Centred Quasi-Experiment on the Quality of LLM-Generated
 Behavioural Specifications from Food-Safety Regulations."
 arXiv:2508.20744v2 (updated March 2026).
 
-Gould, S.J. and Vrba, E.S. (1982). "Exaptation: a missing term in the
-science of form." Paleobiology 8(1).
-
 Hansen, L.K. and Salamon, P. (1990). "Neural Network Ensembles." IEEE
 Transactions on Pattern Analysis and Machine Intelligence, 12(10),
 993-1001. doi:10.1109/34.58871
@@ -786,8 +790,6 @@ Snowden, D. (2022). "Constraints." cynefin.io/wiki/Constraints.
 The Cynefin Company. Confirms: Complicated domain: governing
 constraints. Complex domain: enabling constraints.
 
-The Cynefin Company. "Exaptation." cynefin.io/wiki/Exaptation.
-
 Vallecillos-Ruiz, F., Hort, M., and Moonen, L. (2025). "Wisdom and
 Delusion of LLM Ensembles for Code Generation and Repair."
 arXiv:2510.21513, October 2025.
@@ -797,10 +799,6 @@ Wang, K., Mao, B., Jia, S., Ding, Y., Han, D., Ma, T., and Cao, B.
 Code Review." arXiv:2512.17540, December 2025, v2 January 2026.
 Note: the 90.9% figure refers to developer adoption rate, not defect
 detection rate.
-
-Dong, Y., Jiang, X., Qian, J., Wang, T., Zhang, K., Jin, Z., and Li, G.
-(2025). "A Survey on Code Generation with LLM-based Agents."
-arXiv:2508.00083, July 2025, v2 September 2025.
 
 Zadenoori, M.A., Dabrowski, J., Alhoshan, W., Zhao, L., and Ferrari, A.
 (2025). "Large Language Models (LLMs) for Requirements Engineering (RE):
@@ -813,9 +811,6 @@ arXiv:2508.12358, August 2025. Presented at ASE 2025.
 Jin, H. and Chen, H. (2026). "Are LLMs Reliable Code Reviewers? Systematic
 Overcorrection in Requirement Conformance Judgement."
 arXiv:2603.00539, March 2026.
-
-KoCo-Bench (2026). "KoCo-Bench: Can Large Language Models Leverage Domain
-Knowledge in Software Development?" arXiv:2601.13240, January 2026.
 
 Ma, Z., Zhang, T., Cao, M., Liu, J., Zhang, W., Luo, M., Zhang, S., and Chen, K.
 (2025). "Rethinking Verification for LLM Code Generation: From Generation to
