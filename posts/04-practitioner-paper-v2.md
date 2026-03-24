@@ -239,8 +239,7 @@ industry architecture typically provides neither.
 Three small contrived experiments were conducted to test the hypothesis
 directly. All are reported here with their limitations stated up front.
 The full corpus, specifications, scripts, and results are publicly
-available at [github.com/czietsman/nuphirho.dev/experiments](https://github.com/czietsman/nuphirho.dev/tree/main/experiments)
-(v1, v2, and v3 subdirectories).
+available at [github.com/czietsman/nuphirho.dev/experiments](https://github.com/czietsman/nuphirho.dev/tree/main/experiments).
 
 The experimental design was proposed by Claude (Anthropic) during a
 research session developing this paper, and implemented by a Claude Code
