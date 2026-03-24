@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "description": "Codes with invalid trailing characters are accepted as valid because only the first three characters are checked. For example, \"A12$\" passes validation even though it is not well-formed.",
+      "line": "if not code[1:3].isdigit():"
+    },
+    {
+      "description": "The function claims to validate that the diagnosis code sequence is valid for submission, but it never checks any sequence-level rules beyond individual code formatting.",
+      "line": "for i, code in enumerate(codes):"
+    }
+  ],
+  "verdict": "buggy"
+}

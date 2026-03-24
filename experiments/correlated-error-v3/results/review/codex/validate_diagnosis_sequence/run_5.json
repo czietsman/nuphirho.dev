@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "The function only validates the first three characters of each code. Any extra trailing characters are accepted without checks, so malformed codes such as \"A12!\" would be marked valid.",
+      "line": "if not code[1:3].isdigit():"
+    }
+  ],
+  "verdict": "buggy"
+}

@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "description": "The function does not implement gas day logic at all. It returns the calendar date, but a gas day is not generally the same as the local calendar day and depends on a market-specific rollover hour.",
+      "line": "return timestamp.date()"
+    },
+    {
+      "description": "The result can be wrong for timezone-aware inputs because the function never normalises the timestamp to the relevant market timezone before assigning the gas day.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "The function applies a single tier rate to all consumed kWh once it finds the matching upper limit, instead of charging progressively across tiers. For tiered pricing, usage in lower tiers should be charged at their own rates and only the remaining usage at the higher tier rate.",
+      "line": "return round(kwh * rate, 2)"
+    }
+  ],
+  "verdict": "buggy"
+}
