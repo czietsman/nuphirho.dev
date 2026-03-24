@@ -61,7 +61,7 @@ def convert_inline(text):
     code_spans = []
     def save_code(m):
         code_spans.append(m.group(1))
-        return f"%%CODE{len(code_spans)-1}%%"
+        return f"CODESPAN{len(code_spans)-1}ENDSPAN"
     text = re.sub(r'`([^`]+)`', save_code, text)
 
     # Escape LaTeX special chars
@@ -74,7 +74,7 @@ def convert_inline(text):
     # Restore code spans
     for i, code in enumerate(code_spans):
         escaped_code = code.replace('_', r'\_').replace('%', r'\%').replace('#', r'\#').replace('&', r'\&')
-        text = text.replace(f"%%CODE{i}%%", f"\\texttt{{{escaped_code}}}")
+        text = text.replace(f"CODESPAN{i}ENDSPAN", f"\\texttt{{{escaped_code}}}")
 
     # Markdown links to footnotes with URL
     text = re.sub(

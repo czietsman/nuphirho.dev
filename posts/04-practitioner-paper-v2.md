@@ -252,10 +252,11 @@ planted bug per function. Two conditions ran against each function.
 Condition A: Claude CLI reviewed the buggy implementation using a neutral
 prompt with no specification context, run five times per function.
 Condition B: pre-written BDD scenarios targeting the exact defect ran via
-behave. Both experiments used Claude as the reviewer (same family as the
-code author). This is the strongest form of the correlated error claim and
-the most important limitation: the results do not generalise to cross-family
-pipelines or to human code review.
+behave. Experiments 1 and 2 used Claude as the sole reviewer (same family
+as the code author). Experiment 3 extended to a cross-family panel of four
+models from three families. The same-family condition is the strongest form
+of the correlated error claim; the cross-family condition tests whether
+diversity alone is sufficient.
 
 **Experiment 1: Classic boundary conditions.** The first corpus used
 textbook boundary-condition bugs: off-by-one in pagination, loop
