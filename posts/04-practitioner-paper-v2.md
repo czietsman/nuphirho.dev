@@ -674,8 +674,7 @@ corpus, the BDD scenarios are optimally targeted, and the cross-family
 panel includes two Anthropic-family models. A controlled study using a
 natural defect sample, fully independent model families, and a
 specification-grounded condition alongside an ungrounded condition would
-strengthen or revise the claim precisely. The experiments are available
-at [github.com/czietsman/nuphirho.dev/experiments](https://github.com/czietsman/nuphirho.dev/tree/main/experiments)
+strengthen or revise the claim precisely. The experiments are available in the repository cited in Section 2.5
 for replication and extension.
 
 The Cynefin mapping is unvalidated by the Cynefin community. The
