@@ -11,11 +11,9 @@ series: "The Specification as Quality Gate"
 *A PDF version of this paper is available for download and citation at [arXiv link to be added after submission].*
 
 *This paper develops three interconnected hypotheses about the role of
-executable specifications in AI-assisted software development. It is
-addressed to engineering leaders and senior practitioners working at the
-intersection of AI tooling and software process. Citations are provided
-for verification; readers are encouraged to consult the original sources
-rather than relying on the summaries here.*
+executable specifications in AI-assisted software development. Citations
+are provided for verification; readers are encouraged to consult the
+original sources rather than relying on the summaries here.*
 
 ---
 
@@ -239,7 +237,7 @@ industry architecture typically provides neither.
 Three small contrived experiments were conducted to test the hypothesis
 directly. All are reported here with their limitations stated up front.
 The full corpus, specifications, scripts, and results are publicly
-available at [github.com/czietsman/nuphirho.dev/experiments](https://github.com/czietsman/nuphirho.dev/tree/main/experiments).
+available at https://github.com/czietsman/nuphirho.dev/tree/main/experiments.
 
 The experimental design was proposed by Claude (Anthropic) during a
 research session developing this paper, and implemented by a Claude Code
@@ -524,9 +522,9 @@ theoretical boundary of what specification-driven verification can achieve.
 
 ### 4.2 The Proposed Taxonomy
 
-To the best of our knowledge, no existing taxonomy we are aware of in the testing or
-formal methods literature organises defects by specifiability rather than
-by severity or recovery type. The following five-category taxonomy is
+To the best of our knowledge, no prior taxonomy in the testing or formal methods literature
+organises defects by specifiability rather than by severity or recovery
+type. The following five-category taxonomy is
 proposed as a working framework.
 
 **Category A: Theoretically specifiable, not yet specified.** These are
@@ -695,14 +693,6 @@ which would reduce the permanent residual for AI review.
 
 These are open questions, not fatal weaknesses. The directional evidence is consistent with the hypothesis. Stating the gaps is not a concession. It is
 what makes the argument trustworthy.
-
-The authors of every paper cited here are welcome to respond, challenge,
-or build on this argument. If the correlated error hypothesis is weaker
-than the evidence suggests, if the Cynefin framing misrepresents how
-domain transitions work, or if the residual defect taxonomy is
-incomplete or miscategorised, this is the right venue to say so.
-Open discourse is how arguments improve. Corrections and counterarguments
-will be published with attribution.
 
 ---
 
