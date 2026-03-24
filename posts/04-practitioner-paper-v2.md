@@ -239,9 +239,8 @@ industry architecture typically provides neither.
 Three small contrived experiments were conducted to test the hypothesis
 directly. All are reported here with their limitations stated up front.
 The full corpus, specifications, scripts, and results are publicly
-available at github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v1,
-github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v2,
-and github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v3.
+available at [github.com/czietsman/nuphirho.dev/experiments](https://github.com/czietsman/nuphirho.dev/tree/main/experiments)
+(v1, v2, and v3 subdirectories).
 
 The experimental design was proposed by Claude (Anthropic) during a
 research session developing this paper, and implemented by a Claude Code
@@ -330,7 +329,7 @@ the reviewer panel. Amazon Q declined to participate in corpus generation
 on safety grounds and was used as a reviewer only.
 
 The full corpus, specifications, scripts, and results are publicly available
-at github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v3.
+at [github.com/czietsman/nuphirho.dev/experiments/correlated-error-v3](https://github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v3).
 
 Result with manual review of all 100 runs:
 
@@ -680,8 +679,8 @@ panel includes two Anthropic-family models. A controlled study using a
 natural defect sample, fully independent model families, and a
 specification-grounded condition alongside an ungrounded condition would
 strengthen or revise the claim precisely. The experiments are available
-at github.com/czietsman/nuphirho.dev/tree/main/experiments for replication
-and extension.
+at [github.com/czietsman/nuphirho.dev/experiments](https://github.com/czietsman/nuphirho.dev/tree/main/experiments)
+for replication and extension.
 
 The Cynefin mapping is unvalidated by the Cynefin community. The
 constraint transformation framing is consistent with Snowden's own
