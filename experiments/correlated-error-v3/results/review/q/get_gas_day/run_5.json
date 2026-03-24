@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "Gas day calculation ignores the standard 09:00 CT start time; timestamps before 09:00 should belong to the previous day's gas day",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

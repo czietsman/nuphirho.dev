@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "Applies flat rate from matching tier instead of progressively calculating cost across all tiers",
+      "line": "return round(kwh * rate, 2)"
+    }
+  ],
+  "verdict": "buggy"
+}

@@ -81,3 +81,7 @@ Either result is worth publishing.
 5. Five functions is a small corpus. Results are directional, not statistically significant.
 6. Amazon Q was excluded from corpus generation on safety grounds and used as a
    reviewer only. This is noted as a finding in the experiment write-up.
+7. Amazon Q requires periodic re-authentication during batch runs. The session expired
+   during the electricity_cost review condition and required manual re-login before
+   the run could complete. Experiments using Q in unattended batch mode should
+   implement session refresh or reduce the interval between runs.

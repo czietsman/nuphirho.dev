@@ -1,0 +1,15 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "Calculates cost using a single flat rate for the entire consumption instead of applying progressive marginal rates per tier.",
+      "line": "return round(kwh * rate, 2)"
+    },
+    {
+      "description": "Raises an IndexError if the tiers list is empty.",
+      "line": "return round(kwh * tiers[-1][1], 2)"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

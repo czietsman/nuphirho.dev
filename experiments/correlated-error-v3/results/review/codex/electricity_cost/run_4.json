@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "description": "The function applies a single tier rate to the entire consumption once it finds the first matching tier, instead of charging progressively across all lower tiers first. This produces incorrect totals for tiered pricing.",
+      "line": "return round(kwh * rate, 2)"
+    },
+    {
+      "description": "If consumption exceeds all listed limits, the function charges the final tier's rate for the entire consumption rather than only for the usage above the previous tier boundaries.",
+      "line": "return round(kwh * tiers[-1][1], 2)"
+    }
+  ],
+  "verdict": "buggy"
+}

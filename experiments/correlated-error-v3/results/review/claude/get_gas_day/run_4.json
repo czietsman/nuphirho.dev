@@ -1,0 +1,12 @@
+
+
+
+{
+  "bugs": [
+    {
+      "description": "Gas day boundary is not applied. In natural gas markets, a gas day typically runs from 06:00 (or 05:00) to 06:00 (or 05:00) the next day, meaning timestamps before the cutoff hour belong to the previous calendar day's gas day. The function simply returns the calendar date, ignoring the gas-day cutoff entirely.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

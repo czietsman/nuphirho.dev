@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "Applies flat rate to total consumption instead of progressively calculating cost across tiers",
+      "line": "return round(kwh * rate, 2)"
+    }
+  ],
+  "verdict": "buggy"
+}

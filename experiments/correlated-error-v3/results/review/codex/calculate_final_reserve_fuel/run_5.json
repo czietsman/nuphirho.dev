@@ -1,0 +1,1 @@
+{"bugs":[{"description":"The function accepts negative fuel burn rates and returns a negative reserve fuel value, which is nonsensical for a fuel requirement calculation. It should reject invalid non-positive inputs.","line":"reserve_fuel = fuel_burn_rate * reserve_hours"}],"verdict":"buggy"}

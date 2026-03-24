@@ -1,0 +1,11 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "The check digit calculation uses the wrong weighting factors. The first six digits of an IMO number should be multiplied by 7, 6, 5, 4, 3, and 2 respectively (from left to right). The current implementation multiplies them by 2, 3, 4, 5, 6, and 7.",
+      "line": "factor = i + 2"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

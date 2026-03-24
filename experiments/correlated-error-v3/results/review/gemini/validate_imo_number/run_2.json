@@ -1,0 +1,13 @@
+I have reviewed the `validate_imo_number` function. The primary issue is that the multiplication factors for the check digit calculation are applied in the reverse order. According to the IMO ship identification number standard, the factors for the first six digits should be $7, 6, 5, 4, 3, 2$ respectively. The current implementation uses $2, 3, 4, 5, 6, 7$.
+
+```json
+{
+  "bugs": [
+    {
+      "description": "The multiplication factors for the first six digits are applied in reverse order. The first digit should be multiplied by 7, the second by 6, and so on down to the sixth digit which is multiplied by 2.",
+      "line": "factor = i + 2"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

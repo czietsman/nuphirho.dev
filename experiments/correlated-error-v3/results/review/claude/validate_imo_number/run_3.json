@@ -1,0 +1,12 @@
+
+
+
+{
+  "bugs": [
+    {
+      "description": "The weighting factors are reversed. IMO check digit is computed by multiplying the first digit by 7, second by 6, ..., sixth by 2 (i.e., factor = 7 - i). The code uses factor = i + 2, which multiplies the first digit by 2 and the sixth by 7.",
+      "line": "factor = i + 2"
+    }
+  ],
+  "verdict": "buggy"
+}

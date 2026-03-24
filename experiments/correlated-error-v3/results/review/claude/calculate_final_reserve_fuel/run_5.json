@@ -1,0 +1,10 @@
+
+
+
+{
+  "bugs": [],
+  "verdict": "correct"
+}
+
+
+The function correctly implements ICAO final reserve fuel rules: 45 minutes for jet engines, 30 minutes for piston engines, converted to hours and multiplied by the burn rate.
