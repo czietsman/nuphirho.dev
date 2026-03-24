@@ -328,9 +328,6 @@ context. The corpus was designed collaboratively across six models not in
 the reviewer panel. Amazon Q declined to participate in corpus generation
 on safety grounds and was used as a reviewer only.
 
-The full corpus, specifications, scripts, and results are publicly available
-at [github.com/czietsman/nuphirho.dev/experiments/correlated-error-v3](https://github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v3).
-
 Result with manual review of all 100 runs:
 
 | Function | Domain | BDD | Claude | Codex | Gemini | Q |
