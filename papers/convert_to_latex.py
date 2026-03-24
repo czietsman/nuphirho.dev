@@ -238,9 +238,17 @@ preamble_tex = convert_inline(preamble_text) if preamble_text else ""
 document = rf"""\documentclass{{article}}
 
 \usepackage{{arxiv}}
+\renewcommand{{\headeright}}{{Technical Report}}
+\renewcommand{{\undertitle}}{{}}
 \usepackage[utf8]{{inputenc}}
 \usepackage[T1]{{fontenc}}
 \usepackage{{hyperref}}
+\hypersetup{{
+  pdftitle={{The Specification as Quality Gate: Three Hypotheses on AI-Assisted Code Review}},
+  pdfauthor={{Christo Zietsman}},
+  pdfsubject={{Software Engineering, AI Code Review, Specification-Driven Development}},
+  pdfkeywords={{specifications, BDD, AI code review, correlated errors, Cynefin, software engineering}}
+}}
 \usepackage{{url}}
 \usepackage{{booktabs}}
 \usepackage{{listings}}
