@@ -706,6 +706,40 @@ will be published with attribution.
 
 ---
 
+## 6. Conclusion
+
+The argument developed here is structural, not empirical. Executable
+specifications break the circularity in AI-assisted pipelines not because
+they catch more bugs than AI review, but because they introduce a
+reference that is independent of the model's training distribution. That
+independence is what makes verification non-circular. Without it, review
+checks code against itself.
+
+Three experiments across four model families and three training
+distributions provide directional evidence. Classic boundary conditions
+are reliably caught by all models. Domain-convention violations produce a
+gradient from 0% to 100% detection depending on how well the convention
+is represented in training data. The ICD-10-CM external cause code rule
+was missed by every model tested, while BDD caught it deterministically.
+The ICAO fuel reserve case showed something worse than a miss: models
+confidently asserting the wrong convention as correct. These results are
+small in scale and use planted bugs, but the pattern is consistent with
+the theoretical prediction and with the independent empirical findings
+cited in Section 2.
+
+The practical implication is an architecture, not a prohibition.
+Specifications first, for the domain logic that must be right.
+Deterministic pipeline second, as the reviewer for behavioural
+correctness. AI review third, scoped to the structural and architectural
+residual where it adds genuine non-circular signal. This is not a claim
+that AI review is valueless. It is a claim about where it belongs in the
+pipeline and what it needs underneath it to be trustworthy.
+
+The experiments, corpus, and specifications are publicly available for
+replication and extension. The argument improves by being tested.
+
+---
+
 ## References
 
 Barr, E.T., Harman, M., McMinn, P., Shahbaz, M., and Yoo, S. (2015).
