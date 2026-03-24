@@ -493,7 +493,7 @@ specification narrows the problem space by articulating requirements
 precisely enough to be analysed. The domain transition occurs in the
 problem space, not in the implementation.
 
-No published work in the Cynefin community addresses the specific claim
+As of March 2026, no published work in the Cynefin community addresses the specific claim
 that executable specifications serve as a constraint transformation
 mechanism in this sense. Dave Snowden is actively working on the
 relationship between AI and Cynefin domains as of early 2026, but has
@@ -511,7 +511,7 @@ to this argument.
 ### 4.1 Theoretical Grounding: The Oracle Problem
 
 The oracle problem in software testing asks how a test outcome is
-determined to be correct. For a test to be meaningful, you need an oracle
+determined to be correct. For a test to be meaningful, you need an oracle,
 a ground truth against which to judge the system's output.
 
 Barr et al. (2015), in the canonical survey of the oracle problem,
@@ -524,7 +524,7 @@ theoretical boundary of what specification-driven verification can achieve.
 
 ### 4.2 The Proposed Taxonomy
 
-To the best of our knowledge, no existing taxonomy in the testing or
+To the best of our knowledge, no existing taxonomy we are aware of in the testing or
 formal methods literature organises defects by specifiability rather than
 by severity or recovery type. The following five-category taxonomy is
 proposed as a working framework.
@@ -693,8 +693,7 @@ the most contested: if architectural properties become specifiable as
 tooling matures, parts of Category D would reclassify into Category A,
 which would reduce the permanent residual for AI review.
 
-These are open questions, not fatal weaknesses. The argument holds at the
-current level of evidence. Stating the gaps is not a concession. It is
+These are open questions, not fatal weaknesses. The directional evidence is consistent with the hypothesis. Stating the gaps is not a concession. It is
 what makes the argument trustworthy.
 
 The authors of every paper cited here are welcome to respond, challenge,
