@@ -3,12 +3,10 @@
 ## The Specification as Quality Gate
 
 Source: ../posts/04-practitioner-paper-v2.md (markdown, single source of truth)
+Style: arxiv.sty (modified from upstream, tracked)
 Output: specification-as-quality-gate.pdf (not tracked, build locally)
 
 ### Build
-
-    # Download arxiv style (one-time)
-    curl -L https://raw.githubusercontent.com/kourgeorge/arxiv-style/master/arxiv.sty -o arxiv.sty
 
     # Convert markdown to LaTeX
     python convert_to_latex.py
@@ -21,9 +19,16 @@ Output: specification-as-quality-gate.pdf (not tracked, build locally)
       sh -c 'pdflatex -interaction=nonstopmode specification-as-quality-gate.tex && pdflatex -interaction=nonstopmode specification-as-quality-gate.tex'
     rm -f specification-as-quality-gate.{aux,log,out,toc}
 
+### Notes
+
 The markdown file is published as a blog post on Hashnode with frontmatter
 and series navigation links. The conversion script strips these before
 rendering to LaTeX.
+
+arxiv.sty is a modified copy of the upstream arxiv-style template with
+small-caps removed from the title and abstract heading. It is tracked
+because the modifications are local. The generated .tex file is not
+tracked (gitignored).
 
 When submitting to arXiv, build the PDF from this directory. After arXiv
 assigns a DOI, update the arXiv link in the blog post frontmatter and commit.
