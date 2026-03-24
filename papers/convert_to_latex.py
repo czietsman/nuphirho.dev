@@ -57,12 +57,27 @@ def escape_latex(text):
 
 def convert_inline(text):
     """Convert inline markdown formatting to LaTeX."""
-    # Code spans first (before escaping)
+    # Save code spans before escaping
     code_spans = []
     def save_code(m):
         code_spans.append(m.group(1))
         return f"CODESPAN{len(code_spans)-1}ENDSPAN"
     text = re.sub(r'`([^`]+)`', save_code, text)
+
+    # Convert markdown links to footnotes (before escaping mangles URLs)
+    saved_latex = []
+    def save_link(m):
+        saved_latex.append(f'{m.group(1)}\\footnote{{\\url{{{m.group(2)}}}}}')
+        return f"SAVEDLATEX{len(saved_latex)-1}ENDSAVED"
+    text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', save_link, text)
+
+    # Convert bare URLs to \url{} (before escaping mangles them)
+    def save_bare_url_stripped(m):
+        url = m.group(1).rstrip('.,;:)')
+        saved_latex.append(f'\\url{{{url}}}')
+        trailing = m.group(1)[len(url):]
+        return f"SAVEDLATEX{len(saved_latex)-1}ENDSAVED{trailing}"
+    text = re.sub(r'(https?://\S+)', save_bare_url_stripped, text)
 
     # Escape LaTeX special chars
     text = escape_latex(text)
@@ -76,12 +91,9 @@ def convert_inline(text):
         escaped_code = code.replace('_', r'\_').replace('%', r'\%').replace('#', r'\#').replace('&', r'\&')
         text = text.replace(f"CODESPAN{i}ENDSPAN", f"\\texttt{{{escaped_code}}}")
 
-    # Markdown links to footnotes with URL
-    text = re.sub(
-        r'\[([^\]]+)\]\(([^)]+)\)',
-        lambda m: f'{m.group(1)}\\footnote{{\\url{{{m.group(2)}}}}}',
-        text
-    )
+    # Restore saved LaTeX (links and URLs)
+    for i, latex in enumerate(saved_latex):
+        text = text.replace(f"SAVEDLATEX{i}ENDSAVED", latex)
 
     return text
 
@@ -235,10 +247,11 @@ bib_tex = '\n\n'.join(bib_items)
 # --- Assemble full document ---
 preamble_tex = convert_inline(preamble_text) if preamble_text else ""
 
-document = rf"""\documentclass{{article}}
+document = rf"""\pdfoutput=1
+\documentclass{{article}}
 
 \usepackage{{arxiv}}
-\renewcommand{{\headeright}}{{Technical Report}}
+\renewcommand{{\headeright}}{{}}
 \renewcommand{{\undertitle}}{{}}
 \usepackage[utf8]{{inputenc}}
 \usepackage[T1]{{fontenc}}
