@@ -268,7 +268,7 @@ document = rf"""\documentclass{{article}}
 \end{{document}}
 """
 
-with open("specification-as-quality-gate.tex", "w") as f:
+with open("specification-as-quality-gate.tex", "w", newline='\n') as f:
     f.write(document)
 
 print("Written: specification-as-quality-gate.tex")
