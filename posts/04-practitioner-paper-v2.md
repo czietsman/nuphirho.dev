@@ -31,11 +31,12 @@ against intent.
 
 Three hypotheses are developed. First, that correlated errors in
 homogeneous LLM pipelines echo rather than cancel, a claim supported by
-convergent empirical evidence from multiple 2025-2026 studies and by two
-small contrived experiments reported here. Those experiments are
-same-family only (Claude reviewing Claude-generated code) and use a
-planted bug corpus rather than a natural defect sample; they are
-directional evidence, not a controlled demonstration.
+convergent empirical evidence from multiple 2025-2026 studies and by three
+small contrived experiments reported here. The first two experiments are
+same-family (Claude reviewing Claude-generated code); the third extends to
+a cross-family panel of four models from three families. All use a planted
+bug corpus rather than a natural defect sample; they are directional
+evidence, not a controlled demonstration.
 Second, that executable specifications perform a domain transition in the
 Cynefin sense, converting enabling constraints into governing constraints
 and moving the problem from the complex domain to the complicated domain,
@@ -235,11 +236,12 @@ industry architecture typically provides neither.
 
 ### 2.5 Experimental Evidence
 
-Two small contrived experiments were conducted to test the hypothesis
-directly. Both are reported here with their limitations stated up front.
+Three small contrived experiments were conducted to test the hypothesis
+directly. All are reported here with their limitations stated up front.
 The full corpus, specifications, scripts, and results are publicly
-available at github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v1
-and github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v2.
+available at github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v1,
+github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v2,
+and github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v3.
 
 The experimental design was proposed by Claude (Anthropic) during a
 research session developing this paper, and implemented by a Claude Code
@@ -318,17 +320,80 @@ The code is idiomatic, the logic is sound, and without the convention stated
 explicitly there is no signal. The reviewer filled in a plausible concern
 rather than the actual violation.
 
-**Limitations of both experiments.** These results are directional, not
-statistically significant. The corpus was designed to test the hypothesis
-rather than sampled from a natural defect distribution. The bugs were
-planted by someone who already knew where they were, giving the BDD
+**Experiment 3: Cross-family reviewer panel.** A third experiment extended
+the test to four models from three families: Claude Sonnet 4.6 (Anthropic),
+Codex 0.116.0/gpt-5.4 (OpenAI), Gemini 0.34.0 (Google), and Amazon Q
+1.18.1/claude-sonnet-4.5 (AWS/Anthropic). Five domain-opaque bugs were
+reviewed by each model, five runs per function, with no specification
+context. The corpus was designed collaboratively across six models not in
+the reviewer panel. Amazon Q declined to participate in corpus generation
+on safety grounds and was used as a reviewer only.
+
+The full corpus, specifications, scripts, and results are publicly available
+at github.com/czietsman/nuphirho.dev/tree/main/experiments/correlated-error-v3.
+
+Result with manual review of all 100 runs:
+
+| Function | Domain | BDD | Claude | Codex | Gemini | Q |
+|---|---|---|---|---|---|---|
+| calculate_final_reserve_fuel | Aviation (ICAO) | caught | 0/5 | 0/5 | 5/5 | 0/5 |
+| get_gas_day | Energy (NAESB) | caught | 5/5 | 5/5 | 5/5 | 2/5 |
+| validate_diagnosis_sequence | Healthcare (ICD-10-CM) | caught | 0/5 | 0/5 | 0/5 | 0/5 |
+| validate_imo_number | Maritime (IMO) | caught | 5/5 | 5/5 | 5/5 | 0/5 |
+| electricity_cost | Utility billing | caught | 5/5 | 5/5 | 5/5 | 5/5 |
+
+BDD caught all five. AI review ranged from 0% to 100% depending on domain
+opacity and model family, confirming the gradient observed in Experiment 2
+and extending it across training distributions.
+
+The ICAO fuel reserve function produced the most striking result. The bug
+swaps the reserve durations for jet and piston aircraft (45 minutes instead
+of 30 for jet, 30 instead of 45 for piston). This is the
+`intuition_misleads` case: the swapped values are plausible on naive
+reasoning because larger aircraft might seem to need more reserve. Claude
+did not merely miss the bug. In all five runs, it confidently asserted the
+swapped values as the correct ICAO rules and declared the implementation
+correct. The model filled in the wrong convention and defended it. Gemini
+caught the swap in all five runs, indicating this convention is represented
+in its training data but absent from Claude's and Codex's.
+
+The ICD-10-CM external cause code rule (V00-Y99 codes cannot be the
+principal diagnosis) was missed by all four models at 0/5. This convention
+was absent from every training distribution tested. No model even
+approximated the rule. This is the strongest confirmation of the hypothesis
+across the three experiments: a domain convention that exists only in
+published coding guidelines and is not inferable from the code.
+
+Amazon Q (claude-sonnet-4.5, AWS fine-tuned from an Anthropic base model)
+showed consistently lower detection rates than Claude Sonnet 4.6 despite
+sharing the same model family. Claude caught the IMO check digit weight
+ordering at 5/5; Q missed it at 0/5. Claude caught the gas day boundary at
+5/5; Q caught it at 2/5. This suggests that AWS fine-tuning for the
+developer assistant use case may have narrowed general domain knowledge
+coverage relative to the base model. Two of the four reviewer models are
+Anthropic family, so this experiment is only partially cross-family.
+
+During the first Gemini run, it was discovered that the Gemini CLI in
+interactive mode accessed the experiment's specification files from the
+local filesystem before answering. Gemini was re-run in sandboxed
+non-interactive mode to prevent filesystem access. The original corpus also
+contained an unused `timedelta` import in the gas day function that acted
+as a code-level hint; Q's detection rate dropped from 5/5 to 2/5 after
+the import was removed, demonstrating the sensitivity of detection to
+incidental code signals.
+
+**Limitations of all three experiments.** These results are directional,
+not statistically significant. The corpus was designed to test the
+hypothesis rather than sampled from a natural defect distribution. The bugs
+were planted by someone who already knew where they were, giving the BDD
 scenarios an unfair advantage: they are optimally targeted at the planted
-defects in a way that production specifications would not be. Both
-experiments use Claude as both the code author and reviewer (same family),
-which is the strongest form of the correlated error claim but not a general
-result about all AI pipelines. A cross-family test (Gemini reviewing
-Claude-generated code, for example) would provide additional signal on
-whether the failure mode is family-specific or general.
+defects in a way that production specifications would not be. Experiments 1
+and 2 use Claude as both the code author and reviewer (same family), which
+is the strongest form of the correlated error claim but not a general
+result about all AI pipelines. Experiment 3 extends to a cross-family
+panel, but two of four models share the Anthropic base, making it only
+partially cross-family. Amazon Q required periodic re-authentication during
+batch runs, introducing an operational constraint on unattended execution.
 
 The truly untestable version of the hypothesis cannot be demonstrated in a
 public experiment: a bug that is only wrong relative to an internal policy
@@ -600,19 +665,23 @@ and design thinking. Not part of the engineering pipeline at all.
 
 Three open questions are stated honestly here.
 
-The controlled demonstration remains incomplete. Two contrived experiments
-provided directional evidence: classic boundary conditions were detected at
-100% by AI review (refining the hypothesis toward domain-opaque defects),
-and domain-convention violations showed a gradient from 0% to 100%
-depending on how well the convention is represented in training data. The
-0% result on log-linear interpolation without a specification is consistent
-with the hypothesis. But both experiments are same-family (Claude reviewing
-Claude-generated code), use a planted bug corpus, and are small in scale.
-A controlled study using a natural defect sample, cross-family pipelines,
-and a specification-grounded condition alongside an ungrounded condition
-would strengthen or revise the claim precisely. The experiments are
-available at github.com/czietsman/nuphirho.dev/tree/main/experiments
-for replication and extension.
+The controlled demonstration has strengthened but remains incomplete. Three
+contrived experiments provided directional evidence: classic boundary
+conditions were detected at 100% by AI review (refining the hypothesis
+toward domain-opaque defects), domain-convention violations showed a
+gradient from 0% to 100% depending on how well the convention is
+represented in training data, and a cross-family reviewer panel confirmed
+the gradient extends across model families with detection varying by both
+domain opacity and training distribution. The 0/20 result on ICD-10-CM
+coding guidelines (four models, five runs each, zero detections) is the
+strongest single finding. But all three experiments use a planted bug
+corpus, the BDD scenarios are optimally targeted, and the cross-family
+panel includes two Anthropic-family models. A controlled study using a
+natural defect sample, fully independent model families, and a
+specification-grounded condition alongside an ungrounded condition would
+strengthen or revise the claim precisely. The experiments are available
+at github.com/czietsman/nuphirho.dev/tree/main/experiments for replication
+and extension.
 
 The Cynefin mapping is unvalidated by the Cynefin community. The
 constraint transformation framing is consistent with Snowden's own
