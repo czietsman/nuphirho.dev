@@ -34,6 +34,9 @@ if preamble_match:
 # Strip leading --- separator after preamble
 raw = re.sub(r'^\n*---\n+', '\n', raw, count=1)
 
+# Strip manual section numbering (e.g. "## 1. Introduction" → "## Introduction")
+raw = re.sub(r'^(#{2,3})\s+\d+(?:\.\d+)*\.?\s+', r'\1 ', raw, flags=re.MULTILINE)
+
 # Extract references section
 refs_match = re.search(r'^## References\n+(.*)', raw, flags=re.DOTALL | re.MULTILINE)
 refs_text = ""
@@ -73,8 +76,12 @@ def convert_inline(text):
         escaped_code = code.replace('_', r'\_').replace('%', r'\%').replace('#', r'\#').replace('&', r'\&')
         text = text.replace(f"%%CODE{i}%%", f"\\texttt{{{escaped_code}}}")
 
-    # URLs (simple conversion)
-    text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'\1', text)
+    # Markdown links to footnotes with URL
+    text = re.sub(
+        r'\[([^\]]+)\]\(([^)]+)\)',
+        lambda m: f'{m.group(1)}\\footnote{{\\url{{{m.group(2)}}}}}',
+        text
+    )
 
     return text
 
