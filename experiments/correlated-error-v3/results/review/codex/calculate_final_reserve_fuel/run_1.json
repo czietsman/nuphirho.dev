@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "The function accepts negative fuel burn rates, which produces a negative reserve fuel value instead of rejecting invalid input.",
+      "line": "reserve_fuel = fuel_burn_rate * reserve_hours"
+    }
+  ],
+  "verdict": "buggy"
+}

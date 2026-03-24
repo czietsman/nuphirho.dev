@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "description": "The IMO check digit algorithm uses the wrong weights. The first six digits must be multiplied by 7, 6, 5, 4, 3, 2 from left to right, but this code uses 2, 3, 4, 5, 6, 7, which will reject valid IMO numbers and accept invalid ones.",
+      "line": "factor = i + 2"
+    },
+    {
+      "description": "The code removes every occurrence of \"IMO\" anywhere in the input instead of only accepting it as an optional prefix. Inputs like \"12IMO34567\" would be treated as validly formatted.",
+      "line": "number = imo_number.replace(\"IMO\", \"\").strip()"
+    }
+  ],
+  "verdict": "buggy"
+}

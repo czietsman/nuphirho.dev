@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "description": "The function returns the calendar date directly, but a gas day does not generally align with midnight-to-midnight calendar days, so timestamps before the gas-day cutoff will be assigned to the wrong gas day.",
+      "line": "return timestamp.date()"
+    },
+    {
+      "description": "The function does not account for timezone-aware versus naive datetimes, which can produce incorrect gas day labels when the timestamp is not already in the market's reference timezone.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

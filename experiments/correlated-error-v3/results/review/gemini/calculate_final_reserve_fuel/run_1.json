@@ -1,0 +1,15 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "The reserve fuel time requirements are swapped: international aviation standards (ICAO Annex 6) typically require 45 minutes for piston-engine aircraft and 30 minutes for turbine (jet) aircraft, whereas the function assigns 45 to jets and 30 to pistons.",
+      "line": "if engine_type == \"jet\": reserve_minutes = 45 else: reserve_minutes = 30"
+    },
+    {
+      "description": "Rounding to two decimal places using round() can result in a value slightly lower than the calculated requirement (rounding down), which may violate safety regulations requiring a strict minimum fuel reserve.",
+      "line": "return round(reserve_fuel, 2)"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

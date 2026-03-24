@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "The function returns the calendar date directly, but a gas day is not generally identical to the calendar day. It usually starts at a specific hour in market/local time, so timestamps before that cutoff can belong to the previous gas day.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

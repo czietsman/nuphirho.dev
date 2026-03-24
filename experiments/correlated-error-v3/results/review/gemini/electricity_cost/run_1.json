@@ -1,0 +1,11 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "The function applies the matched tier's rate to the total consumption (flat rate) rather than calculating the progressive/marginal cost for the portion of electricity consumed within each tier.",
+      "line": "return round(kwh * rate, 2)"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

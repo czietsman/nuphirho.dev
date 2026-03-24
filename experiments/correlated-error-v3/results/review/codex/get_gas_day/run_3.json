@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "The function returns the calendar date of the timestamp, but a gas day does not generally align with midnight-to-midnight calendar days. It needs to apply the gas day boundary before choosing the date label.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

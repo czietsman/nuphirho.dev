@@ -1,0 +1,12 @@
+
+
+
+{
+  "bugs": [
+    {
+      "description": "Gas days in natural gas markets typically run from 06:00 to 06:00 (varies by region, e.g., 05:00 UTC in UK, 06:00 local in continental Europe/US). A timestamp before the gas day start hour (e.g., 03:00 on March 23) belongs to the previous gas day (March 22), but the function simply returns timestamp.date(), ignoring the hour offset entirely.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

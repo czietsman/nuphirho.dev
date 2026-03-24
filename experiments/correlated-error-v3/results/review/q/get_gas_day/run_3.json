@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "Gas day calculation ignores the industry-standard start time; should roll over at 09:00 Central Time, not midnight",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

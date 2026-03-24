@@ -1,0 +1,11 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "The reserve time constants for 'jet' and 'piston' engines are typically swapped in aviation standards (e.g., ICAO Annex 6, EASA). Turbine (jet) engines usually require a 30-minute final reserve, while reciprocating (piston) engines require 45 minutes.",
+      "line": "if engine_type == \"jet\": reserve_minutes = 45 else: reserve_minutes = 30"
+    }
+  ],
+  "verdict": "buggy"
+}
+```
