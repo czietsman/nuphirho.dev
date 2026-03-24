@@ -55,7 +55,7 @@ non-circular.
 ## 1. Introduction
 
 The AI code review market is growing rapidly, with tools like CodeRabbit,
-Cursor Bugbot, and GitHub Copilot for Pull Requests deployed across tens
+Cursor Bugbot, and GitHub Copilot deployed across tens
 of thousands of engineering teams. The value proposition is
 straightforward: AI generates code faster than humans can review it, so
 use AI to review it.
@@ -126,16 +126,16 @@ adversarial diversity. Single-agent self-review degenerated into
 repeating the original errors.
 
 A February 2026 paper (Pappu et al., arXiv:2602.01011) showed that even
-heterogeneous multi-agent teams consistently fail to match their best
+heterogeneous multi-agent teams consistently failed to match their best
 individual member, incurring performance losses of up to 37.6%, even when
-explicitly told which member is the expert. The failure mechanism is
+explicitly told which member was the expert. The failure mechanism is
 consensus-seeking over expertise. Homogeneous copies of the same model
 family make the failure mode worse.
 
 A 2025 paper on test case generation (arXiv:2507.06920) found that
-LLM-generated verifiers exhibit tightly clustered error patterns,
-indicating shared systematic biases, while human errors are widely
-distributed. LLM-based approaches produce test suites that mirror the
+LLM-generated verifiers exhibited tightly clustered error patterns,
+indicating shared systematic biases, while human errors were widely
+distributed. LLM-based approaches produced test suites that mirrored the
 generating model's error patterns, creating what the authors call a
 homogenisation trap where tests focus on LLM-like failures while
 neglecting diverse human programming errors. This is the correlated error
@@ -170,7 +170,7 @@ configuration, subject to the limitations stated there.
 
 The following example uses a deliberately simple case. Modern frontier
 models catch classic boundary conditions reliably, as the experiments in
-Section 2.5 confirm this. The purpose here is not to demonstrate an AI
+Section 2.5 confirm. The purpose here is not to demonstrate an AI
 review failure but to illustrate the sequence: how a BDD scenario makes
 a defect detectable before any reviewer, human or AI, is involved.
 
@@ -279,7 +279,7 @@ error claim applies to the complex domain, not to pattern-recognition bugs
 that any experienced reviewer would find.
 
 **Experiment 2: Domain-convention violations.** The second corpus used bugs
-that are only wrong relative to a domain convention not inferrable from
+that are only wrong relative to a domain convention not inferable from
 the code alone: insurance premium proration using a fixed 365-day divisor
 rather than actual/actual, flat-rate tax rather than marginal bracket
 calculation, aviation maintenance triggering on AND rather than OR of hour
@@ -502,7 +502,9 @@ As of March 2026, no published work in the Cynefin community addresses the speci
 that executable specifications serve as a constraint transformation
 mechanism in this sense. Dave Snowden is actively working on the
 relationship between AI and Cynefin domains as of early 2026, but has
-not published conclusions. The vocabulary has been checked carefully
+not published conclusions.
+
+The vocabulary has been checked carefully
 against canonical framework definitions. The enabling and governing
 constraints terminology is confirmed in Snowden's own Cynefin wiki
 (cynefin.io/wiki/Constraints), not in the 2007 HBR paper. The mapping
@@ -572,7 +574,7 @@ every specification while introducing coupling, violating layer boundaries,
 or drifting from intended design. These are relational properties of the
 codebase as a whole, not properties of individual components. They resist
 behavioural specification because they concern structure rather than
-behaviour, but resist does not mean unspecifiable. Architectural rules,
+behaviour, but this resistance does not mean they are unspecifiable. Architectural rules,
 once articulated, are enforceable deterministically: dependency rules via
 tools such as ArchUnit or Dependency Cruiser, service boundary agreements
 via contract testing frameworks such as Pact. General delivery rigour,
