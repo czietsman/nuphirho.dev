@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "description": "The check digit calculation uses the wrong weights. IMO numbers multiply the first six digits by descending factors 7, 6, 5, 4, 3, 2 from left to right, but this code uses ascending factors 2 through 7, so valid IMO numbers can be rejected and invalid ones accepted.",
+      "line": "factor = i + 2"
+    },
+    {
+      "description": "The prefix handling removes every occurrence of \"IMO\" anywhere in the input instead of accepting only an optional leading prefix. Inputs like \"12IMO34567\" would be normalised to \"1234567\" and could be treated as valid.",
+      "line": "number = imo_number.replace(\"IMO\", \"\").strip()"
+    }
+  ],
+  "verdict": "buggy"
+}

@@ -1,0 +1,12 @@
+
+
+
+{
+  "bugs": [
+    {
+      "description": "Gas day in natural gas markets typically runs from 06:00 to 06:00 (or 05:00/06:00 depending on region), not midnight to midnight. A timestamp before the gas day boundary (e.g., 03:00 on March 23) should return the previous calendar date as the gas day, but this function simply returns the calendar date, ignoring the gas day cutover hour entirely.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

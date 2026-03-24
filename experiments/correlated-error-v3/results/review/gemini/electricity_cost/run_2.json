@@ -1,0 +1,11 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "Incorrectly calculates cost by applying a single tier's rate to the entire consumption, rather than progressively calculating marginal costs for each tier bracket.",
+      "line": "return round(kwh * rate, 2)"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

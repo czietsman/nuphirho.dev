@@ -1,0 +1,13 @@
+
+{
+  "bugs": [
+    {
+      "description": "Weight factors are reversed. The IMO check digit algorithm multiplies the first six digits by weights 7, 6, 5, 4, 3, 2 (descending), but the code uses 2, 3, 4, 5, 6, 7 (ascending).",
+      "line": "factor = i + 2"
+    }
+  ],
+  "verdict": "buggy"
+}
+
+
+The fix is to replace factor = i + 2 with factor = 7 - i.

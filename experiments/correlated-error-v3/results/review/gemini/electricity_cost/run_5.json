@@ -1,0 +1,11 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "The function calculates cost by applying a single tier's rate to the entire consumption. Tiered pricing should be calculated progressively, applying each tier's rate only to the portion of electricity consumed within that specific bracket.",
+      "line": "return round(kwh * rate, 2)"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

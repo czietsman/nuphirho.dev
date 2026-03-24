@@ -1,0 +1,16 @@
+
+
+
+{
+  "bugs": [
+    {
+      "description": "Tiered pricing should be calculated incrementally (each tier's rate applies only to the kWh within that tier's band), but the function applies a single tier's rate to the entire consumption. For example, with tiers [(100, 0.10), (200, 0.20), (inf, 0.30)] and kwh=150, it returns 150*0.20=30.00 instead of the correct 100*0.10 + 50*0.20 = 20.00.",
+      "line": "return round(kwh * rate, 2)"
+    },
+    {
+      "description": "The fallback case also applies the last tier's rate to the entire consumption instead of only the portion exceeding the previous tier's limit.",
+      "line": "return round(kwh * tiers[-1][1], 2)"
+    }
+  ],
+  "verdict": "buggy"
+}

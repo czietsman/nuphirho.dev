@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "The check digit calculation uses the weighting factors in the wrong order. IMO numbers require weights 7, 6, 5, 4, 3, 2 for the first six digits from left to right, but this code uses 2, 3, 4, 5, 6, 7.",
+      "line": "factor = i + 2"
+    }
+  ],
+  "verdict": "buggy"
+}

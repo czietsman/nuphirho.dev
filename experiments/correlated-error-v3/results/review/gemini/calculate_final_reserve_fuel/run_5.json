@@ -1,0 +1,11 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "The final reserve fuel durations for jet and piston engines are swapped. According to standard aviation regulations (such as ICAO Annex 6 and EASA), jet (turbine) engines typically require a 30-minute final reserve, whereas piston (reciprocating) engines require 45 minutes.",
+      "line": "if engine_type == \"jet\": reserve_minutes = 45 else: reserve_minutes = 30"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

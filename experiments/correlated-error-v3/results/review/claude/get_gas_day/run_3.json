@@ -1,0 +1,12 @@
+
+
+
+{
+  "bugs": [
+    {
+      "description": "Gas day boundary is not applied. In natural gas markets, a gas day typically runs from 06:00 (or 05:00) on day D to 06:00 (or 05:00) on day D+1. The function simply returns the calendar date, so a timestamp at e.g. 03:00 on 15 March is assigned to gas day 15 March when it should belong to gas day 14 March.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

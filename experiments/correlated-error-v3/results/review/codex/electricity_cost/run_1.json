@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "description": "The function does not apply tiered pricing cumulatively. When consumption falls within a tier, it charges all kWh at that tier's rate instead of charging earlier tiers at their own rates and only the remaining usage at the current tier's rate.",
+      "line": "return round(kwh * rate, 2)"
+    },
+    {
+      "description": "If consumption exceeds earlier tiers, the fallback charges all kWh at the last tier's rate rather than charging each tier incrementally.",
+      "line": "return round(kwh * tiers[-1][1], 2)"
+    }
+  ],
+  "verdict": "buggy"
+}

@@ -1,0 +1,12 @@
+I will verify the ICAO fuel reserve requirements for jet and piston aircraft to ensure the function's logic matches aviation standards.
+```json
+{
+  "bugs": [
+    {
+      "description": "The reserve fuel durations for engine types are swapped. According to ICAO and FAA standards, jet (turbine) aircraft typically require a final reserve of 30 minutes, while piston (reciprocating) aircraft require 45 minutes.",
+      "line": "if engine_type == \"jet\": reserve_minutes = 45 else: reserve_minutes = 30"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "The function does not validate that `fuel_burn_rate` is a non-negative numeric value, so invalid inputs such as negative numbers produce an impossible negative reserve fuel requirement instead of raising an error.",
+      "line": "reserve_fuel = fuel_burn_rate * reserve_hours"
+    }
+  ],
+  "verdict": "buggy"
+}

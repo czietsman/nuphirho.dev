@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "description": "The function does not compute tiered pricing cumulatively. It charges all consumed kWh at the rate of the first tier whose upper limit contains `kwh`, instead of charging each portion of usage at its corresponding tier rate.",
+      "line": "return round(kwh * rate, 2)"
+    },
+    {
+      "description": "The fallback for usage above all listed limits also applies a single rate to the entire consumption, which is incorrect for cumulative tiered billing.",
+      "line": "return round(kwh * tiers[-1][1], 2)"
+    }
+  ],
+  "verdict": "buggy"
+}

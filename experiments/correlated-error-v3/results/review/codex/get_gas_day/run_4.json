@@ -1,0 +1,9 @@
+{
+  "bugs": [
+    {
+      "description": "The function returns the calendar date instead of the gas day. A gas day does not align with midnight-to-midnight, so timestamps before the market's gas-day boundary will be assigned to the wrong day.",
+      "line": "return timestamp.date()"
+    }
+  ],
+  "verdict": "buggy"
+}

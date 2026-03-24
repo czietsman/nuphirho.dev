@@ -1,0 +1,11 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "The weights used to calculate the check digit are applied in reverse order. According to the IMO standard, the first six digits should be multiplied by factors 7, 6, 5, 4, 3, 2 respectively (from left to right), but the code uses 2, 3, 4, 5, 6, 7.",
+      "line": "factor = i + 2"
+    }
+  ],
+  "verdict": "buggy"
+}
+```

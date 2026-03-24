@@ -1,0 +1,11 @@
+```json
+{
+  "bugs": [
+    {
+      "description": "The multiplication factors are applied to the digits in the reverse order. According to the IMO standard, the first digit should be multiplied by 7, the second by 6, the third by 5, the fourth by 4, the fifth by 3, and the sixth by 2. The current implementation multiplies the first digit by 2 and the sixth by 7.",
+      "line": "factor = i + 2"
+    }
+  ],
+  "verdict": "buggy"
+}
+```
