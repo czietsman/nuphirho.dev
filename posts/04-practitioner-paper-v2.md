@@ -63,7 +63,7 @@ use AI to review it.
 The premise is reasonable. The architecture that follows from it has a
 structural problem the industry conversation has mostly not examined.
 
-The DORA 2026 report, based on responses from 1,110 Google engineers,
+The DORA 2026 report, based on 1,110 open-ended survey responses from Google engineers,
 found that higher AI adoption correlates with higher throughput and higher
 instability simultaneously. Time saved generating code is re-spent
 auditing it. The bottleneck has moved from writing code to knowing what
@@ -749,9 +749,10 @@ Dietterich, T.G. (2000). "Ensemble Methods in Machine Learning."
 Proceedings of the First International Workshop on Multiple Classifier
 Systems. Lecture Notes in Computer Science, vol 1857. Springer.
 
-DORA (2026). "Balancing AI Tensions: Moving from AI adoption to effective
-SDLC use." dora.dev, March 2026. Based on 1,110 Google engineer
-responses.
+Baolin, J. and Harvey, N. (2026). "Balancing AI Tensions: Moving from
+AI Adoption to Effective SDLC Use." dora.dev/insights/balancing-ai-tensions/,
+March 2026. Based on 1,110 open-ended survey responses from Google
+software engineers.
 
 Fonseca, P.L., Lima, B., and Faria, J.P. (2025). "Streamlining Acceptance
 Test Generation for Mobile Applications Through Large Language Models:
@@ -771,7 +772,7 @@ Maaz, M., DeVoe, L., Hatfield-Dodds, Z., and Carlini, N. (2025).
 Ecosystem." arXiv:2510.09907, October 2025.
 
 Mi, Z., Zheng, R., Zhong, H., Sun, Y., Kneeland, S., Moitra, S., Kutzer,
-K., and Xu Huang, Z. (2025). "CoopetitiveV: Leveraging LLM-powered
+K., Xu, Z., and Huang, S. (2025). "CoopetitiveV: Leveraging LLM-powered
 Coopetitive Multi-Agent Prompting for High-quality Verilog Generation."
 arXiv:2412.11014, v2 June 2025.
 
@@ -788,9 +789,9 @@ Making." Harvard Business Review, November 2007. Note: the enabling
 and governing constraints terminology is not in this paper. It is
 from Snowden's Cynefin wiki.
 
-Snowden, D. (2022). "Constraints." cynefin.io/wiki/Constraints.
-The Cynefin Company. Confirms: Complicated domain: governing
-constraints. Complex domain: enabling constraints.
+Snowden, D. "Constraints." cynefin.io/wiki/Constraints.
+The Cynefin Company. Accessed March 2026. Confirms: Complicated domain:
+governing constraints. Complex domain: enabling constraints.
 
 Vallecillos-Ruiz, F., Hort, M., and Moonen, L. (2025). "Wisdom and
 Delusion of LLM Ensembles for Code Generation and Repair."
