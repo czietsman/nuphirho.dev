@@ -3,6 +3,7 @@ title: "AI-Assisted Security Audit"
 slug: "ai-assisted-security-audit"
 draft: false
 tags: [security, ai, architecture, software-engineering, process]
+series: "Process Over Technology"
 ---
 
 Last year I started working on a large, unfamiliar codebase. Go, new CI/CD pipelines, new deployment patterns. My job was integration work, not security. I was using AI to accelerate my understanding of the system, reading through services, tracing data flows, building a mental model of how the pieces fit together.
