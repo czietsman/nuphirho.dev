@@ -153,10 +153,11 @@ while i < len(lines):
         if i < len(lines):
             i += 1  # skip closing ```
         code = '\n'.join(code_lines)
+        listing_opts = 'basicstyle=\\ttfamily\\footnotesize,columns=fullflexible,frame=single,breaklines=true'
         if lang == 'gherkin':
-            latex_blocks.append('\\begin{lstlisting}[language={},basicstyle=\\ttfamily\\small,frame=single,breaklines=true]')
+            latex_blocks.append(f'\\begin{{lstlisting}}[language={{}},{listing_opts}]')
         else:
-            latex_blocks.append('\\begin{lstlisting}[basicstyle=\\ttfamily\\small,frame=single,breaklines=true]')
+            latex_blocks.append(f'\\begin{{lstlisting}}[{listing_opts}]')
         latex_blocks.append(code)
         latex_blocks.append('\\end{lstlisting}')
         continue
@@ -180,7 +181,7 @@ while i < len(lines):
 
         # Choose column spec based on number of columns
         if ncols == 7:
-            colspec = 'p{3.2cm}p{2cm}p{0.8cm}p{0.8cm}p{0.8cm}p{0.8cm}p{0.8cm}'
+            colspec = r'>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{3.6cm}ccccc'
         elif ncols == 4:
             colspec = 'lllr'
         else:
@@ -255,14 +256,20 @@ document = rf"""\pdfoutput=1
 \renewcommand{{\undertitle}}{{}}
 \usepackage[utf8]{{inputenc}}
 \usepackage[T1]{{fontenc}}
+\usepackage{{lmodern}}
 \usepackage{{hyperref}}
 \hypersetup{{
   pdftitle={{The Specification as Quality Gate: Three Hypotheses on AI-Assisted Code Review}},
   pdfauthor={{Christo Zietsman}},
   pdfsubject={{Software Engineering, AI Code Review, Specification-Driven Development}},
-  pdfkeywords={{specifications, BDD, AI code review, correlated errors, Cynefin, software engineering}}
+  pdfkeywords={{specifications, BDD, AI code review, correlated errors, Cynefin, software engineering}},
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
 }}
 \usepackage{{url}}
+\usepackage{{array}}
 \usepackage{{booktabs}}
 \usepackage{{listings}}
 \usepackage{{microtype}}
