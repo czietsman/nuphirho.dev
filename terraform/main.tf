@@ -3,6 +3,7 @@
 # 2026-03-06  Migrate S3 backend endpoint to endpoints.s3
 # 2026-03-06  Set blog CNAME to DNS-only (Hashnode/Vercel requires unproxied)
 # 2026-03-08  Point blog CNAME to GitHub Pages (static frontend)
+# 2026-03-26  Add MX, SPF, DMARC for Cloudflare Email Routing
 
 terraform {
   required_version = ">= 1.0"
@@ -77,4 +78,47 @@ resource "cloudflare_record" "www" {
   type    = "CNAME"
   proxied = true
   ttl     = 1 # Auto when proxied
+}
+
+# ── Email Routing (Cloudflare) ────────────────────────────────────────
+
+# MX records for Cloudflare Email Routing
+locals {
+  cloudflare_mx_records = {
+    isaac = { server = "isaac.mx.cloudflare.net", priority = 84 }
+    linda = { server = "linda.mx.cloudflare.net", priority = 4 }
+    amir  = { server = "amir.mx.cloudflare.net", priority = 21 }
+  }
+}
+
+resource "cloudflare_record" "mx" {
+  for_each = local.cloudflare_mx_records
+
+  zone_id  = data.cloudflare_zone.nuphirho.id
+  name     = "@"
+  content  = each.value.server
+  type     = "MX"
+  priority = each.value.priority
+  proxied  = false
+  ttl      = 1
+}
+
+# SPF record authorising Cloudflare Email Routing
+resource "cloudflare_record" "spf" {
+  zone_id = data.cloudflare_zone.nuphirho.id
+  name    = "@"
+  content = "v=spf1 include:_spf.mx.cloudflare.net ~all"
+  type    = "TXT"
+  proxied = false
+  ttl     = 1
+}
+
+# DMARC policy (quarantine; upgrade to reject after monitoring)
+resource "cloudflare_record" "dmarc" {
+  zone_id = data.cloudflare_zone.nuphirho.id
+  name    = "_dmarc"
+  content = "v=DMARC1; p=quarantine; rua=mailto:christo@nuphirho.dev"
+  type    = "TXT"
+  proxied = false
+  ttl     = 1
 }
