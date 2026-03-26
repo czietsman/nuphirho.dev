@@ -749,8 +749,8 @@ Dietterich, T.G. (2000). "Ensemble Methods in Machine Learning."
 Proceedings of the First International Workshop on Multiple Classifier
 Systems. Lecture Notes in Computer Science, vol 1857. Springer.
 
-Baolin, J. and Harvey, N. (2026). "Balancing AI Tensions: Moving from
-AI Adoption to Effective SDLC Use." dora.dev/insights/balancing-ai-tensions/,
+Baolin, J. and Harvey, N. (2026). "Balancing AI tensions: Moving from
+AI adoption to effective SDLC use." https://dora.dev/insights/balancing-ai-tensions/,
 March 2026. Based on 1,110 open-ended survey responses from Google
 software engineers.
 

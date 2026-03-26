@@ -239,8 +239,8 @@ for entry in ref_entries:
     else:
         key = f"ref{len(bib_items)+1}"
 
-    # Escape the entry text
-    entry_tex = escape_latex(entry)
+    # Convert inline formatting (handles URLs, escaping, etc.)
+    entry_tex = convert_inline(entry)
     bib_items.append(f'\\bibitem{{{key}}}\n{entry_tex}')
 
 bib_tex = '\n\n'.join(bib_items)
