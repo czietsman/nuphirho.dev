@@ -1,1 +1,4 @@
-specification-as-quality-gate.tex
+*.aux
+*.log
+*.out
+*.toc
