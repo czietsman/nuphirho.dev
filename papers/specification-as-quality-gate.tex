@@ -6,14 +6,20 @@
 \renewcommand{\undertitle}{}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{hyperref}
 \hypersetup{
   pdftitle={The Specification as Quality Gate: Three Hypotheses on AI-Assisted Code Review},
   pdfauthor={Christo Zietsman},
   pdfsubject={Software Engineering, AI Code Review, Specification-Driven Development},
-  pdfkeywords={specifications, BDD, AI code review, correlated errors, Cynefin, software engineering}
+  pdfkeywords={specifications, BDD, AI code review, correlated errors, Cynefin, software engineering},
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
 }
 \usepackage{url}
+\usepackage{array}
 \usepackage{booktabs}
 \usepackage{listings}
 \usepackage{microtype}
@@ -209,7 +215,7 @@ was not tested. It reports no issues.
 The following BDD scenario would have made the boundary condition
 explicit before a single line of code was written:
 
-\begin{lstlisting}[language={},basicstyle=\ttfamily\small,frame=single,breaklines=true]
+\begin{lstlisting}[language={},basicstyle=\ttfamily\footnotesize,columns=fullflexible,frame=single,breaklines=true]
 Scenario: Last page when total is exactly divisible by page size
   Given a list of 10 items
   And a page size of 5
@@ -366,7 +372,7 @@ Result with manual review of all 100 runs:
 \begin{table}[h]
 \centering
 \small
-\begin{tabular}{p{3.2cm}p{2cm}p{0.8cm}p{0.8cm}p{0.8cm}p{0.8cm}p{0.8cm}}
+\begin{tabular}{>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{3.6cm}ccccc}
 \toprule
 Function & Domain & BDD & Claude & Codex & Gemini & Q \\
 \midrule
@@ -783,8 +789,8 @@ Proceedings of the First International Workshop on Multiple Classifier
 Systems. Lecture Notes in Computer Science, vol 1857. Springer.
 
 \bibitem{baolin2026}
-Baolin, J. and Harvey, N. (2026). "Balancing AI tensions: Moving from
-AI adoption to effective SDLC use." \url{https://dora.dev/insights/balancing-ai-tensions/},
+Baolin, J. and Harvey, N. (2026). "Balancing AI Tensions: Moving from
+AI Adoption to Effective SDLC Use." dora.dev/insights/balancing-ai-tensions/,
 March 2026. Based on 1,110 open-ended survey responses from Google
 software engineers.
 
