@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths: ['posts/**']
   schedule:
-    - cron: '10 6 * * *'
+    - cron: '0 5 * * *'
   workflow_dispatch:
     inputs:
       posts:
