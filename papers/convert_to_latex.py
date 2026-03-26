@@ -272,7 +272,7 @@ document = rf"""\pdfoutput=1
 \author{{
   Christo Zietsman \\
   Independent Researcher \\
-  \texttt{{nuphirho.dev}}
+  \texttt{{christo@nuphirho.dev}}
 }}
 
 \date{{March 2026}}
