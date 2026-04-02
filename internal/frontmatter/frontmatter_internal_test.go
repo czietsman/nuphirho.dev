@@ -242,3 +242,11 @@ func TestStripLeadingH1PreservesNonHeadingContentWhenTitleIsEmpty(t *testing.T) 
 		t.Fatalf("expected content %q to be preserved when title is empty, got %q", content, got)
 	}
 }
+
+func TestStripLeadingH1PreservesBodyMatchingTitleWithoutHeadingMarker(t *testing.T) {
+	content := "Body only"
+
+	if got := stripLeadingH1(content, "Body only"); got != content {
+		t.Fatalf("expected content %q to be preserved without a heading marker, got %q", content, got)
+	}
+}
