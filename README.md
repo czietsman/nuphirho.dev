@@ -79,7 +79,7 @@ Requires a `CLOUDFLARE_API_TOKEN` environment variable or equivalent configurati
 
 Push a markdown file to `posts/` on the `main` branch. The GitHub Actions pipeline handles publishing to Hashnode and cross-posting to Dev.to.
 
-Posts with `draft: true` in the front matter are pushed as unpublished drafts to both Hashnode and Dev.to, allowing end-to-end pipeline validation without going live. Removing the `draft` flag and pushing again publishes the post.
+Posts with `draft: true` in the front matter are skipped by the publishing pipeline.
 
 Medium cross-posting is manual via the "Import a story" feature using the canonical URL.
 
