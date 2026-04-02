@@ -66,6 +66,7 @@ bash tests/test-secret-patterns.sh
 
 `prompts/dependency-review/` contains reviewed research briefs for Go modules, GitHub Actions, npm packages, Terraform providers, and standalone tools.
 PR validation also runs mutation testing against `internal/frontmatter`.
+Repository validation fails when a Go test does not declare a backing BDD feature or scenario in `specs/`.
 ## Getting started
 
 ### Terraform

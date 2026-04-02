@@ -136,6 +136,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^all tags are valid$`, tc.allTagsAreValid)
 }
 
+// BDD: specs/tag_glossary.feature :: Feature: Tag glossary
 func TestFeatures(t *testing.T) {
 	suite := godog.TestSuite{
 		ScenarioInitializer: InitializeScenario,

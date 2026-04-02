@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// BDD: specs/repository_validation.feature :: Scenario: The publish workflow sends daily notifications only when needed
 func TestPublishWorkflowIncludesDailyNotificationStep(t *testing.T) {
 	t.Parallel()
 
@@ -30,6 +31,7 @@ func TestPublishWorkflowIncludesDailyNotificationStep(t *testing.T) {
 	}
 }
 
+// BDD: specs/repository_validation.feature :: Scenario: README documents daily publish notifications
 func TestReadmeDocumentsDailyPublishNotifications(t *testing.T) {
 	t.Parallel()
 

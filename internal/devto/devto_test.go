@@ -513,6 +513,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the request body does not have "series"$`, dc.theRequestBodyDoesNotHaveSeries)
 }
 
+// BDD: specs/devto_client.feature :: Feature: Dev.to client
 func TestFeatures(t *testing.T) {
 	suite := godog.TestSuite{
 		ScenarioInitializer: InitializeScenario,

@@ -2,6 +2,7 @@ package frontmatter
 
 import "testing"
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Post with valid frontmatter passes validation
 func TestSplitFrontmatterReturnsExactSections(t *testing.T) {
 	raw := `---
 title: "Exact"
@@ -26,6 +27,7 @@ Body.
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Opening delimiter may have trailing spaces before frontmatter
 func TestSplitFrontmatterTrimsOpeningDelimiterPaddingFromFrontmatter(t *testing.T) {
 	raw := "---   \n" +
 		"title: \"Padded\"\n" +
@@ -49,6 +51,7 @@ func TestSplitFrontmatterTrimsOpeningDelimiterPaddingFromFrontmatter(t *testing.
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: File without frontmatter delimiters fails
 func TestSplitFrontmatterRejectsNonFrontmatterPrefixEvenIfDelimiterAppearsLater(t *testing.T) {
 	raw := `title: Not Frontmatter
 ---
@@ -66,6 +69,7 @@ Body.
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Closing delimiter suffix text is ignored before body content
 func TestSplitFrontmatterIgnoresClosingDelimiterLineSuffix(t *testing.T) {
 	raw := `---
 title: "Commented Closing"
@@ -90,6 +94,7 @@ Body.
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Content immediately after the closing delimiter is preserved
 func TestSplitFrontmatterPreservesImmediateBodyAfterClosingDelimiter(t *testing.T) {
 	raw := `---
 title: "Immediate Body"
@@ -113,6 +118,7 @@ Body.
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Closing delimiter suffix text is ignored when no body follows
 func TestSplitFrontmatterIgnoresClosingDelimiterSuffixWithoutBody(t *testing.T) {
 	raw := `---
 title: "No Body"
@@ -134,6 +140,7 @@ tags: [test]
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Blank lines after the opening delimiter are allowed
 func TestParseBlankLineAfterOpeningDelimiterParsesFields(t *testing.T) {
 	raw := `---
 
@@ -158,6 +165,7 @@ Body.
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Post with valid frontmatter passes validation
 func TestParseWindowsLineEndingsNormalisesContent(t *testing.T) {
 	raw := "---\r\n" +
 		"title: \"Windows Post\"\r\n" +
@@ -179,6 +187,7 @@ func TestParseWindowsLineEndingsNormalisesContent(t *testing.T) {
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: File without frontmatter delimiters fails
 func TestParseDelimiterOnlyFrontmatterReturnsMissingFrontmatter(t *testing.T) {
 	post, result := Parse("---")
 
@@ -190,6 +199,7 @@ func TestParseDelimiterOnlyFrontmatterReturnsMissingFrontmatter(t *testing.T) {
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Opening delimiter may have trailing spaces before frontmatter
 func TestParseOpeningDelimiterMayHaveTrailingSpaces(t *testing.T) {
 	raw := `---   
 title: "Spaced Delimiter"
@@ -210,6 +220,7 @@ Content.
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Closing delimiter suffix text is ignored when no body follows
 func TestParseNoContentAfterClosingDelimiterReturnsEmptyBody(t *testing.T) {
 	raw := `---
 title: "Header Only"
@@ -227,6 +238,7 @@ tags: [test]
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Leading H1 not matching title is preserved
 func TestStripLeadingH1PreservesSingleLineBody(t *testing.T) {
 	content := "Body only"
 
@@ -235,6 +247,7 @@ func TestStripLeadingH1PreservesSingleLineBody(t *testing.T) {
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Leading H1 not matching title is preserved
 func TestStripLeadingH1PreservesNonHeadingContentWhenTitleIsEmpty(t *testing.T) {
 	content := "Body only"
 
@@ -243,6 +256,7 @@ func TestStripLeadingH1PreservesNonHeadingContentWhenTitleIsEmpty(t *testing.T) 
 	}
 }
 
+// BDD: specs/validate_frontmatter.feature :: Scenario: Body matching the title is not stripped without an H1 marker
 func TestStripLeadingH1PreservesBodyMatchingTitleWithoutHeadingMarker(t *testing.T) {
 	content := "Body only"
 

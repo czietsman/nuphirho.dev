@@ -143,6 +143,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the exit code is (\d+)$`, nc.theExitCodeIs)
 }
 
+// BDD: specs/notify.feature :: Feature: Notification CLI
 func TestFeatures(t *testing.T) {
 	suite := godog.TestSuite{
 		ScenarioInitializer: InitializeScenario,

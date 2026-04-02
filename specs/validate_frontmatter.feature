@@ -349,6 +349,23 @@ Feature: Validate frontmatter
     When the frontmatter is parsed
     Then validation fails with error "missing required field: title"
 
+  Scenario: Blank lines after the opening delimiter are allowed
+    Given a markdown file with frontmatter:
+      """
+      ---
+
+      title: "My Post"
+      slug: my-post
+      tags: [test]
+      ---
+
+      Body.
+      """
+    When the frontmatter is parsed
+    Then the title is "My Post"
+    And the content is "Body."
+    And validation passes with no errors
+
   Scenario: Opening delimiter may have trailing spaces before frontmatter
     Given a markdown file with frontmatter:
       """
@@ -392,6 +409,19 @@ Feature: Validate frontmatter
       """
     When the frontmatter is parsed
     Then the content is "Body."
+    And validation passes with no errors
+
+  Scenario: Closing delimiter suffix text is ignored when no body follows
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "No Body"
+      slug: no-body
+      tags: [test]
+      --- trailing text
+      """
+    When the frontmatter is parsed
+    Then the content is ""
     And validation passes with no errors
 
   Scenario: Empty tags list fails validation

@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// BDD: specs/repository_validation.feature :: Scenario: Dependency review prompt templates are present and documented
 func TestDependencyReviewPromptTemplatesExist(t *testing.T) {
 	t.Parallel()
 
@@ -25,6 +26,7 @@ func TestDependencyReviewPromptTemplatesExist(t *testing.T) {
 	}
 }
 
+// BDD: specs/repository_validation.feature :: Scenario: Dependency review prompt templates are present and documented
 func TestReadmeDocumentsDependencyReviewPrompts(t *testing.T) {
 	t.Parallel()
 

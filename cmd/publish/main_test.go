@@ -309,6 +309,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^stderr contains "([^"]*)"$`, cc.stderrContains)
 }
 
+// BDD: specs/cli.feature :: Feature: CLI wrapper
 func TestFeatures(t *testing.T) {
 	suite := godog.TestSuite{
 		ScenarioInitializer: InitializeScenario,

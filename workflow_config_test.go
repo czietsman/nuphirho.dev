@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// BDD: specs/repository_validation.feature :: Scenario: Workflow action pins are checked in repository validation
 func TestWorkflowActionPins(t *testing.T) {
 	t.Parallel()
 
@@ -34,6 +35,7 @@ func TestWorkflowActionPins(t *testing.T) {
 	})
 }
 
+// BDD: specs/repository_validation.feature :: Scenario: Terraform workflow comments the real plan output
 func TestTerraformWorkflowCommentsRealPlanOutput(t *testing.T) {
 	t.Parallel()
 
@@ -56,6 +58,7 @@ func TestTerraformWorkflowCommentsRealPlanOutput(t *testing.T) {
 	}
 }
 
+// BDD: specs/repository_validation.feature :: Scenario: README describes draft posts as skipped
 func TestReadmeDescribesDraftPostsAsSkipped(t *testing.T) {
 	t.Parallel()
 
@@ -70,6 +73,7 @@ func TestReadmeDescribesDraftPostsAsSkipped(t *testing.T) {
 	}
 }
 
+// BDD: specs/repository_validation.feature :: Scenario: PR validation runs mutation testing
 func TestValidateWorkflowRunsMutationTesting(t *testing.T) {
 	t.Parallel()
 
@@ -86,6 +90,7 @@ func TestValidateWorkflowRunsMutationTesting(t *testing.T) {
 	}
 }
 
+// BDD: specs/repository_validation.feature :: Scenario: README documents mutation testing in validation
 func TestReadmeDocumentsMutationTestingInValidation(t *testing.T) {
 	t.Parallel()
 
@@ -96,6 +101,7 @@ func TestReadmeDocumentsMutationTestingInValidation(t *testing.T) {
 	}
 }
 
+// BDD: specs/repository_validation.feature :: Scenario: The repository Go version supports the pinned mutation tool
 func TestGoVersionSupportsPinnedMutationTool(t *testing.T) {
 	t.Parallel()
 
@@ -125,4 +131,30 @@ func readFile(t *testing.T, path string) string {
 		t.Fatalf("read %s: %v", path, err)
 	}
 	return string(content)
+}
+// BDD: specs/repository_validation.feature :: Scenario: PR validation enforces BDD traceability checks
+func TestValidateWorkflowRunsBDDTraceabilityCheck(t *testing.T) {
+	t.Parallel()
+
+	content := readFile(t, ".github/workflows/validate-pr.yml")
+
+	required := []string{
+		"go test ./... -run '^TestBDDTraceability$' -count=1",
+	}
+	for _, fragment := range required {
+		if !strings.Contains(content, fragment) {
+			t.Fatalf("validate workflow missing %q", fragment)
+		}
+	}
+}
+
+// BDD: specs/repository_validation.feature :: Scenario: README documents BDD traceability enforcement
+func TestReadmeDocumentsBDDTraceabilityRequirement(t *testing.T) {
+	t.Parallel()
+
+	content := readFile(t, "README.md")
+
+	if !strings.Contains(content, "Repository validation fails when a Go test does not declare a backing BDD feature or scenario in `specs/`.") {
+		t.Fatalf("README does not document the BDD traceability rule")
+	}
 }

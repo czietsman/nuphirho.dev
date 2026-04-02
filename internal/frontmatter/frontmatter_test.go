@@ -165,6 +165,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^validation fails with error "([^"]*)"$`, fc.validationFailsWithError)
 }
 
+// BDD: specs/validate_frontmatter.feature :: Feature: Validate frontmatter
 func TestFeatures(t *testing.T) {
 	suite := godog.TestSuite{
 		ScenarioInitializer: InitializeScenario,

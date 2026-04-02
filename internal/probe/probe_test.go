@@ -271,6 +271,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the Dev\.to article created by the probe is deleted$`, pc.theDevToArticleCreatedByTheProbeIsDeleted)
 }
 
+// BDD: specs/contract_probes.feature :: Feature: Contract probes
 func TestFeatures(t *testing.T) {
 	suite := godog.TestSuite{
 		ScenarioInitializer: InitializeScenario,

@@ -483,6 +483,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the series resolver is called once for "([^"]*)"$`, pc.theSeriesResolverIsCalledOnceFor)
 }
 
+// BDD: specs/pipeline.feature :: Feature: Pipeline orchestrator
 func TestFeatures(t *testing.T) {
 	suite := godog.TestSuite{
 		ScenarioInitializer: InitializeScenario,

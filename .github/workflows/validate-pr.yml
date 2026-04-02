@@ -24,6 +24,9 @@ jobs:
       - name: Run secret pattern tests
         run: bash tests/test-secret-patterns.sh
 
+      - name: Run BDD traceability checks
+        run: go test ./... -run '^TestBDDTraceability$' -count=1
+
       - name: Run Go tests (includes BDD specs)
         run: go test ./... -count=1
 

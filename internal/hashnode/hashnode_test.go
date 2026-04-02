@@ -707,6 +707,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the update request includes series ID "([^"]*)"$`, hc.theUpdateRequestIncludesSeriesID)
 }
 
+// BDD: specs/hashnode_client.feature :: Feature: Hashnode client
 func TestFeatures(t *testing.T) {
 	suite := godog.TestSuite{
 		ScenarioInitializer: InitializeScenario,
