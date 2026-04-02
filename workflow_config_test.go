@@ -96,6 +96,16 @@ func TestReadmeDocumentsMutationTestingInValidation(t *testing.T) {
 	}
 }
 
+func TestGoVersionSupportsPinnedMutationTool(t *testing.T) {
+	t.Parallel()
+
+	content := readFile(t, "go.mod")
+
+	if !strings.Contains(content, "go 1.25.5") {
+		t.Fatalf("go.mod does not declare the minimum Go version required for the pinned mutation tool")
+	}
+}
+
 func checkContains(t *testing.T, path string, fragments []string) {
 	t.Helper()
 
