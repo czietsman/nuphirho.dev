@@ -108,20 +108,13 @@ func splitFrontmatter(raw string) (frontmatter, content string, err error) {
 		rest = rest[1:]
 	}
 
-	idx := strings.Index(rest, "\n---")
-	if idx < 0 {
+	fm, remaining, ok := strings.Cut(rest, "\n---")
+	if !ok {
 		return "", "", fmt.Errorf("missing frontmatter")
 	}
 
-	fm := rest[:idx]
-	remaining := rest[idx+4:] // skip \n---
-
 	// Skip the rest of the closing --- line
-	if nlIdx := strings.IndexByte(remaining, '\n'); nlIdx >= 0 {
-		remaining = remaining[nlIdx+1:]
-	} else {
-		return fm, "", nil
-	}
+	_, remaining, _ = strings.Cut(remaining, "\n")
 
 	// Trim leading blank lines from content
 	remaining = strings.TrimLeft(remaining, "\n")

@@ -349,6 +349,51 @@ Feature: Validate frontmatter
     When the frontmatter is parsed
     Then validation fails with error "missing required field: title"
 
+  Scenario: Opening delimiter may have trailing spaces before frontmatter
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Padded"
+      slug: padded
+      tags: [test]
+      ---
+
+      Body.
+      """
+    When the frontmatter is parsed
+    Then the title is "Padded"
+    And the content is "Body."
+    And validation passes with no errors
+
+  Scenario: Content immediately after the closing delimiter is preserved
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Immediate Body"
+      slug: immediate-body
+      tags: [test]
+      ---
+      Body.
+      """
+    When the frontmatter is parsed
+    Then the content is "Body."
+    And validation passes with no errors
+
+  Scenario: Closing delimiter suffix text is ignored before body content
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Commented Closing"
+      slug: commented-closing
+      tags: [test]
+      --- trailing text
+
+      Body.
+      """
+    When the frontmatter is parsed
+    Then the content is "Body."
+    And validation passes with no errors
+
   Scenario: Empty tags list fails validation
     Given a markdown file with frontmatter:
       """
@@ -453,4 +498,18 @@ Feature: Validate frontmatter
       """
     When the frontmatter is parsed
     Then the subtitle is ""
+    And validation passes with no errors
+
+  Scenario: Body matching the title is not stripped without an H1 marker
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Body only"
+      slug: body-only
+      tags: [test]
+      ---
+      Body only
+      """
+    When the frontmatter is parsed
+    Then the content is "Body only"
     And validation passes with no errors
