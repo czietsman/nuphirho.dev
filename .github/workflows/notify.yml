@@ -1,0 +1,33 @@
+name: Send Notification
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Notification message to send'
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  notify:
+    name: Send Telegram notification
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build notify tool
+        run: go build -o notify ./cmd/notify/
+
+      - name: Send notification
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: ./notify "${{ github.event.inputs.message }}"
