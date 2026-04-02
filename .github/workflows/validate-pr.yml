@@ -18,9 +18,17 @@ jobs:
       - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
         with:
           go-version-file: go.mod
+          cache: true
+          cache-dependency-path: go.sum
 
       - name: Run secret pattern tests
         run: bash tests/test-secret-patterns.sh
 
       - name: Run Go tests (includes BDD specs)
         run: go test ./... -count=1
+
+      - name: Install go-mutesting
+        run: go install github.com/avito-tech/go-mutesting/cmd/go-mutesting@v0.0.0-20251226130216-48d0401f00fb
+
+      - name: Run mutation tests
+        run: $(go env GOPATH)/bin/go-mutesting --exec-timeout=20 ./internal/frontmatter
