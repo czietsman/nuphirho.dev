@@ -37,6 +37,7 @@ AI assists in research, drafting, and refinement. The thinking, decisions, direc
 | Cross-post | Dev.to (automated), Medium (manual) |
 | Amplification | LinkedIn |
 | Secret detection | Husky pre-push hook (grep-based) |
+| Telegram notifications | Manual or workflow dispatch via Telegram Bot API |
 
 The domain is the only cost.
 
@@ -82,6 +83,21 @@ Push a markdown file to `posts/` on the `main` branch. The GitHub Actions pipeli
 Posts with `draft: true` in the front matter are pushed as unpublished drafts to both Hashnode and Dev.to, allowing end-to-end pipeline validation without going live. Removing the `draft` flag and pushing again publishes the post.
 
 Medium cross-posting is manual via the "Import a story" feature using the canonical URL.
+
+### Notifications
+
+Telegram notifications can be sent manually from the repository root:
+
+```bash
+go run ./cmd/notify "Post 4 is live. Monitor engagement."
+```
+
+Or via the `Send Notification` GitHub Actions workflow using the `message` input.
+
+Required secrets:
+
+- `TELEGRAM_BOT_TOKEN`: Telegram bot token created via BotFather
+- `TELEGRAM_CHAT_ID`: Chat ID for the phone or chat that should receive notifications
 
 ## Licence
 
