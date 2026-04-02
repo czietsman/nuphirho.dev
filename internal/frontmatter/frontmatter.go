@@ -59,6 +59,7 @@ var secretPattern = regexp.MustCompile(`(?i)(api[_-]?key|secret|token|password|c
 func Parse(raw string) (*Post, *ValidationResult) {
 	result := &ValidationResult{}
 	post := &Post{}
+	raw = strings.ReplaceAll(raw, "\r\n", "\n")
 
 	// Split frontmatter from content
 	fm, content, err := splitFrontmatter(raw)
@@ -103,10 +104,8 @@ func splitFrontmatter(raw string) (frontmatter, content string, err error) {
 	// Find the closing ---
 	rest := trimmed[3:]
 	rest = strings.TrimLeft(rest, " \t")
-	if len(rest) > 0 && rest[0] == '\n' {
+	if strings.HasPrefix(rest, "\n") {
 		rest = rest[1:]
-	} else if len(rest) > 1 && rest[0:2] == "\r\n" {
-		rest = rest[2:]
 	}
 
 	idx := strings.Index(rest, "\n---")
@@ -121,7 +120,7 @@ func splitFrontmatter(raw string) (frontmatter, content string, err error) {
 	if nlIdx := strings.IndexByte(remaining, '\n'); nlIdx >= 0 {
 		remaining = remaining[nlIdx+1:]
 	} else {
-		remaining = ""
+		return fm, "", nil
 	}
 
 	// Trim leading blank lines from content
@@ -132,16 +131,11 @@ func splitFrontmatter(raw string) (frontmatter, content string, err error) {
 
 func stripLeadingH1(content, title string) string {
 	lines := strings.SplitN(content, "\n", 2)
-	if len(lines) == 0 {
-		return content
-	}
-
 	firstLine := strings.TrimSpace(lines[0])
-	if !strings.HasPrefix(firstLine, "# ") {
+	h1Text, ok := strings.CutPrefix(firstLine, "# ")
+	if !ok {
 		return content
 	}
-
-	h1Text := strings.TrimSpace(firstLine[2:])
 	if h1Text != title {
 		return content
 	}
