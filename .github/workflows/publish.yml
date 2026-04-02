@@ -53,11 +53,50 @@ jobs:
         run: go build -o publish ./cmd/publish/
 
       - name: Publish posts
+        id: publish_step
         if: steps.changed.outputs.posts != '[]'
+        continue-on-error: true
         env:
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: |
+          set +e
           FILES=$(echo '${{ steps.changed.outputs.posts }}' | jq -r '.[]')
           ./publish --tags-file tags.json $FILES
+          exit_code=$?
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Build notification tools
+        if: github.event_name == 'schedule'
+        run: |
+          go build -o notify ./cmd/notify/
+          go build -o notify-summary ./cmd/notify-summary/
+
+      - name: Prepare daily notification
+        id: notification
+        if: github.event_name == 'schedule'
+        run: |
+          ./notify-summary --posts-dir posts --today "$(date -u +%F)" --publish-exit-code "${{ steps.publish_step.outputs.exit_code }}" > notification.txt
+          if [ -s notification.txt ]; then
+            echo "has_message=true" >> "$GITHUB_OUTPUT"
+            {
+              echo 'MESSAGE<<EOF'
+              cat notification.txt
+              echo 'EOF'
+            } >> "$GITHUB_ENV"
+          else
+            echo "has_message=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Send daily notification
+        if: github.event_name == 'schedule' && steps.notification.outputs.has_message == 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: ./notify "$MESSAGE"
+
+      - name: Fail if publish step failed
+        if: steps.publish_step.outputs.exit_code != '' && steps.publish_step.outputs.exit_code != '0'
+        run: exit 1
