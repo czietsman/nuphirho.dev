@@ -12,6 +12,7 @@ The repository contains:
 
 - **site/** -- Static landing page (deployed to GitHub Pages)
 - **posts/** -- Markdown blog post source files
+- **prompts/** -- Reviewed prompt material, including dependency review briefs
 - **specs/** -- BDD feature files describing pipeline behaviour
 - **terraform/** -- Cloudflare DNS configuration as code
 - **.github/workflows/** -- GitHub Actions CI/CD pipelines
@@ -63,6 +64,7 @@ To run the pattern tests:
 bash tests/test-secret-patterns.sh
 ```
 
+`prompts/dependency-review/` contains reviewed research briefs for Go modules, GitHub Actions, npm packages, Terraform providers, and standalone tools.
 ## Getting started
 
 ### Terraform
