@@ -65,6 +65,7 @@ bash tests/test-secret-patterns.sh
 ```
 
 `prompts/dependency-review/` contains reviewed research briefs for Go modules, GitHub Actions, npm packages, Terraform providers, and standalone tools.
+PR validation also runs mutation testing against `internal/frontmatter`.
 ## Getting started
 
 ### Terraform

@@ -12,6 +12,8 @@ func TestWorkflowActionPins(t *testing.T) {
 	checkContains(t, ".github/workflows/validate-pr.yml", []string{
 		"actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2",
 		"actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0",
+		"cache: true",
+		"cache-dependency-path: go.sum",
 	})
 
 	checkContains(t, ".github/workflows/publish.yml", []string{
@@ -65,6 +67,32 @@ func TestReadmeDescribesDraftPostsAsSkipped(t *testing.T) {
 
 	if !strings.Contains(content, "Posts with `draft: true` in the front matter are skipped by the publishing pipeline.") {
 		t.Fatalf("README does not describe draft posts as skipped")
+	}
+}
+
+func TestValidateWorkflowRunsMutationTesting(t *testing.T) {
+	t.Parallel()
+
+	content := readFile(t, ".github/workflows/validate-pr.yml")
+
+	required := []string{
+		"go install github.com/avito-tech/go-mutesting/cmd/go-mutesting@v0.0.0-20251226130216-48d0401f00fb",
+		"$(go env GOPATH)/bin/go-mutesting --exec-timeout=20 ./internal/frontmatter",
+	}
+	for _, fragment := range required {
+		if !strings.Contains(content, fragment) {
+			t.Fatalf("validate workflow missing %q", fragment)
+		}
+	}
+}
+
+func TestReadmeDocumentsMutationTestingInValidation(t *testing.T) {
+	t.Parallel()
+
+	content := readFile(t, "README.md")
+
+	if !strings.Contains(content, "PR validation also runs mutation testing against `internal/frontmatter`.") {
+		t.Fatalf("README does not document PR mutation testing")
 	}
 }
 
