@@ -311,6 +311,20 @@ Feature: Validate frontmatter
     When the frontmatter is parsed
     Then the content starts with "# A Different Heading"
 
+  Scenario: Leading H1 matching title with no body is stripped to empty content
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "My Post"
+      slug: my-post
+      tags: [test]
+      ---
+
+      # My Post
+      """
+    When the frontmatter is parsed
+    Then the content is ""
+
   Scenario: File without frontmatter delimiters fails
     Given a markdown file with frontmatter:
       """
@@ -322,6 +336,18 @@ Feature: Validate frontmatter
       """
     When the frontmatter is parsed
     Then validation fails with error "missing frontmatter"
+
+  Scenario: Empty frontmatter block still validates required fields
+    Given a markdown file with frontmatter:
+      """
+      ---
+
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "missing required field: title"
 
   Scenario: Empty tags list fails validation
     Given a markdown file with frontmatter:
