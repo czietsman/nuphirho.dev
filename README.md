@@ -94,6 +94,9 @@ go run ./cmd/notify "Post 4 is live. Monitor engagement."
 
 Or via the `Send Notification` GitHub Actions workflow using the `message` input.
 
+The scheduled publish run also sends a daily Telegram notification when there is something to report.
+That notification includes posts queued for tomorrow and whether today's scheduled publish succeeded or failed.
+
 Required secrets:
 
 - `TELEGRAM_BOT_TOKEN`: Telegram bot token created via BotFather
