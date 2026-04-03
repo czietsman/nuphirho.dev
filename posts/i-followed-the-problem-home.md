@@ -54,7 +54,7 @@ This is not false modesty. It is how good thinking works. You follow the problem
 
 ---
 
-I have been asking questions in public for several months now. The questions have attracted people I did not expect: practitioners, researchers, strategists, an investor from London. Not because I have all the answers. Because the questions are the right ones, and the right questions draw out the people who have been thinking about the same things from different angles.
+I have been asking questions in public for several months now. The questions have attracted people I did not expect: practitioners, researchers, strategists, and investors. Not because I have all the answers. Because the questions are the right ones, and the right questions draw out the people who have been thinking about the same things from different angles.
 
 What I am looking for now is more of that.
 
