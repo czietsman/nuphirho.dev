@@ -30,7 +30,7 @@ The specification is the quality gate.
 
 I did not expect what happened next.
 
-James Bach, who has spent his career thinking about software testing and the limits of what testing can prove, engaged with the taxonomy I had published on residual defect categories. He arrived at Category E independently: the oracle problem. The cases where no specification can tell you whether the output is correct, because correctness depends on knowledge that cannot be encoded. He did not agree with everything. He pushed. He asked whether failing to detect a problem was a measurement of non-problemness.
+James Bach posted a question about whether past correctness justifies trust in a tool. I replied with the mutation testing argument. He pushed back: failing to detect a problem is not a measurement of non-problemness, unless you have a guaranteed method of detecting every possible kind of problem. He was right. That is the oracle problem, the formal boundary of what executable specifications can catch. I had already published a taxonomy of it. His pushback named the limit more precisely than I had.
 
 It is not. That is Hume's problem of induction. I had stumbled into philosophy.
 
