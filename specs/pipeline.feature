@@ -275,6 +275,21 @@ Feature: Pipeline orchestrator
     Then the summary contains "em dash"
     And the exit code is 1
 
+  # --- Unchanged ---
+
+  Scenario: Unchanged post is reported and Dev.to is skipped
+    Given a post file "posts/unchanged.md" with:
+      | title   | Unchanged Post |
+      | slug    | unchanged-post |
+      | tags    | go             |
+      | content | Same content.  |
+    And Hashnode reports slug "unchanged-post" as unchanged
+    When the pipeline runs
+    Then Hashnode publish is called with slug "unchanged-post"
+    And Dev.to cross-post is not called
+    And the summary contains "unchanged"
+    And the exit code is 0
+
   # --- Probe ---
 
   Scenario: Probe flag calls ProbeAll and exits before publish
