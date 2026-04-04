@@ -200,7 +200,7 @@ func (c *Client) loadPublishedInventory() error {
 		return nil
 	}
 
-	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 100) { edges { node { id slug } } } } }`
+	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 50) { edges { node { id slug } } } } }`
 	vars := map[string]string{"id": c.PublicationID}
 
 	resp, err := c.doGraphQL(query, vars)
@@ -222,7 +222,7 @@ func (c *Client) loadDeletedInventory() error {
 		return nil
 	}
 
-	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 100, filter: { deletedOnly: true }) { edges { node { id slug } } } } }`
+	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 50, filter: { deletedOnly: true }) { edges { node { id slug } } } } }`
 	vars := map[string]string{"id": c.PublicationID}
 
 	resp, err := c.doGraphQL(query, vars)
