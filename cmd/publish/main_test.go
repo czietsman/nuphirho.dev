@@ -177,10 +177,13 @@ func (cc *cliCtx) runWith(flags string) error {
 	// Add --tags-file unless explicitly omitted or --probe or --unknown
 	isProbe := strings.Contains(flags, "--probe")
 	isUnknown := strings.Contains(flags, "--unknown")
-	isDryRunNoFiles := strings.Contains(flags, "--dry-run") && len(cc.postFiles) == 0
 
-	if !cc.noTagsFile && !isProbe && !isUnknown && !isDryRunNoFiles {
+	if !cc.noTagsFile && !isProbe && !isUnknown {
 		args = append(args, "--tags-file", cc.tagsFile)
+	}
+
+	if !strings.Contains(flags, "--posts-dir") {
+		args = append(args, "--posts-dir", filepath.Join(cc.tmpDir, "posts"))
 	}
 
 	// Add post files

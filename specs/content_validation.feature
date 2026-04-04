@@ -25,9 +25,9 @@ Feature: Content validation
     And em dash violations fail validation
     And emoji violations are reported as warnings
 
-  Scenario: Only changed posts are validated and published
+  Scenario: All local posts are reconciled against publishing targets
     Given multiple markdown files exist in "posts/"
-    And only "posts/updated-post.md" was modified in the latest push
     When the publish pipeline runs
-    Then only "posts/updated-post.md" is validated and published
-    And unchanged posts are not re-published
+    Then all local posts are validated for publication eligibility
+    And posts missing from a publishing target are published there
+    And unchanged posts are not updated

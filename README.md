@@ -81,7 +81,7 @@ Requires a `CLOUDFLARE_API_TOKEN` environment variable or equivalent configurati
 
 ### Publishing
 
-Push a markdown file to `posts/` on the `main` branch. The GitHub Actions pipeline handles publishing to Hashnode and cross-posting to Dev.to.
+Push changes to `posts/` on the `main` branch or run the workflow manually. The GitHub Actions pipeline scans the local `posts/` tree and reconciles it against Hashnode and Dev.to so missing posts are published and changed posts are updated.
 
 Posts with `draft: true` in the front matter are skipped by the publishing pipeline.
 
@@ -98,7 +98,7 @@ go run ./cmd/notify "Post 4 is live. Monitor engagement."
 Or via the `Send Notification` GitHub Actions workflow using the `message` input.
 
 The scheduled publish run also sends a daily Telegram notification when there is something to report.
-That notification includes posts queued for tomorrow and whether today's scheduled publish succeeded or failed.
+That notification includes posts queued for tomorrow plus target-level publish changes from the scheduled run. Unchanged posts are not reported.
 
 Required secrets:
 

@@ -22,11 +22,11 @@ type existingPostData struct {
 }
 
 type fakeHTTP struct {
-	posts        map[string]string          // slug -> id for published posts
+	posts        map[string]string           // slug -> id for published posts
 	postData     map[string]existingPostData // slug -> existing content
-	deletedPosts map[string]string          // slug -> id for deleted posts
-	drafts       map[string]string          // slug -> id for drafts
-	series       map[string]string          // name -> id for series
+	deletedPosts map[string]string           // slug -> id for deleted posts
+	drafts       map[string]string           // slug -> id for drafts
+	series       map[string]string           // name -> id for series
 	authError    bool
 	pubNotFound  bool
 	unreachable  bool
@@ -74,6 +74,8 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 
 	// Route based on query content
 	switch {
+	case strings.Contains(query, "posts(first:") && !strings.Contains(query, "deletedOnly"):
+		return f.handlePublishedPosts(), nil
 	case strings.Contains(query, "content") && strings.Contains(query, "post(slug:"):
 		return f.handlePostContentBySlug(vars), nil
 	case strings.Contains(query, "post(slug:"):
@@ -97,6 +99,22 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return jsonResponse(map[string]interface{}{"data": nil}), nil
+}
+
+func (f *fakeHTTP) handlePublishedPosts() *http.Response {
+	edges := make([]interface{}, 0)
+	for slug, id := range f.posts {
+		edges = append(edges, map[string]interface{}{
+			"node": map[string]interface{}{"id": id, "slug": slug},
+		})
+	}
+	return jsonResponse(map[string]interface{}{
+		"data": map[string]interface{}{
+			"publication": map[string]interface{}{
+				"posts": map[string]interface{}{"edges": edges},
+			},
+		},
+	})
 }
 
 func (f *fakeHTTP) handlePostBySlug(vars map[string]interface{}) *http.Response {

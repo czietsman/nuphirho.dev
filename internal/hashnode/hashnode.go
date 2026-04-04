@@ -45,8 +45,10 @@ type Client struct {
 	DryRun        bool
 
 	// mutationsSent tracks mutations for test assertions
-	mutationsSent []string
-	requestCount  int
+	mutationsSent   []string
+	requestCount    int
+	publishedBySlug map[string]string
+	deletedBySlug   map[string]string
 }
 
 // New creates a new Hashnode client.
@@ -96,12 +98,14 @@ func (c *Client) fetchExistingPost(slug string) (*existingPost, error) {
 func (c *Client) Publish(input PostInput) (*PublishResult, error) {
 	canonicalURL := "https://blog.nuphirho.dev/" + input.Slug
 
-	// Check if post already exists
-	existingID, err := c.CheckPostBySlug(input.Slug)
-	if err != nil {
+	if err := c.loadPublishedInventory(); err != nil {
+		return nil, err
+	}
+	if err := c.loadDeletedInventory(); err != nil {
 		return nil, err
 	}
 
+	existingID := c.publishedBySlug[input.Slug]
 	if existingID != "" {
 		if c.DryRun {
 			return &PublishResult{Action: "update", PostID: existingID, DryRun: true}, nil
@@ -123,12 +127,7 @@ func (c *Client) Publish(input PostInput) (*PublishResult, error) {
 		return &PublishResult{Action: "update", PostID: existingID, URL: url}, nil
 	}
 
-	// Check for deleted post
-	deletedID, err := c.CheckDeletedBySlug(input.Slug)
-	if err != nil {
-		return nil, err
-	}
-
+	deletedID := c.deletedBySlug[input.Slug]
 	if deletedID != "" {
 		if c.DryRun {
 			return &PublishResult{Action: "restore_and_update", DeletedID: deletedID, DryRun: true}, nil
@@ -182,64 +181,62 @@ func (c *Client) CreateDraft(input PostInput) (*PublishResult, error) {
 
 // CheckPostBySlug queries for a published post by slug. Returns the post ID or empty string.
 func (c *Client) CheckPostBySlug(slug string) (string, error) {
-	query := `query($id: ObjectId!, $slug: String!) { publication(id: $id) { post(slug: $slug) { id } } }`
-	vars := map[string]string{"id": c.PublicationID, "slug": slug}
-
-	resp, err := c.doGraphQL(query, vars)
-	if err != nil {
+	if err := c.loadPublishedInventory(); err != nil {
 		return "", err
 	}
-
-	pub := resp.path("data", "publication")
-	if pub.isNull() {
-		return "", fmt.Errorf("publication not found")
-	}
-
-	post := pub.path("post")
-	if post.isNull() {
-		return "", nil
-	}
-
-	return post.str("id"), nil
+	return c.publishedBySlug[slug], nil
 }
 
 // CheckDeletedBySlug queries for deleted posts matching the given slug.
 func (c *Client) CheckDeletedBySlug(slug string) (string, error) {
-	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 50, filter: { deletedOnly: true }) { edges { node { id slug } } } } }`
+	if err := c.loadDeletedInventory(); err != nil {
+		return "", err
+	}
+	return c.deletedBySlug[slug], nil
+}
+
+func (c *Client) loadPublishedInventory() error {
+	if c.publishedBySlug != nil {
+		return nil
+	}
+
+	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 100) { edges { node { id slug } } } } }`
 	vars := map[string]string{"id": c.PublicationID}
 
 	resp, err := c.doGraphQL(query, vars)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	edges := resp.path("data", "publication", "posts", "edges")
-	if edges == nil {
-		return "", nil
+	pub := resp.path("data", "publication")
+	if pub.isNull() {
+		return fmt.Errorf("publication not found")
 	}
 
-	edgesList, ok := edges.raw.([]interface{})
-	if !ok {
-		return "", nil
+	c.publishedBySlug = edgesToSlugMap(resp.path("data", "publication", "posts", "edges"))
+	return nil
+}
+
+func (c *Client) loadDeletedInventory() error {
+	if c.deletedBySlug != nil {
+		return nil
 	}
 
-	for _, edge := range edgesList {
-		edgeMap, ok := edge.(map[string]interface{})
-		if !ok {
-			continue
-		}
-		node, ok := edgeMap["node"].(map[string]interface{})
-		if !ok {
-			continue
-		}
-		if nodeSlug, _ := node["slug"].(string); nodeSlug == slug {
-			if id, _ := node["id"].(string); id != "" {
-				return id, nil
-			}
-		}
+	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 100, filter: { deletedOnly: true }) { edges { node { id slug } } } } }`
+	vars := map[string]string{"id": c.PublicationID}
+
+	resp, err := c.doGraphQL(query, vars)
+	if err != nil {
+		return err
 	}
 
-	return "", nil
+	pub := resp.path("data", "publication")
+	if pub.isNull() {
+		return fmt.Errorf("publication not found")
+	}
+
+	c.deletedBySlug = edgesToSlugMap(resp.path("data", "publication", "posts", "edges"))
+	return nil
 }
 
 func (c *Client) checkDraftBySlug(slug string) (string, error) {
@@ -308,6 +305,13 @@ func (c *Client) publishPost(input PostInput, canonicalURL string) (string, stri
 	if postID == "" {
 		return "", "", fmt.Errorf("publishPost returned no post ID: %v", resp.raw)
 	}
+	if c.publishedBySlug == nil {
+		c.publishedBySlug = make(map[string]string)
+	}
+	c.publishedBySlug[input.Slug] = postID
+	if c.deletedBySlug != nil {
+		delete(c.deletedBySlug, input.Slug)
+	}
 
 	return postID, postURL, nil
 }
@@ -335,6 +339,10 @@ func (c *Client) updatePost(id string, input PostInput) (string, error) {
 	}
 
 	url := resp.path("data", "updatePost", "post").str("url")
+	if c.publishedBySlug == nil {
+		c.publishedBySlug = make(map[string]string)
+	}
+	c.publishedBySlug[input.Slug] = id
 	return url, nil
 }
 
@@ -356,6 +364,18 @@ func (c *Client) restorePost(id string) (string, error) {
 	if restoredID == "" {
 		return "", fmt.Errorf("restorePost returned no post ID: %v", resp.raw)
 	}
+	if c.deletedBySlug != nil {
+		for slug, deletedID := range c.deletedBySlug {
+			if deletedID == id {
+				delete(c.deletedBySlug, slug)
+				if c.publishedBySlug == nil {
+					c.publishedBySlug = make(map[string]string)
+				}
+				c.publishedBySlug[slug] = restoredID
+				break
+			}
+		}
+	}
 
 	return restoredID, nil
 }
@@ -365,14 +385,14 @@ func (c *Client) createDraft(input PostInput, canonicalURL string) (string, erro
 	query := `mutation($input: CreateDraftInput!) { createDraft(input: $input) { draft { id slug } } }`
 	vars := map[string]interface{}{
 		"input": map[string]interface{}{
-			"publicationId":    c.PublicationID,
-			"title":            input.Title,
-			"subtitle":         input.Subtitle,
-			"slug":             input.Slug,
-			"contentMarkdown":  input.Content,
-			"tags":             tagsJSON,
+			"publicationId":      c.PublicationID,
+			"title":              input.Title,
+			"subtitle":           input.Subtitle,
+			"slug":               input.Slug,
+			"contentMarkdown":    input.Content,
+			"tags":               tagsJSON,
 			"originalArticleURL": canonicalURL,
-			"settings":         map[string]interface{}{"slugOverridden": true},
+			"settings":           map[string]interface{}{"slugOverridden": true},
 		},
 	}
 
@@ -499,6 +519,36 @@ func buildTagsJSON(tags []string) []map[string]string {
 	for i, t := range tags {
 		result[i] = map[string]string{"slug": t, "name": t}
 	}
+	return result
+}
+
+func edgesToSlugMap(edges *gqlNode) map[string]string {
+	result := make(map[string]string)
+	if edges == nil {
+		return result
+	}
+
+	edgesList, ok := edges.raw.([]interface{})
+	if !ok {
+		return result
+	}
+
+	for _, edge := range edgesList {
+		edgeMap, ok := edge.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		node, ok := edgeMap["node"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+		slug, _ := node["slug"].(string)
+		id, _ := node["id"].(string)
+		if slug != "" && id != "" {
+			result[slug] = id
+		}
+	}
+
 	return result
 }
 
