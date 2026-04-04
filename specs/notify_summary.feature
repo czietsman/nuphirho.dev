@@ -22,8 +22,15 @@ Feature: Notify summary CLI
       | tags         | go         |
       | publish_date | 2026-04-02 |
     And the publish step exit code is 0
+    And the publish output is:
+      """
+      today-post: published
+        Hashnode: https://blog.nuphirho.dev/today-post (publish)
+        Dev.to:   https://dev.to/nuphirho/today-post (create)
+      """
     When the notify summary CLI runs
-    Then stdout contains "Published today: Today Post"
+    Then stdout contains "today-post: Hashnode publish"
+    And stdout contains "today-post: Dev.to create"
     And the exit code is 0
 
   Scenario: Today's failed publish is included
@@ -34,8 +41,29 @@ Feature: Notify summary CLI
       | tags         | go         |
       | publish_date | 2026-04-02 |
     And the publish step exit code is 2
+    And the publish output is:
+      """
+      today-post: failed
+        Error: hashnode: server error
+      """
     When the notify summary CLI runs
     Then stdout contains "Publish failed today: Today Post"
+    And the exit code is 0
+
+  Scenario: Unchanged posts are not included when there were no target changes
+    Given today's date is "2026-04-02"
+    And a post file "posts/today.md" with:
+      | title        | Today Post |
+      | slug         | today-post |
+      | tags         | go         |
+      | publish_date | 2026-04-02 |
+    And the publish step exit code is 0
+    And the publish output is:
+      """
+      today-post: unchanged
+      """
+    When the notify summary CLI runs
+    Then stdout is empty
     And the exit code is 0
 
   Scenario: No queue and no publish result produces no message

@@ -14,7 +14,9 @@ func TestPublishWorkflowIncludesDailyNotificationStep(t *testing.T) {
 	fragments := []string{
 		"id: publish_step",
 		"continue-on-error: true",
-		`./notify-summary --posts-dir posts --today "$(date -u +%F)" --publish-exit-code "${{ steps.publish_step.outputs.exit_code }}" > notification.txt`,
+		`./publish --tags-file tags.json --posts-dir posts | tee publish-output.txt`,
+		`exit_code=${PIPESTATUS[0]}`,
+		`./notify-summary --posts-dir posts --today "$(date -u +%F)" --publish-exit-code "${{ steps.publish_step.outputs.exit_code }}" --publish-output-file publish-output.txt > notification.txt`,
 		`if [ -s notification.txt ]; then`,
 		`./notify "$MESSAGE"`,
 		"github.event_name == 'schedule'",

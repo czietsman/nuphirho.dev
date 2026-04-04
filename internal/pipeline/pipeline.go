@@ -192,11 +192,6 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 		}
 		fr.HashnodeRes = hnResult
 
-		// Skip Dev.to if Hashnode reports the post is unchanged
-		if hnResult.Action == "unchanged" {
-			continue
-		}
-
 		// Cross-post to Dev.to (skip if client is nil or tags invalid)
 		if cfg.DevTo != nil && !skipDevTo {
 			dtInput := devto.ArticleInput{
@@ -236,11 +231,11 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 // --- Dry-run JSON output ---
 
 type dryRunEntry struct {
-	File        string        `json:"file"`
-	Frontmatter dryRunFM     `json:"frontmatter"`
-	Validation  dryRunVal    `json:"validation"`
-	Hashnode    *dryRunHN    `json:"hashnode"`
-	DevTo       *dryRunDT    `json:"devto"`
+	File        string    `json:"file"`
+	Frontmatter dryRunFM  `json:"frontmatter"`
+	Validation  dryRunVal `json:"validation"`
+	Hashnode    *dryRunHN `json:"hashnode"`
+	DevTo       *dryRunDT `json:"devto"`
 }
 
 type dryRunFM struct {
@@ -365,7 +360,8 @@ func writeSummary(w io.Writer, files []*FileResult) {
 			continue
 		}
 
-		if fr.HashnodeRes != nil && fr.HashnodeRes.Action == "unchanged" {
+		if fr.HashnodeRes != nil && fr.HashnodeRes.Action == "unchanged" &&
+			(fr.DevToRes == nil || fr.DevToRes.Action == "unchanged") {
 			fmt.Fprintf(w, "%s: unchanged\n", fr.Post.Slug)
 			unchanged++
 			continue

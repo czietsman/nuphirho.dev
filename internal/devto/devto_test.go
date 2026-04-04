@@ -28,8 +28,13 @@ type fakeHTTP struct {
 }
 
 type fakeArticle struct {
-	ID  int
-	URL string
+	ID        int
+	URL       string
+	Title     string
+	Content   string
+	Tags      []string
+	Published bool
+	Series    string
 }
 
 func newFakeHTTP() *fakeHTTP {
@@ -103,6 +108,11 @@ func (f *fakeHTTP) handleListArticles() *http.Response {
 			"id":            float64(article.ID),
 			"canonical_url": canonicalURL,
 			"url":           article.URL,
+			"title":         article.Title,
+			"body_markdown": article.Content,
+			"tags":          article.Tags,
+			"published":     article.Published,
+			"series":        article.Series,
 		})
 	}
 	b, _ := json.Marshal(articles)
@@ -183,8 +193,9 @@ func (dc *devtoContext) noArticleExistsWithCanonicalURL(url string) error {
 func (dc *devtoContext) anArticleExistsWithCanonicalURLAndID(url string, id int) error {
 	slug := strings.TrimPrefix(url, "https://blog.nuphirho.dev/")
 	dc.fake.articles[url] = fakeArticle{
-		ID:  id,
-		URL: "https://dev.to/nuphirho/" + slug,
+		ID:        id,
+		URL:       "https://dev.to/nuphirho/" + slug,
+		Published: true,
 	}
 	return nil
 }
