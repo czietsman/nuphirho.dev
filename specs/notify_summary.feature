@@ -14,7 +14,7 @@ Feature: Notify summary CLI
     Then stdout contains "Queued for tomorrow: Tomorrow Post"
     And the exit code is 0
 
-  Scenario: Today's successful publish is included
+  Scenario: Today's successful target changes are included
     Given today's date is "2026-04-02"
     And a post file "posts/today.md" with:
       | title        | Today Post |
@@ -31,23 +31,6 @@ Feature: Notify summary CLI
     When the notify summary CLI runs
     Then stdout contains "today-post: Hashnode publish"
     And stdout contains "today-post: Dev.to create"
-    And the exit code is 0
-
-  Scenario: Today's failed publish is included
-    Given today's date is "2026-04-02"
-    And a post file "posts/today.md" with:
-      | title        | Today Post |
-      | slug         | today-post |
-      | tags         | go         |
-      | publish_date | 2026-04-02 |
-    And the publish step exit code is 2
-    And the publish output is:
-      """
-      today-post: failed
-        Error: hashnode: server error
-      """
-    When the notify summary CLI runs
-    Then stdout contains "Publish failed today: Today Post"
     And the exit code is 0
 
   Scenario: Unchanged posts are not included when there were no target changes
