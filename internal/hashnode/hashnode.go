@@ -59,6 +59,39 @@ func New(token, publicationID string, httpClient HTTPClient) *Client {
 	}
 }
 
+// existingPost holds the data fetched from Hashnode for content comparison.
+type existingPost struct {
+	Title    string
+	Subtitle string
+	Content  string
+}
+
+// fetchExistingPost retrieves the current content of a published post by slug.
+func (c *Client) fetchExistingPost(slug string) (*existingPost, error) {
+	query := `query($id: ObjectId!, $slug: String!) { publication(id: $id) { post(slug: $slug) { title subtitle content { markdown } } } }`
+	vars := map[string]string{"id": c.PublicationID, "slug": slug}
+
+	resp, err := c.doGraphQL(query, vars)
+	if err != nil {
+		return nil, err
+	}
+
+	post := resp.path("data", "publication", "post")
+	if post.isNull() {
+		return nil, nil
+	}
+
+	title := post.str("title")
+	subtitle := post.str("subtitle")
+	contentNode := post.path("content")
+	content := ""
+	if !contentNode.isNull() {
+		content = contentNode.str("markdown")
+	}
+
+	return &existingPost{Title: title, Subtitle: subtitle, Content: content}, nil
+}
+
 // Publish handles the full publish flow: check existing, check deleted, restore, or create.
 func (c *Client) Publish(input PostInput) (*PublishResult, error) {
 	canonicalURL := "https://blog.nuphirho.dev/" + input.Slug
@@ -73,6 +106,16 @@ func (c *Client) Publish(input PostInput) (*PublishResult, error) {
 		if c.DryRun {
 			return &PublishResult{Action: "update", PostID: existingID, DryRun: true}, nil
 		}
+
+		// Fetch existing content and compare before updating
+		existing, err := c.fetchExistingPost(input.Slug)
+		if err != nil {
+			return nil, err
+		}
+		if existing != nil && existing.Title == input.Title && existing.Subtitle == input.Subtitle && existing.Content == input.Content {
+			return &PublishResult{Action: "unchanged", PostID: existingID}, nil
+		}
+
 		url, err := c.updatePost(existingID, input)
 		if err != nil {
 			return nil, err

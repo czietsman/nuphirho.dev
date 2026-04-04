@@ -237,3 +237,30 @@ Feature: Hashnode client
       | seriesId | series-002                 |
     Then an updatePost mutation is sent with ID "post-050"
     And the update request includes series ID "series-002"
+
+  # --- Skip unchanged ---
+
+  Scenario: Skip update when content has not changed
+    Given a post exists with slug "unchanged-post" and ID "post-100"
+    And the existing post "unchanged-post" has title "Same Title" and subtitle "Same Sub" and content "Same content."
+    When the pipeline publishes a post:
+      | title    | Same Title                 |
+      | slug     | unchanged-post             |
+      | subtitle | Same Sub                   |
+      | content  | Same content.              |
+      | tags     | go                         |
+    Then no updatePost mutation is sent
+    And the result action is "unchanged"
+    And the result post ID is "post-100"
+
+  Scenario: Update when content has changed
+    Given a post exists with slug "changed-post" and ID "post-101"
+    And the existing post "changed-post" has title "Old Title" and subtitle "Old Sub" and content "Old content."
+    When the pipeline publishes a post:
+      | title    | New Title                  |
+      | slug     | changed-post               |
+      | subtitle | New Sub                    |
+      | content  | New content.               |
+      | tags     | go                         |
+    Then an updatePost mutation is sent with ID "post-101"
+    And the response contains post URL "https://blog.example.com/changed-post"

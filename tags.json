@@ -11,5 +11,8 @@
   "code-review": { "devto": "codereview" },
   "formal-methods": { "devto": "formalmethods" },
   "scientific-method": { "devto": "scientificmethod" },
-  "specification-driven-development": { "devto": "sdd" }
+  "specification-driven-development": { "devto": "sdd" },
+  "ai-governance": { "devto": "aigovernance" },
+  "software-verification": { "devto": "softwareverification" },
+  "collaboration": { "devto": "collaboration" }
 }

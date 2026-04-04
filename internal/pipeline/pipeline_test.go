@@ -20,10 +20,11 @@ import (
 // --- Fakes ---
 
 type fakeHN struct {
-	publishCalls []string // slugs
-	publishErr   error
-	slugErrors   map[string]error
-	lastInputs   map[string]hashnode.PostInput // slug -> last input
+	publishCalls    []string // slugs
+	publishErr      error
+	slugErrors      map[string]error
+	unchangedSlugs  map[string]bool // slugs that should return "unchanged"
+	lastInputs      map[string]hashnode.PostInput // slug -> last input
 }
 
 func (f *fakeHN) Publish(input hashnode.PostInput) (*hashnode.PublishResult, error) {
@@ -37,6 +38,12 @@ func (f *fakeHN) Publish(input hashnode.PostInput) (*hashnode.PublishResult, err
 	}
 	if f.publishErr != nil {
 		return nil, f.publishErr
+	}
+	if f.unchangedSlugs != nil && f.unchangedSlugs[input.Slug] {
+		return &hashnode.PublishResult{
+			Action: "unchanged",
+			PostID: "post-001",
+		}, nil
 	}
 	return &hashnode.PublishResult{
 		Action: "publish",
@@ -125,7 +132,7 @@ type pipelineCtx struct {
 
 func (pc *pipelineCtx) reset() {
 	pc.glossary = nil
-	pc.hn = &fakeHN{slugErrors: make(map[string]error)}
+	pc.hn = &fakeHN{slugErrors: make(map[string]error), unchangedSlugs: make(map[string]bool)}
 	pc.dt = &fakeDT{slugErrors: make(map[string]error)}
 	pc.prober = &fakeProber{}
 	pc.seriesResolver = &fakeSeriesResolver{}
@@ -172,6 +179,11 @@ func (pc *pipelineCtx) hashnodePublishWillFailForSlugWith(slug, errMsg string) e
 
 func (pc *pipelineCtx) devtoCrossPostWillFailWith(errMsg string) error {
 	pc.dt.createErr = fmt.Errorf("%s", errMsg)
+	return nil
+}
+
+func (pc *pipelineCtx) hashnodeReportsSlugAsUnchanged(slug string) error {
+	pc.hn.unchangedSlugs[slug] = true
 	return nil
 }
 
@@ -458,6 +470,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^Hashnode publish will fail for slug "([^"]*)" with "([^"]*)"$`, pc.hashnodePublishWillFailForSlugWith)
 	ctx.Step(`^Dev\.to cross-post will fail with "([^"]*)"$`, pc.devtoCrossPostWillFailWith)
 	ctx.Step(`^series resolution will fail with "([^"]*)"$`, pc.seriesResolutionWillFailWith)
+	ctx.Step(`^Hashnode reports slug "([^"]*)" as unchanged$`, pc.hashnodeReportsSlugAsUnchanged)
 	ctx.Step(`^dry-run mode is enabled$`, pc.dryRunModeIsEnabled)
 
 	// When

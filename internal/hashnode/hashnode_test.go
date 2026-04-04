@@ -15,11 +15,18 @@ import (
 )
 
 // fakeHTTP implements hashnode.HTTPClient for testing.
+type existingPostData struct {
+	Title    string
+	Subtitle string
+	Content  string
+}
+
 type fakeHTTP struct {
-	posts        map[string]string // slug -> id for published posts
-	deletedPosts map[string]string // slug -> id for deleted posts
-	drafts       map[string]string // slug -> id for drafts
-	series       map[string]string // name -> id for series
+	posts        map[string]string          // slug -> id for published posts
+	postData     map[string]existingPostData // slug -> existing content
+	deletedPosts map[string]string          // slug -> id for deleted posts
+	drafts       map[string]string          // slug -> id for drafts
+	series       map[string]string          // name -> id for series
 	authError    bool
 	pubNotFound  bool
 	unreachable  bool
@@ -30,6 +37,7 @@ type fakeHTTP struct {
 func newFakeHTTP() *fakeHTTP {
 	return &fakeHTTP{
 		posts:        make(map[string]string),
+		postData:     make(map[string]existingPostData),
 		deletedPosts: make(map[string]string),
 		drafts:       make(map[string]string),
 		series:       make(map[string]string),
@@ -66,6 +74,8 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 
 	// Route based on query content
 	switch {
+	case strings.Contains(query, "content") && strings.Contains(query, "post(slug:"):
+		return f.handlePostContentBySlug(vars), nil
 	case strings.Contains(query, "post(slug:"):
 		return f.handlePostBySlug(vars), nil
 	case strings.Contains(query, "deletedOnly"):
@@ -105,6 +115,34 @@ func (f *fakeHTTP) handlePostBySlug(vars map[string]interface{}) *http.Response 
 		"data": map[string]interface{}{
 			"publication": map[string]interface{}{
 				"post": map[string]interface{}{"id": id},
+			},
+		},
+	})
+}
+
+func (f *fakeHTTP) handlePostContentBySlug(vars map[string]interface{}) *http.Response {
+	slug := extractVar(vars, "slug")
+	id, found := f.posts[slug]
+	if !found {
+		return jsonResponse(map[string]interface{}{
+			"data": map[string]interface{}{
+				"publication": map[string]interface{}{
+					"post": nil,
+				},
+			},
+		})
+	}
+	data, hasData := f.postData[slug]
+	post := map[string]interface{}{"id": id}
+	if hasData {
+		post["title"] = data.Title
+		post["subtitle"] = data.Subtitle
+		post["content"] = map[string]interface{}{"markdown": data.Content}
+	}
+	return jsonResponse(map[string]interface{}{
+		"data": map[string]interface{}{
+			"publication": map[string]interface{}{
+				"post": post,
 			},
 		},
 	})
@@ -598,6 +636,44 @@ func (hc *hashnodeContext) theSeriesIDIs(id string) error {
 	return hc.theSeriesIsFoundWithID(id)
 }
 
+func (hc *hashnodeContext) theExistingPostHasTitleSubtitleContent(slug, title, subtitle, content string) error {
+	hc.fake.postData[slug] = existingPostData{
+		Title:    title,
+		Subtitle: subtitle,
+		Content:  content,
+	}
+	return nil
+}
+
+func (hc *hashnodeContext) theResultActionIs(action string) error {
+	if hc.result == nil {
+		return fmt.Errorf("no result (error: %v)", hc.err)
+	}
+	if hc.result.Action != action {
+		return fmt.Errorf("expected action %q, got %q", action, hc.result.Action)
+	}
+	return nil
+}
+
+func (hc *hashnodeContext) theResultPostIDIs(id string) error {
+	if hc.result == nil {
+		return fmt.Errorf("no result (error: %v)", hc.err)
+	}
+	if hc.result.PostID != id {
+		return fmt.Errorf("expected post ID %q, got %q", id, hc.result.PostID)
+	}
+	return nil
+}
+
+func (hc *hashnodeContext) noUpdatePostMutationIsSent() error {
+	for _, m := range hc.client.MutationsSent() {
+		if strings.HasPrefix(m, "updatePost:") {
+			return fmt.Errorf("expected no updatePost mutation, but got: %v", hc.client.MutationsSent())
+		}
+	}
+	return nil
+}
+
 func (hc *hashnodeContext) thePipelinePublishesAPostWithSeries(table *godog.Table) error {
 	input := tableToPostInput(table)
 	hc.result, hc.err = hc.client.Publish(input)
@@ -664,6 +740,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the Hashnode API returns an authentication error$`, hc.theHashnodeAPIReturnsAnAuthenticationError)
 	ctx.Step(`^the Hashnode API returns a publication not found error$`, hc.theHashnodeAPIReturnsAPublicationNotFoundError)
 	ctx.Step(`^the Hashnode API is unreachable$`, hc.theHashnodeAPIIsUnreachable)
+	ctx.Step(`^the existing post "([^"]*)" has title "([^"]*)" and subtitle "([^"]*)" and content "([^"]*)"$`, hc.theExistingPostHasTitleSubtitleContent)
 	ctx.Step(`^a series exists with name "([^"]*)" and ID "([^"]*)"$`, hc.aSeriesExistsWithNameAndID)
 	ctx.Step(`^no series exists with name "([^"]*)"$`, hc.noSeriesExistsWithName)
 
@@ -705,6 +782,9 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the series ID is "([^"]*)"$`, hc.theSeriesIDIs)
 	ctx.Step(`^the publish request includes series ID "([^"]*)"$`, hc.thePublishRequestIncludesSeriesID)
 	ctx.Step(`^the update request includes series ID "([^"]*)"$`, hc.theUpdateRequestIncludesSeriesID)
+	ctx.Step(`^no updatePost mutation is sent$`, hc.noUpdatePostMutationIsSent)
+	ctx.Step(`^the result action is "([^"]*)"$`, hc.theResultActionIs)
+	ctx.Step(`^the result post ID is "([^"]*)"$`, hc.theResultPostIDIs)
 }
 
 func TestFeatures(t *testing.T) {
