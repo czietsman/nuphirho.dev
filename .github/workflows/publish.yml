@@ -30,31 +30,11 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: Find changed posts
-        id: changed
-        run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            POSTS=$(git diff --name-only --diff-filter=ACM HEAD~1 HEAD -- 'posts/*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            INPUT="${{ github.event.inputs.posts }}"
-            if [ -n "$INPUT" ]; then
-              POSTS=$(echo "$INPUT" | tr ' ' '\n' | jq -R -s -c 'split("\n") | map(select(length > 0))')
-            else
-              POSTS=$(find posts -name '*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
-            fi
-          else
-            # schedule: process all posts, pipeline skips drafts and future-dated
-            POSTS=$(find posts -name '*.md' | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          fi
-          echo "posts=$POSTS" >> "$GITHUB_OUTPUT"
-
       - name: Build publish tool
-        if: steps.changed.outputs.posts != '[]'
         run: go build -o publish ./cmd/publish/
 
       - name: Publish posts
         id: publish_step
-        if: steps.changed.outputs.posts != '[]'
         continue-on-error: true
         env:
           HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
@@ -62,9 +42,12 @@ jobs:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: |
           set +e
-          FILES=$(echo '${{ steps.changed.outputs.posts }}' | jq -r '.[]')
-          ./publish --tags-file tags.json $FILES
-          exit_code=$?
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.posts }}" ]; then
+            ./publish --tags-file tags.json --posts-dir posts ${{ github.event.inputs.posts }} | tee publish-output.txt
+          else
+            ./publish --tags-file tags.json --posts-dir posts | tee publish-output.txt
+          fi
+          exit_code=${PIPESTATUS[0]}
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
           exit 0
 
@@ -78,7 +61,7 @@ jobs:
         id: notification
         if: github.event_name == 'schedule'
         run: |
-          ./notify-summary --posts-dir posts --today "$(date -u +%F)" --publish-exit-code "${{ steps.publish_step.outputs.exit_code }}" > notification.txt
+          ./notify-summary --posts-dir posts --today "$(date -u +%F)" --publish-exit-code "${{ steps.publish_step.outputs.exit_code }}" --publish-output-file publish-output.txt > notification.txt
           if [ -s notification.txt ]; then
             echo "has_message=true" >> "$GITHUB_OUTPUT"
             {
