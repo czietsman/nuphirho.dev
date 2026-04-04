@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"regexp"
+	"slices"
 	"strings"
 )
 
@@ -29,7 +30,7 @@ type ArticleInput struct {
 
 // PublishResult holds the outcome of a create or update operation.
 type PublishResult struct {
-	Action          string // "create", "update"
+	Action          string // "create", "update", "unchanged"
 	ArticleID       int
 	URL             string
 	Published       bool
@@ -46,12 +47,24 @@ type Client struct {
 
 	// requestsMade tracks requests for test assertions
 	requestsMade []requestRecord
+	inventory    map[string]articleRecord
 }
 
 type requestRecord struct {
 	Method string
 	Path   string
 	Body   map[string]interface{}
+}
+
+type articleRecord struct {
+	ID           int
+	URL          string
+	Title        string
+	Content      string
+	Tags         []string
+	Published    bool
+	Series       string
+	CanonicalURL string
 }
 
 // New creates a new Dev.to client.
@@ -86,7 +99,7 @@ func (c *Client) CreateArticle(input ArticleInput) (*PublishResult, error) {
 	content, embedCount := convertEmbeds(input.Content)
 
 	// Look up existing article by canonical URL
-	existingID, err := c.findByCanonicalURL(canonicalURL)
+	existing, err := c.findByCanonicalURL(canonicalURL)
 	if err != nil {
 		return nil, err
 	}
@@ -103,17 +116,26 @@ func (c *Client) CreateArticle(input ArticleInput) (*PublishResult, error) {
 	}
 	body := map[string]interface{}{"article": articleBody}
 
-	if existingID > 0 {
+	if existing != nil {
+		if existing.matches(input.Title, content, input.Tags, input.Published, input.Series) {
+			return &PublishResult{
+				Action:          "unchanged",
+				ArticleID:       existing.ID,
+				URL:             existing.URL,
+				Published:       input.Published,
+				EmbedsConverted: embedCount,
+			}, nil
+		}
 		if c.DryRun {
 			return &PublishResult{
 				Action:          "update",
-				ArticleID:       existingID,
+				ArticleID:       existing.ID,
 				Published:       input.Published,
 				EmbedsConverted: embedCount,
 				DryRun:          true,
 			}, nil
 		}
-		return c.updateArticle(existingID, body, embedCount)
+		return c.updateArticle(existing.ID, body, embedCount, input.Published)
 	}
 
 	if c.DryRun {
@@ -124,57 +146,85 @@ func (c *Client) CreateArticle(input ArticleInput) (*PublishResult, error) {
 			DryRun:          true,
 		}, nil
 	}
-	return c.createArticle(body, embedCount)
+	return c.createArticle(body, embedCount, input.Published)
 }
 
-func (c *Client) findByCanonicalURL(canonicalURL string) (int, error) {
+func (c *Client) findByCanonicalURL(canonicalURL string) (*articleRecord, error) {
+	if err := c.loadInventory(); err != nil {
+		return nil, err
+	}
+	if article, ok := c.inventory[canonicalURL]; ok {
+		copy := article
+		return &copy, nil
+	}
+	return nil, nil
+}
+
+func (c *Client) loadInventory() error {
+	if c.inventory != nil {
+		return nil
+	}
+
 	req, err := http.NewRequest("GET", c.Endpoint+"/api/articles/me/all", nil)
 	if err != nil {
-		return 0, fmt.Errorf("creating request: %w", err)
+		return fmt.Errorf("creating request: %w", err)
 	}
 	req.Header.Set("api-key", c.APIKey)
 
 	resp, err := c.HTTP.Do(req)
 	if err != nil {
 		if strings.Contains(err.Error(), "connection") {
-			return 0, fmt.Errorf("connection error: %w", err)
+			return fmt.Errorf("connection error: %w", err)
 		}
-		return 0, fmt.Errorf("HTTP request failed: %w", err)
+		return fmt.Errorf("HTTP request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return 0, fmt.Errorf("reading response: %w", err)
+		return fmt.Errorf("reading response: %w", err)
 	}
 
 	if resp.StatusCode == 401 {
-		return 0, fmt.Errorf("authentication failed")
+		return fmt.Errorf("authentication failed")
 	}
 	if resp.StatusCode == 429 {
-		return 0, fmt.Errorf("rate limited")
+		return fmt.Errorf("rate limited")
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return 0, fmt.Errorf("API error (HTTP %d): %s", resp.StatusCode, string(respBody))
+		return fmt.Errorf("API error (HTTP %d): %s", resp.StatusCode, string(respBody))
 	}
 
 	var articles []map[string]interface{}
 	if err := json.Unmarshal(respBody, &articles); err != nil {
-		return 0, fmt.Errorf("parsing response: %w", err)
+		return fmt.Errorf("parsing response: %w", err)
 	}
 
+	c.inventory = make(map[string]articleRecord, len(articles))
 	for _, article := range articles {
-		if cu, _ := article["canonical_url"].(string); cu == canonicalURL {
-			if id, ok := article["id"].(float64); ok {
-				return int(id), nil
-			}
+		cu, _ := article["canonical_url"].(string)
+		if cu == "" {
+			continue
 		}
+		record := articleRecord{
+			URL:          stringValue(article["url"]),
+			Title:        stringValue(article["title"]),
+			Content:      stringValue(article["body_markdown"]),
+			Tags:         firstNonEmptyTags(article["tag_list"], article["tags"]),
+			Published:    boolValue(article["published"]),
+			Series:       stringValue(article["series"]),
+			CanonicalURL: cu,
+		}
+		if id, ok := article["id"].(float64); ok {
+			record.ID = int(id)
+		}
+		c.inventory[cu] = record
 	}
 
-	return 0, nil
+	return nil
 }
 
-func (c *Client) createArticle(body map[string]interface{}, embedCount int) (*PublishResult, error) {
+func (c *Client) createArticle(body map[string]interface{}, embedCount int, published bool) (*PublishResult, error) {
 	resp, err := c.doRequest("POST", "/api/articles", body)
 	if err != nil {
 		return nil, err
@@ -186,12 +236,12 @@ func (c *Client) createArticle(body map[string]interface{}, embedCount int) (*Pu
 		Action:          "create",
 		ArticleID:       int(id),
 		URL:             url,
-		Published:       true,
+		Published:       published,
 		EmbedsConverted: embedCount,
 	}, nil
 }
 
-func (c *Client) updateArticle(id int, body map[string]interface{}, embedCount int) (*PublishResult, error) {
+func (c *Client) updateArticle(id int, body map[string]interface{}, embedCount int, published bool) (*PublishResult, error) {
 	path := fmt.Sprintf("/api/articles/%d", id)
 	resp, err := c.doRequest("PUT", path, body)
 	if err != nil {
@@ -203,7 +253,7 @@ func (c *Client) updateArticle(id int, body map[string]interface{}, embedCount i
 		Action:          "update",
 		ArticleID:       id,
 		URL:             url,
-		Published:       true,
+		Published:       published,
 		EmbedsConverted: embedCount,
 	}, nil
 }
@@ -258,4 +308,49 @@ func (c *Client) doRequest(method, path string, body map[string]interface{}) (ma
 // RequestsMade returns the request records for test assertions.
 func (c *Client) RequestsMade() []requestRecord {
 	return c.requestsMade
+}
+
+func (a articleRecord) matches(title, content string, tags []string, published bool, series string) bool {
+	return a.Title == title &&
+		a.Content == content &&
+		a.Published == published &&
+		a.Series == series &&
+		slices.Equal(a.Tags, tags)
+}
+
+func stringValue(v interface{}) string {
+	s, _ := v.(string)
+	return s
+}
+
+func boolValue(v interface{}) bool {
+	b, _ := v.(bool)
+	return b
+}
+
+func firstNonEmptyTags(values ...interface{}) []string {
+	for _, value := range values {
+		tags := stringSliceValue(value)
+		if len(tags) > 0 {
+			return tags
+		}
+	}
+	return nil
+}
+
+func stringSliceValue(v interface{}) []string {
+	switch tags := v.(type) {
+	case []string:
+		return append([]string(nil), tags...)
+	case []interface{}:
+		result := make([]string, 0, len(tags))
+		for _, tag := range tags {
+			if s, ok := tag.(string); ok && s != "" {
+				result = append(result, s)
+			}
+		}
+		return result
+	default:
+		return nil
+	}
 }

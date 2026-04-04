@@ -13,12 +13,13 @@ import (
 )
 
 type notifySummaryCtx struct {
-	tmpDir      string
-	today       string
-	exitCode    int
-	stdout      string
-	stderr      string
-	publishCode int
+	tmpDir        string
+	today         string
+	exitCode      int
+	stdout        string
+	stderr        string
+	publishCode   int
+	publishOutput string
 }
 
 func (nc *notifySummaryCtx) reset() {
@@ -32,6 +33,7 @@ func (nc *notifySummaryCtx) reset() {
 	nc.stdout = ""
 	nc.stderr = ""
 	nc.publishCode = 0
+	nc.publishOutput = ""
 }
 
 func (nc *notifySummaryCtx) cleanup() {
@@ -60,11 +62,26 @@ func (nc *notifySummaryCtx) thePublishStepExitCodeIs(code int) error {
 	return nil
 }
 
+func (nc *notifySummaryCtx) thePublishOutputIs(output string) error {
+	nc.publishOutput = strings.ReplaceAll(output, `\n`, "\n")
+	return nil
+}
+
 func (nc *notifySummaryCtx) theNotifySummaryCLIRuns() error {
+	publishOutputPath := filepath.Join(nc.tmpDir, "publish-output.txt")
+	if nc.publishOutput != "" {
+		if err := os.WriteFile(publishOutputPath, []byte(nc.publishOutput), 0644); err != nil {
+			return err
+		}
+	}
+
 	args := []string{
 		"--posts-dir", filepath.Join(nc.tmpDir, "posts"),
 		"--today", nc.today,
 		"--publish-exit-code", intToString(nc.publishCode),
+	}
+	if nc.publishOutput != "" {
+		args = append(args, "--publish-output-file", publishOutputPath)
 	}
 
 	var stdoutBuf, stderrBuf bytes.Buffer
@@ -121,6 +138,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^a post file "([^"]*)" with:$`, nc.aPostFileWith)
 	ctx.Step(`^today's date is "([^"]*)"$`, nc.todaysDateIs)
 	ctx.Step(`^the publish step exit code is (\d+)$`, nc.thePublishStepExitCodeIs)
+	ctx.Step(`^the publish output is:$`, nc.thePublishOutputIs)
 	ctx.Step(`^the notify summary CLI runs$`, nc.theNotifySummaryCLIRuns)
 	ctx.Step(`^stdout contains "([^"]*)"$`, nc.stdoutContains)
 	ctx.Step(`^stdout is empty$`, nc.stdoutIsEmpty)

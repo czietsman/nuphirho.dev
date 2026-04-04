@@ -277,7 +277,7 @@ Feature: Pipeline orchestrator
 
   # --- Unchanged ---
 
-  Scenario: Unchanged post is reported and Dev.to is skipped
+  Scenario: Unchanged Hashnode post still reconciles Dev.to
     Given a post file "posts/unchanged.md" with:
       | title   | Unchanged Post |
       | slug    | unchanged-post |
@@ -286,8 +286,8 @@ Feature: Pipeline orchestrator
     And Hashnode reports slug "unchanged-post" as unchanged
     When the pipeline runs
     Then Hashnode publish is called with slug "unchanged-post"
-    And Dev.to cross-post is not called
-    And the summary contains "unchanged"
+    And Dev.to cross-post is called with slug "unchanged-post"
+    And the summary contains "published"
     And the exit code is 0
 
   # --- Probe ---

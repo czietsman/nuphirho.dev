@@ -29,6 +29,15 @@ Feature: CLI wrapper
     Then stdout contains "[]"
     And the exit code is 0
 
+  Scenario: No explicit files triggers post directory scan
+    Given valid credentials via environment variables
+    And a post file "scanned.md" with:
+      | title | Scanned Post |
+      | slug  | scanned-post |
+      | tags  | go           |
+    When the CLI runs
+    Then the exit code is 0
+
   # --- Publish ---
 
   Scenario: Valid post file publishes successfully

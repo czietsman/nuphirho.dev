@@ -7,6 +7,9 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
+	"sort"
+	"strings"
 
 	"github.com/czietsman/nuphirho.dev/internal/devto"
 	"github.com/czietsman/nuphirho.dev/internal/hashnode"
@@ -36,6 +39,7 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 	dryRun := fs.Bool("dry-run", false, "Validate and report without publishing (JSON output)")
 	skipDevTo := fs.Bool("skip-devto", false, "Skip Dev.to cross-posting (Hashnode only)")
 	tagsFile := fs.String("tags-file", "tags.json", "Path to tag glossary")
+	postsDir := fs.String("posts-dir", "posts", "Directory to scan for markdown posts when no files are specified")
 	hnToken := fs.String("hashnode-token", "", "Hashnode API token (or HASHNODE_TOKEN env)")
 	hnPubID := fs.String("hashnode-publication", "", "Hashnode publication ID (or HASHNODE_PUBLICATION_ID env)")
 	dtKey := fs.String("devto-api-key", "", "Dev.to API key (or DEVTO_API_KEY env)")
@@ -82,6 +86,15 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 
 	// Collect post files from remaining args
 	filePaths := fs.Args()
+
+	if len(filePaths) == 0 {
+		discovered, err := discoverPostFiles(*postsDir)
+		if err != nil {
+			fmt.Fprintf(stderr, "error: discovering posts: %s\n", err)
+			return 1
+		}
+		filePaths = discovered
+	}
 
 	if len(filePaths) == 0 {
 		if *dryRun {
@@ -148,6 +161,36 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 
 	result := pipeline.Run(cfg, postFiles, stdout)
 	return result.ExitCode
+}
+
+func discoverPostFiles(postsDir string) ([]string, error) {
+	var files []string
+
+	if _, err := os.Stat(postsDir); err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	err := filepath.WalkDir(postsDir, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		if strings.EqualFold(filepath.Ext(path), ".md") {
+			files = append(files, path)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	sort.Strings(files)
+	return files, nil
 }
 
 // realProber wraps probe.ProbeAll with real API adapters.
