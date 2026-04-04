@@ -192,6 +192,11 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 		}
 		fr.HashnodeRes = hnResult
 
+		// Skip Dev.to if Hashnode reports the post is unchanged
+		if hnResult.Action == "unchanged" {
+			continue
+		}
+
 		// Cross-post to Dev.to (skip if client is nil or tags invalid)
 		if cfg.DevTo != nil && !skipDevTo {
 			dtInput := devto.ArticleInput{
@@ -330,6 +335,7 @@ func writeDryRunJSON(w io.Writer, files []*FileResult) {
 
 func writeSummary(w io.Writer, files []*FileResult) {
 	published := 0
+	unchanged := 0
 	skipped := 0
 	failed := 0
 
@@ -359,6 +365,12 @@ func writeSummary(w io.Writer, files []*FileResult) {
 			continue
 		}
 
+		if fr.HashnodeRes != nil && fr.HashnodeRes.Action == "unchanged" {
+			fmt.Fprintf(w, "%s: unchanged\n", fr.Post.Slug)
+			unchanged++
+			continue
+		}
+
 		fmt.Fprintf(w, "%s: published\n", fr.Post.Slug)
 		if fr.HashnodeRes != nil {
 			fmt.Fprintf(w, "  Hashnode: %s (%s)\n", fr.HashnodeRes.URL, fr.HashnodeRes.Action)
@@ -384,6 +396,9 @@ func writeSummary(w io.Writer, files []*FileResult) {
 	parts := []string{}
 	if published > 0 {
 		parts = append(parts, fmt.Sprintf("%d published", published))
+	}
+	if unchanged > 0 {
+		parts = append(parts, fmt.Sprintf("%d unchanged", unchanged))
 	}
 	if skipped > 0 {
 		parts = append(parts, fmt.Sprintf("%d skipped", skipped))
