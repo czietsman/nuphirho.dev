@@ -109,12 +109,8 @@ func buildSummary(postsDir string, today time.Time, publishExitCode int, publish
 	}
 	lines = append(lines, changeLines...)
 
-	if len(todayTitles) > 0 {
-		if publishOutputFile == "" && publishExitCode == 0 {
-			lines = append(lines, fmt.Sprintf("Published today: %s", strings.Join(todayTitles, ", ")))
-		} else if publishExitCode != 0 {
+	if len(todayTitles) > 0 && publishExitCode != 0 {
 			lines = append(lines, fmt.Sprintf("Publish failed today: %s", strings.Join(todayTitles, ", ")))
-		}
 	}
 
 	if len(lines) == 0 {
