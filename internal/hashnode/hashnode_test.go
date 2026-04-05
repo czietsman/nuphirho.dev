@@ -9,24 +9,24 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/cucumber/godog"
 	"github.com/czietsman/nuphirho.dev/internal/hashnode"
 )
 
 // fakeHTTP implements hashnode.HTTPClient for testing.
-type existingPostData struct {
-	Title    string
-	Subtitle string
-	Content  string
+type publishedPostData struct {
+	ID          string
+	PublishedAt string
+	UpdatedAt   string
 }
 
 type fakeHTTP struct {
-	posts        map[string]string           // slug -> id for published posts
-	postData     map[string]existingPostData // slug -> existing content
-	deletedPosts map[string]string           // slug -> id for deleted posts
-	drafts       map[string]string           // slug -> id for drafts
-	series       map[string]string           // name -> id for series
+	posts        map[string]publishedPostData // slug -> published post metadata
+	deletedPosts map[string]string            // slug -> id for deleted posts
+	drafts       map[string]string            // slug -> id for drafts
+	series       map[string]string            // name -> id for series
 	authError    bool
 	pubNotFound  bool
 	unreachable  bool
@@ -36,8 +36,7 @@ type fakeHTTP struct {
 
 func newFakeHTTP() *fakeHTTP {
 	return &fakeHTTP{
-		posts:        make(map[string]string),
-		postData:     make(map[string]existingPostData),
+		posts:        make(map[string]publishedPostData),
 		deletedPosts: make(map[string]string),
 		drafts:       make(map[string]string),
 		series:       make(map[string]string),
@@ -76,10 +75,6 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 	switch {
 	case strings.Contains(query, "posts(first:") && !strings.Contains(query, "deletedOnly"):
 		return f.handlePublishedPosts(), nil
-	case strings.Contains(query, "content") && strings.Contains(query, "post(slug:"):
-		return f.handlePostContentBySlug(vars), nil
-	case strings.Contains(query, "post(slug:"):
-		return f.handlePostBySlug(vars), nil
 	case strings.Contains(query, "deletedOnly"):
 		return f.handleDeletedPosts(), nil
 	case strings.Contains(query, "drafts(first:"):
@@ -103,64 +98,20 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 
 func (f *fakeHTTP) handlePublishedPosts() *http.Response {
 	edges := make([]interface{}, 0)
-	for slug, id := range f.posts {
+	for slug, post := range f.posts {
 		edges = append(edges, map[string]interface{}{
-			"node": map[string]interface{}{"id": id, "slug": slug},
+			"node": map[string]interface{}{
+				"id":          post.ID,
+				"slug":        slug,
+				"publishedAt": post.PublishedAt,
+				"updatedAt":   post.UpdatedAt,
+			},
 		})
 	}
 	return jsonResponse(map[string]interface{}{
 		"data": map[string]interface{}{
 			"publication": map[string]interface{}{
 				"posts": map[string]interface{}{"edges": edges},
-			},
-		},
-	})
-}
-
-func (f *fakeHTTP) handlePostBySlug(vars map[string]interface{}) *http.Response {
-	slug := extractVar(vars, "slug")
-	id, found := f.posts[slug]
-	if !found {
-		return jsonResponse(map[string]interface{}{
-			"data": map[string]interface{}{
-				"publication": map[string]interface{}{
-					"post": nil,
-				},
-			},
-		})
-	}
-	return jsonResponse(map[string]interface{}{
-		"data": map[string]interface{}{
-			"publication": map[string]interface{}{
-				"post": map[string]interface{}{"id": id},
-			},
-		},
-	})
-}
-
-func (f *fakeHTTP) handlePostContentBySlug(vars map[string]interface{}) *http.Response {
-	slug := extractVar(vars, "slug")
-	id, found := f.posts[slug]
-	if !found {
-		return jsonResponse(map[string]interface{}{
-			"data": map[string]interface{}{
-				"publication": map[string]interface{}{
-					"post": nil,
-				},
-			},
-		})
-	}
-	data, hasData := f.postData[slug]
-	post := map[string]interface{}{"id": id}
-	if hasData {
-		post["title"] = data.Title
-		post["subtitle"] = data.Subtitle
-		post["content"] = map[string]interface{}{"markdown": data.Content}
-	}
-	return jsonResponse(map[string]interface{}{
-		"data": map[string]interface{}{
-			"publication": map[string]interface{}{
-				"post": post,
 			},
 		},
 	})
@@ -340,7 +291,20 @@ func (hc *hashnodeContext) noPostExistsWithSlug(slug string) error {
 }
 
 func (hc *hashnodeContext) aPostExistsWithSlugAndID(slug, id string) error {
-	hc.fake.posts[slug] = id
+	hc.fake.posts[slug] = publishedPostData{
+		ID:          id,
+		PublishedAt: "2026-03-01T00:00:00Z",
+	}
+	return nil
+}
+
+func (hc *hashnodeContext) thePublishedPostHasUpdatedAt(slug, updatedAt string) error {
+	post, ok := hc.fake.posts[slug]
+	if !ok {
+		return fmt.Errorf("no fake post for slug %q", slug)
+	}
+	post.UpdatedAt = updatedAt
+	hc.fake.posts[slug] = post
 	return nil
 }
 
@@ -654,15 +618,6 @@ func (hc *hashnodeContext) theSeriesIDIs(id string) error {
 	return hc.theSeriesIsFoundWithID(id)
 }
 
-func (hc *hashnodeContext) theExistingPostHasTitleSubtitleContent(slug, title, subtitle, content string) error {
-	hc.fake.postData[slug] = existingPostData{
-		Title:    title,
-		Subtitle: subtitle,
-		Content:  content,
-	}
-	return nil
-}
-
 func (hc *hashnodeContext) theResultActionIs(action string) error {
 	if hc.result == nil {
 		return fmt.Errorf("no result (error: %v)", hc.err)
@@ -733,6 +688,12 @@ func tableToPostInput(table *godog.Table) hashnode.PostInput {
 			input.Tags = strings.Split(val, ",")
 		case "seriesId":
 			input.SeriesID = val
+		case "edited_at":
+			parsed, err := time.Parse(time.RFC3339, val)
+			if err == nil {
+				utc := parsed.UTC()
+				input.EditedAt = &utc
+			}
 		}
 	}
 	return input
@@ -750,6 +711,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^a Hashnode client configured with publication ID "([^"]*)"$`, hc.aHashnodeClientConfiguredWithPublicationID)
 	ctx.Step(`^no post exists with slug "([^"]*)"$`, hc.noPostExistsWithSlug)
 	ctx.Step(`^a post exists with slug "([^"]*)" and ID "([^"]*)"$`, hc.aPostExistsWithSlugAndID)
+	ctx.Step(`^the published post "([^"]*)" has updatedAt "([^"]*)"$`, hc.thePublishedPostHasUpdatedAt)
 	ctx.Step(`^no deleted post exists with slug "([^"]*)"$`, hc.noDeletedPostExistsWithSlug)
 	ctx.Step(`^a deleted post exists with slug "([^"]*)" and ID "([^"]*)"$`, hc.aDeletedPostExistsWithSlugAndID)
 	ctx.Step(`^no draft exists with slug "([^"]*)"$`, hc.noDraftExistsWithSlug)
@@ -758,7 +720,6 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the Hashnode API returns an authentication error$`, hc.theHashnodeAPIReturnsAnAuthenticationError)
 	ctx.Step(`^the Hashnode API returns a publication not found error$`, hc.theHashnodeAPIReturnsAPublicationNotFoundError)
 	ctx.Step(`^the Hashnode API is unreachable$`, hc.theHashnodeAPIIsUnreachable)
-	ctx.Step(`^the existing post "([^"]*)" has title "([^"]*)" and subtitle "([^"]*)" and content "([^"]*)"$`, hc.theExistingPostHasTitleSubtitleContent)
 	ctx.Step(`^a series exists with name "([^"]*)" and ID "([^"]*)"$`, hc.aSeriesExistsWithNameAndID)
 	ctx.Step(`^no series exists with name "([^"]*)"$`, hc.noSeriesExistsWithName)
 

@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // HTTPClient is the interface for making HTTP requests.
@@ -24,6 +25,7 @@ type PostInput struct {
 	Content  string
 	Tags     []string
 	SeriesID string
+	EditedAt *time.Time
 }
 
 // PublishResult holds the outcome of a publish or draft operation.
@@ -47,8 +49,14 @@ type Client struct {
 	// mutationsSent tracks mutations for test assertions
 	mutationsSent   []string
 	requestCount    int
-	publishedBySlug map[string]string
+	publishedBySlug map[string]publishedPost
 	deletedBySlug   map[string]string
+}
+
+type publishedPost struct {
+	ID          string
+	PublishedAt *time.Time
+	UpdatedAt   *time.Time
 }
 
 // New creates a new Hashnode client.
@@ -59,39 +67,6 @@ func New(token, publicationID string, httpClient HTTPClient) *Client {
 		Endpoint:      "https://gql.hashnode.com",
 		HTTP:          httpClient,
 	}
-}
-
-// existingPost holds the data fetched from Hashnode for content comparison.
-type existingPost struct {
-	Title    string
-	Subtitle string
-	Content  string
-}
-
-// fetchExistingPost retrieves the current content of a published post by slug.
-func (c *Client) fetchExistingPost(slug string) (*existingPost, error) {
-	query := `query($id: ObjectId!, $slug: String!) { publication(id: $id) { post(slug: $slug) { title subtitle content { markdown } } } }`
-	vars := map[string]string{"id": c.PublicationID, "slug": slug}
-
-	resp, err := c.doGraphQL(query, vars)
-	if err != nil {
-		return nil, err
-	}
-
-	post := resp.path("data", "publication", "post")
-	if post.isNull() {
-		return nil, nil
-	}
-
-	title := post.str("title")
-	subtitle := post.str("subtitle")
-	contentNode := post.path("content")
-	content := ""
-	if !contentNode.isNull() {
-		content = contentNode.str("markdown")
-	}
-
-	return &existingPost{Title: title, Subtitle: subtitle, Content: content}, nil
 }
 
 // Publish handles the full publish flow: check existing, check deleted, restore, or create.
@@ -105,26 +80,19 @@ func (c *Client) Publish(input PostInput) (*PublishResult, error) {
 		return nil, err
 	}
 
-	existingID := c.publishedBySlug[input.Slug]
-	if existingID != "" {
+	existing := c.publishedBySlug[input.Slug]
+	if existing.ID != "" {
+		if input.EditedAt == nil || !shouldUpdatePublishedPost(existing, input.EditedAt) {
+			return &PublishResult{Action: "unchanged", PostID: existing.ID}, nil
+		}
 		if c.DryRun {
-			return &PublishResult{Action: "update", PostID: existingID, DryRun: true}, nil
+			return &PublishResult{Action: "update", PostID: existing.ID, DryRun: true}, nil
 		}
-
-		// Fetch existing content and compare before updating
-		existing, err := c.fetchExistingPost(input.Slug)
+		url, err := c.updatePost(existing.ID, input)
 		if err != nil {
 			return nil, err
 		}
-		if existing != nil && existing.Title == input.Title && existing.Subtitle == input.Subtitle && existing.Content == input.Content {
-			return &PublishResult{Action: "unchanged", PostID: existingID}, nil
-		}
-
-		url, err := c.updatePost(existingID, input)
-		if err != nil {
-			return nil, err
-		}
-		return &PublishResult{Action: "update", PostID: existingID, URL: url}, nil
+		return &PublishResult{Action: "update", PostID: existing.ID, URL: url}, nil
 	}
 
 	deletedID := c.deletedBySlug[input.Slug]
@@ -184,7 +152,7 @@ func (c *Client) CheckPostBySlug(slug string) (string, error) {
 	if err := c.loadPublishedInventory(); err != nil {
 		return "", err
 	}
-	return c.publishedBySlug[slug], nil
+	return c.publishedBySlug[slug].ID, nil
 }
 
 // CheckDeletedBySlug queries for deleted posts matching the given slug.
@@ -200,7 +168,7 @@ func (c *Client) loadPublishedInventory() error {
 		return nil
 	}
 
-	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 50) { edges { node { id slug } } } } }`
+	query := `query($id: ObjectId!) { publication(id: $id) { posts(first: 50) { edges { node { id slug publishedAt updatedAt } } } } }`
 	vars := map[string]string{"id": c.PublicationID}
 
 	resp, err := c.doGraphQL(query, vars)
@@ -213,7 +181,7 @@ func (c *Client) loadPublishedInventory() error {
 		return fmt.Errorf("publication not found")
 	}
 
-	c.publishedBySlug = edgesToSlugMap(resp.path("data", "publication", "posts", "edges"))
+	c.publishedBySlug = edgesToPublishedPosts(resp.path("data", "publication", "posts", "edges"))
 	return nil
 }
 
@@ -306,9 +274,9 @@ func (c *Client) publishPost(input PostInput, canonicalURL string) (string, stri
 		return "", "", fmt.Errorf("publishPost returned no post ID: %v", resp.raw)
 	}
 	if c.publishedBySlug == nil {
-		c.publishedBySlug = make(map[string]string)
+		c.publishedBySlug = make(map[string]publishedPost)
 	}
-	c.publishedBySlug[input.Slug] = postID
+	c.publishedBySlug[input.Slug] = publishedPost{ID: postID}
 	if c.deletedBySlug != nil {
 		delete(c.deletedBySlug, input.Slug)
 	}
@@ -340,9 +308,9 @@ func (c *Client) updatePost(id string, input PostInput) (string, error) {
 
 	url := resp.path("data", "updatePost", "post").str("url")
 	if c.publishedBySlug == nil {
-		c.publishedBySlug = make(map[string]string)
+		c.publishedBySlug = make(map[string]publishedPost)
 	}
-	c.publishedBySlug[input.Slug] = id
+	c.publishedBySlug[input.Slug] = publishedPost{ID: id}
 	return url, nil
 }
 
@@ -369,9 +337,9 @@ func (c *Client) restorePost(id string) (string, error) {
 			if deletedID == id {
 				delete(c.deletedBySlug, slug)
 				if c.publishedBySlug == nil {
-					c.publishedBySlug = make(map[string]string)
+					c.publishedBySlug = make(map[string]publishedPost)
 				}
-				c.publishedBySlug[slug] = restoredID
+				c.publishedBySlug[slug] = publishedPost{ID: restoredID}
 				break
 			}
 		}
@@ -550,6 +518,78 @@ func edgesToSlugMap(edges *gqlNode) map[string]string {
 	}
 
 	return result
+}
+
+func edgesToPublishedPosts(edges *gqlNode) map[string]publishedPost {
+	result := make(map[string]publishedPost)
+	if edges == nil {
+		return result
+	}
+
+	edgesList, ok := edges.raw.([]interface{})
+	if !ok {
+		return result
+	}
+
+	for _, edge := range edgesList {
+		edgeMap, ok := edge.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		node, ok := edgeMap["node"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+		slug, _ := node["slug"].(string)
+		id, _ := node["id"].(string)
+		if slug != "" && id != "" {
+			result[slug] = publishedPost{
+				ID:          id,
+				PublishedAt: parseGraphQLTime(node["publishedAt"]),
+				UpdatedAt:   parseGraphQLTime(node["updatedAt"]),
+			}
+		}
+	}
+
+	return result
+}
+
+func parseGraphQLTime(v interface{}) *time.Time {
+	s, _ := v.(string)
+	if s == "" {
+		return nil
+	}
+	t, err := time.Parse(time.RFC3339, s)
+	if err != nil {
+		return nil
+	}
+	utc := t.UTC()
+	return &utc
+}
+
+func shouldUpdatePublishedPost(post publishedPost, editedAt *time.Time) bool {
+	if editedAt == nil {
+		return false
+	}
+	remote := latestRemoteTimestamp(post.UpdatedAt, post.PublishedAt)
+	if remote == nil {
+		return true
+	}
+	return editedAt.UTC().After(remote.UTC())
+}
+
+func latestRemoteTimestamp(values ...*time.Time) *time.Time {
+	var latest *time.Time
+	for _, value := range values {
+		if value == nil {
+			continue
+		}
+		if latest == nil || value.After(*latest) {
+			copy := value.UTC()
+			latest = &copy
+		}
+	}
+	return latest
 }
 
 // graphQL response navigation helpers

@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/cucumber/godog"
 	"github.com/czietsman/nuphirho.dev/internal/devto"
@@ -17,24 +18,29 @@ import (
 
 // fakeHTTP implements devto.HTTPClient for testing.
 type fakeHTTP struct {
-	articles      map[string]fakeArticle // canonical_url -> article
-	authError     bool
-	rateLimited   bool
-	unreachable   bool
-	customErrCode int
-	customErrBody string
-	requests      []*http.Request
-	lastBody      map[string]interface{}
+	articles         map[string]fakeArticle // canonical_url -> article
+	authError        bool
+	rateLimited      bool
+	rateLimitCount   int
+	rateLimitCalls   int
+	retryAfterHeader string
+	unreachable      bool
+	customErrCode    int
+	customErrBody    string
+	requests         []*http.Request
+	lastBody         map[string]interface{}
 }
 
 type fakeArticle struct {
-	ID        int
-	URL       string
-	Title     string
-	Content   string
-	Tags      []string
-	Published bool
-	Series    string
+	ID          int
+	URL         string
+	Title       string
+	Content     string
+	Tags        []string
+	Published   bool
+	Series      string
+	PublishedAt string
+	EditedAt    string
 }
 
 func newFakeHTTP() *fakeHTTP {
@@ -76,6 +82,19 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 		}, nil
 	}
 
+	if f.rateLimitCount > 0 && f.rateLimitCalls < f.rateLimitCount {
+		f.rateLimitCalls++
+		header := http.Header{"Content-Type": []string{"application/json"}}
+		if f.retryAfterHeader != "" {
+			header.Set("Retry-After", f.retryAfterHeader)
+		}
+		return &http.Response{
+			StatusCode: 429,
+			Body:       io.NopCloser(strings.NewReader(`{"error":"rate limited"}`)),
+			Header:     header,
+		}, nil
+	}
+
 	if f.customErrCode > 0 {
 		return &http.Response{
 			StatusCode: f.customErrCode,
@@ -113,6 +132,8 @@ func (f *fakeHTTP) handleListArticles() *http.Response {
 			"tags":          article.Tags,
 			"published":     article.Published,
 			"series":        article.Series,
+			"published_at":  article.PublishedAt,
+			"edited_at":     article.EditedAt,
 		})
 	}
 	b, _ := json.Marshal(articles)
@@ -164,15 +185,20 @@ func (f *fakeHTTP) handleUpdateArticle(path string) *http.Response {
 // --- godog context ---
 
 type devtoContext struct {
-	fake   *fakeHTTP
-	client *devto.Client
-	result *devto.PublishResult
-	err    error
+	fake           *fakeHTTP
+	client         *devto.Client
+	result         *devto.PublishResult
+	err            error
+	sleepDurations []time.Duration
 }
 
 func (dc *devtoContext) reset() {
 	dc.fake = newFakeHTTP()
 	dc.client = devto.New("test-api-key", dc.fake)
+	dc.sleepDurations = nil
+	dc.client.SetSleepFn(func(d time.Duration) {
+		dc.sleepDurations = append(dc.sleepDurations, d)
+	})
 	dc.result = nil
 	dc.err = nil
 }
@@ -182,6 +208,9 @@ func (dc *devtoContext) reset() {
 func (dc *devtoContext) aDevToClientConfiguredWithAPIKey(key string) error {
 	dc.reset()
 	dc.client = devto.New(key, dc.fake)
+	dc.client.SetSleepFn(func(d time.Duration) {
+		dc.sleepDurations = append(dc.sleepDurations, d)
+	})
 	return nil
 }
 
@@ -193,10 +222,32 @@ func (dc *devtoContext) noArticleExistsWithCanonicalURL(url string) error {
 func (dc *devtoContext) anArticleExistsWithCanonicalURLAndID(url string, id int) error {
 	slug := strings.TrimPrefix(url, "https://blog.nuphirho.dev/")
 	dc.fake.articles[url] = fakeArticle{
-		ID:        id,
-		URL:       "https://dev.to/nuphirho/" + slug,
-		Published: true,
+		ID:          id,
+		URL:         "https://dev.to/nuphirho/" + slug,
+		Published:   true,
+		PublishedAt: "2026-03-01T00:00:00Z",
 	}
+	return nil
+}
+
+func (dc *devtoContext) anUnpublishedArticleExistsWithCanonicalURLAndID(url string, id int) error {
+	slug := strings.TrimPrefix(url, "https://blog.nuphirho.dev/")
+	dc.fake.articles[url] = fakeArticle{
+		ID:          id,
+		URL:         "https://dev.to/nuphirho/" + slug,
+		Published:   false,
+		PublishedAt: "2026-03-01T00:00:00Z",
+	}
+	return nil
+}
+
+func (dc *devtoContext) theArticleHasRemoteEditedAt(url, editedAt string) error {
+	article, ok := dc.fake.articles[url]
+	if !ok {
+		return fmt.Errorf("no fake article for %q", url)
+	}
+	article.EditedAt = editedAt
+	dc.fake.articles[url] = article
 	return nil
 }
 
@@ -218,6 +269,35 @@ func (dc *devtoContext) theDevToAPIReturnsAErrorWithBody(code int, body string) 
 
 func (dc *devtoContext) theDevToAPIIsUnreachable() error {
 	dc.fake.unreachable = true
+	return nil
+}
+
+func (dc *devtoContext) theDevToAPIReturnsRateLimitErrorsBeforeSucceeding(n int) error {
+	dc.fake.rateLimitCount = n
+	return nil
+}
+
+func (dc *devtoContext) theDevToAPIReturnsRateLimitErrorWithRetryAfterHeader(n int, seconds string) error {
+	dc.fake.rateLimitCount = n
+	dc.fake.retryAfterHeader = seconds
+	return nil
+}
+
+func (dc *devtoContext) theClientRetriedTimes(n int) error {
+	if len(dc.sleepDurations) != n {
+		return fmt.Errorf("expected %d retries, got %d (sleeps: %v)", n, len(dc.sleepDurations), dc.sleepDurations)
+	}
+	return nil
+}
+
+func (dc *devtoContext) theFirstRetryDelayWasSeconds(seconds int) error {
+	if len(dc.sleepDurations) == 0 {
+		return fmt.Errorf("no retries occurred")
+	}
+	expected := time.Duration(seconds) * time.Second
+	if dc.sleepDurations[0] != expected {
+		return fmt.Errorf("expected first delay %v, got %v", expected, dc.sleepDurations[0])
+	}
 	return nil
 }
 
@@ -478,6 +558,12 @@ func tableToArticleInput(table *godog.Table) devto.ArticleInput {
 			input.Published = val == "true"
 		case "series":
 			input.Series = val
+		case "edited_at":
+			parsed, err := time.Parse(time.RFC3339, val)
+			if err == nil {
+				utc := parsed.UTC()
+				input.EditedAt = &utc
+			}
 		}
 	}
 	return input
@@ -495,10 +581,14 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^a Dev\.to client configured with API key "([^"]*)"$`, dc.aDevToClientConfiguredWithAPIKey)
 	ctx.Step(`^no article exists with canonical URL "([^"]*)"$`, dc.noArticleExistsWithCanonicalURL)
 	ctx.Step(`^an article exists with canonical URL "([^"]*)" and ID (\d+)$`, dc.anArticleExistsWithCanonicalURLAndID)
+	ctx.Step(`^an unpublished article exists with canonical URL "([^"]*)" and ID (\d+)$`, dc.anUnpublishedArticleExistsWithCanonicalURLAndID)
+	ctx.Step(`^the article "([^"]*)" has remote edited_at "([^"]*)"$`, dc.theArticleHasRemoteEditedAt)
 	ctx.Step(`^the Dev\.to API returns a 401 unauthorized error$`, dc.theDevToAPIReturnsA401UnauthorizedError)
 	ctx.Step(`^the Dev\.to API returns a 429 rate limit error$`, dc.theDevToAPIReturnsA429RateLimitError)
 	ctx.Step(`^the Dev\.to API returns a (\d+) error with body '([^']*)'$`, dc.theDevToAPIReturnsAErrorWithBody)
 	ctx.Step(`^the Dev\.to API is unreachable$`, dc.theDevToAPIIsUnreachable)
+	ctx.Step(`^the Dev\.to API returns (\d+) rate limit errors? before succeeding$`, dc.theDevToAPIReturnsRateLimitErrorsBeforeSucceeding)
+	ctx.Step(`^the Dev\.to API returns (\d+) rate limit errors? with Retry-After header "([^"]*)"$`, dc.theDevToAPIReturnsRateLimitErrorWithRetryAfterHeader)
 	ctx.Step(`^dry-run mode is enabled$`, dc.dryRunModeIsEnabled)
 
 	// When
@@ -522,6 +612,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the dry-run result embeds converted is (\d+)$`, dc.theDryRunResultEmbedsConvertedIs)
 	ctx.Step(`^the request body has "series" set to "([^"]*)"$`, dc.theRequestBodyHasSeriesSetTo)
 	ctx.Step(`^the request body does not have "series"$`, dc.theRequestBodyDoesNotHaveSeries)
+	ctx.Step(`^the client retried (\d+) times?$`, dc.theClientRetriedTimes)
+	ctx.Step(`^the first retry delay was (\d+) seconds?$`, dc.theFirstRetryDelayWasSeconds)
 }
 
 func TestFeatures(t *testing.T) {

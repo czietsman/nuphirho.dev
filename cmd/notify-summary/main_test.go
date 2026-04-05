@@ -188,6 +188,9 @@ func buildMarkdown(fields map[string]string) string {
 	if publishDate, ok := fields["publish_date"]; ok && publishDate != "" {
 		sb.WriteString(fmt.Sprintf("publish_date: %s\n", publishDate))
 	}
+	if editedAt, ok := fields["edited_at"]; ok && editedAt != "" {
+		sb.WriteString(fmt.Sprintf("edited_at: %s\n", editedAt))
+	}
 	sb.WriteString("---\n")
 	sb.WriteString("Test content.")
 	return sb.String()

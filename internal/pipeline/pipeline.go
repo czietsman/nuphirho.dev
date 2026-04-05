@@ -182,6 +182,7 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 			Content:  fr.Post.Content,
 			Tags:     hnMapResult.Tags,
 			SeriesID: seriesID,
+			EditedAt: timestampToTime(fr.Post.EditedAt),
 		}
 
 		hnResult, err := cfg.Hashnode.Publish(hnInput)
@@ -201,6 +202,7 @@ func Run(cfg Config, files []PostFile, w io.Writer) *RunResult {
 				Tags:      dtMapResult.Tags,
 				Published: true,
 				Series:    fr.Post.Series,
+				EditedAt:  timestampToTime(fr.Post.EditedAt),
 			}
 
 			dtResult, err := cfg.DevTo.CreateArticle(dtInput)
@@ -413,4 +415,12 @@ func nonNilSlice(s []string) []string {
 		return []string{}
 	}
 	return s
+}
+
+func timestampToTime(ts *frontmatter.Timestamp) *time.Time {
+	if ts == nil {
+		return nil
+	}
+	t := ts.UTC()
+	return &t
 }
