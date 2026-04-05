@@ -8,8 +8,9 @@ import (
 	"io"
 	"net/http"
 	"regexp"
-	"slices"
+	"strconv"
 	"strings"
+	"time"
 )
 
 // HTTPClient is the interface for making HTTP requests.
@@ -26,6 +27,7 @@ type ArticleInput struct {
 	Tags      []string
 	Published bool
 	Series    string
+	EditedAt  *time.Time
 }
 
 // PublishResult holds the outcome of a create or update operation.
@@ -48,7 +50,10 @@ type Client struct {
 	// requestsMade tracks requests for test assertions
 	requestsMade []requestRecord
 	inventory    map[string]articleRecord
+	sleepFn      func(time.Duration)
 }
+
+const maxRetries = 3
 
 type requestRecord struct {
 	Method string
@@ -59,12 +64,10 @@ type requestRecord struct {
 type articleRecord struct {
 	ID           int
 	URL          string
-	Title        string
-	Content      string
-	Tags         []string
 	Published    bool
-	Series       string
 	CanonicalURL string
+	PublishedAt  *time.Time
+	EditedAt     *time.Time
 }
 
 // New creates a new Dev.to client.
@@ -73,7 +76,13 @@ func New(apiKey string, httpClient HTTPClient) *Client {
 		APIKey:   apiKey,
 		Endpoint: "https://dev.to",
 		HTTP:     httpClient,
+		sleepFn:  time.Sleep,
 	}
+}
+
+// SetSleepFn overrides the sleep function (for testing).
+func (c *Client) SetSleepFn(fn func(time.Duration)) {
+	c.sleepFn = fn
 }
 
 var embedRe = regexp.MustCompile(`(?m)^%\[(.+?)\]$`)
@@ -117,7 +126,7 @@ func (c *Client) CreateArticle(input ArticleInput) (*PublishResult, error) {
 	body := map[string]interface{}{"article": articleBody}
 
 	if existing != nil {
-		if existing.matches(input.Title, content, input.Tags, input.Published, input.Series) {
+		if existing.Published == input.Published && !shouldUpdateArticle(existing, input.EditedAt) {
 			return &PublishResult{
 				Action:          "unchanged",
 				ArticleID:       existing.ID,
@@ -171,7 +180,7 @@ func (c *Client) loadInventory() error {
 	}
 	req.Header.Set("api-key", c.APIKey)
 
-	resp, err := c.HTTP.Do(req)
+	resp, err := c.doWithRetry(req)
 	if err != nil {
 		if strings.Contains(err.Error(), "connection") {
 			return fmt.Errorf("connection error: %w", err)
@@ -208,12 +217,10 @@ func (c *Client) loadInventory() error {
 		}
 		record := articleRecord{
 			URL:          stringValue(article["url"]),
-			Title:        stringValue(article["title"]),
-			Content:      stringValue(article["body_markdown"]),
-			Tags:         firstNonEmptyTags(article["tag_list"], article["tags"]),
 			Published:    boolValue(article["published"]),
-			Series:       stringValue(article["series"]),
 			CanonicalURL: cu,
+			PublishedAt:  parseOptionalTime(article["published_at"]),
+			EditedAt:     parseOptionalTime(article["edited_at"]),
 		}
 		if id, ok := article["id"].(float64); ok {
 			record.ID = int(id)
@@ -273,7 +280,7 @@ func (c *Client) doRequest(method, path string, body map[string]interface{}) (ma
 
 	c.requestsMade = append(c.requestsMade, requestRecord{Method: method, Path: path, Body: body})
 
-	resp, err := c.HTTP.Do(req)
+	resp, err := c.doWithRetry(req)
 	if err != nil {
 		if strings.Contains(err.Error(), "connection") {
 			return nil, fmt.Errorf("connection error: %w", err)
@@ -310,12 +317,62 @@ func (c *Client) RequestsMade() []requestRecord {
 	return c.requestsMade
 }
 
-func (a articleRecord) matches(title, content string, tags []string, published bool, series string) bool {
-	return a.Title == title &&
-		a.Content == content &&
-		a.Published == published &&
-		a.Series == series &&
-		slices.Equal(a.Tags, tags)
+func (c *Client) doWithRetry(req *http.Request) (*http.Response, error) {
+	var bodyBytes []byte
+	if req.Body != nil {
+		var err error
+		bodyBytes, err = io.ReadAll(req.Body)
+		if err != nil {
+			return nil, fmt.Errorf("reading request body: %w", err)
+		}
+	}
+
+	var resp *http.Response
+	for attempt := 0; attempt <= maxRetries; attempt++ {
+		if bodyBytes != nil {
+			req.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+		}
+
+		var err error
+		resp, err = c.HTTP.Do(req)
+		if err != nil {
+			return nil, err
+		}
+
+		if resp.StatusCode != 429 {
+			return resp, nil
+		}
+
+		if attempt == maxRetries {
+			return resp, nil
+		}
+
+		delay := c.retryDelay(resp, attempt)
+		resp.Body.Close()
+		c.sleepFn(delay)
+	}
+
+	return resp, nil
+}
+
+func (c *Client) retryDelay(resp *http.Response, attempt int) time.Duration {
+	if ra := resp.Header.Get("Retry-After"); ra != "" {
+		if seconds, err := strconv.Atoi(ra); err == nil {
+			return time.Duration(seconds) * time.Second
+		}
+	}
+	return time.Duration(1<<uint(attempt)) * time.Second
+}
+
+func shouldUpdateArticle(a *articleRecord, editedAt *time.Time) bool {
+	if editedAt == nil {
+		return false
+	}
+	remote := latestTime(a.EditedAt, a.PublishedAt)
+	if remote == nil {
+		return true
+	}
+	return editedAt.UTC().After(remote.UTC())
 }
 
 func stringValue(v interface{}) string {
@@ -328,29 +385,29 @@ func boolValue(v interface{}) bool {
 	return b
 }
 
-func firstNonEmptyTags(values ...interface{}) []string {
-	for _, value := range values {
-		tags := stringSliceValue(value)
-		if len(tags) > 0 {
-			return tags
-		}
-	}
-	return nil
-}
-
-func stringSliceValue(v interface{}) []string {
-	switch tags := v.(type) {
-	case []string:
-		return append([]string(nil), tags...)
-	case []interface{}:
-		result := make([]string, 0, len(tags))
-		for _, tag := range tags {
-			if s, ok := tag.(string); ok && s != "" {
-				result = append(result, s)
-			}
-		}
-		return result
-	default:
+func parseOptionalTime(v interface{}) *time.Time {
+	s, _ := v.(string)
+	if s == "" {
 		return nil
 	}
+	t, err := time.Parse(time.RFC3339, s)
+	if err != nil {
+		return nil
+	}
+	utc := t.UTC()
+	return &utc
+}
+
+func latestTime(values ...*time.Time) *time.Time {
+	var latest *time.Time
+	for _, value := range values {
+		if value == nil {
+			continue
+		}
+		if latest == nil || value.After(*latest) {
+			copy := value.UTC()
+			latest = &copy
+		}
+	}
+	return latest
 }
