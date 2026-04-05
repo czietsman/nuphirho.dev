@@ -11,10 +11,12 @@ import (
 )
 
 type tagsContext struct {
-	glossary    tags.Glossary
-	canonical   []string
-	mapResult   tags.MapResult
-	validations []tags.TagValidation
+	glossary       tags.Glossary
+	canonical      []string
+	mapResult      tags.MapResult
+	validations    []tags.TagValidation
+	postTagResult  tags.PostTagResult
+	draft          bool
 }
 
 func (tc *tagsContext) aTagGlossary(doc *godog.DocString) error {
@@ -120,6 +122,53 @@ func (tc *tagsContext) allTagsAreValid() error {
 	return nil
 }
 
+// --- Post tag validation steps ---
+
+func (tc *tagsContext) aPostWithTags(tagsJSON string) error {
+	tc.draft = false
+	return json.Unmarshal([]byte(tagsJSON), &tc.canonical)
+}
+
+func (tc *tagsContext) aDraftPostWithTags(tagsJSON string) error {
+	tc.draft = true
+	return json.Unmarshal([]byte(tagsJSON), &tc.canonical)
+}
+
+func (tc *tagsContext) tagValidationRuns() error {
+	tc.postTagResult = tc.glossary.ValidatePostTags(tc.canonical, tc.draft)
+	return nil
+}
+
+func (tc *tagsContext) validationPasses() error {
+	if !tc.postTagResult.Valid {
+		return fmt.Errorf("expected validation to pass, but it failed with unmapped tags: %v", tc.postTagResult.Unmapped)
+	}
+	return nil
+}
+
+func (tc *tagsContext) validationFails() error {
+	if tc.postTagResult.Valid {
+		return fmt.Errorf("expected validation to fail, but it passed")
+	}
+	return nil
+}
+
+func (tc *tagsContext) validationIsSkipped() error {
+	if !tc.postTagResult.Skipped {
+		return fmt.Errorf("expected validation to be skipped, but it was not")
+	}
+	return nil
+}
+
+func (tc *tagsContext) theErrorIdentifiesAsUnmapped(tag string) error {
+	for _, t := range tc.postTagResult.Unmapped {
+		if t == tag {
+			return nil
+		}
+	}
+	return fmt.Errorf("expected %q in unmapped tags, got: %v", tag, tc.postTagResult.Unmapped)
+}
+
 func InitializeScenario(ctx *godog.ScenarioContext) {
 	tc := &tagsContext{}
 
@@ -134,6 +183,15 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^"([^"]*)" is invalid because it contains hyphens$`, tc.tagIsInvalidBecauseItContainsHyphens)
 	ctx.Step(`^"([^"]*)" is valid$`, tc.tagIsValid)
 	ctx.Step(`^all tags are valid$`, tc.allTagsAreValid)
+
+	// Post tag validation steps
+	ctx.Step(`^a post with tags (\[.*\])$`, tc.aPostWithTags)
+	ctx.Step(`^a draft post with tags (\[.*\])$`, tc.aDraftPostWithTags)
+	ctx.Step(`^tag validation runs$`, tc.tagValidationRuns)
+	ctx.Step(`^validation passes$`, tc.validationPasses)
+	ctx.Step(`^validation fails$`, tc.validationFails)
+	ctx.Step(`^validation is skipped$`, tc.validationIsSkipped)
+	ctx.Step(`^the error identifies "([^"]*)" as unmapped$`, tc.theErrorIdentifiesAsUnmapped)
 }
 
 func TestFeatures(t *testing.T) {
@@ -141,7 +199,7 @@ func TestFeatures(t *testing.T) {
 		ScenarioInitializer: InitializeScenario,
 		Options: &godog.Options{
 			Format:   "pretty",
-			Paths:    []string{"../../specs/tag_glossary.feature"},
+			Paths:    []string{"../../specs/tag_glossary.feature", "../../specs/tag_validation.feature"},
 			TestingT: t,
 		},
 	}
