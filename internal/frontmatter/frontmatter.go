@@ -15,6 +15,11 @@ type Date struct {
 	time.Time
 }
 
+// Timestamp is an RFC3339 timestamp for explicit republish intent.
+type Timestamp struct {
+	time.Time
+}
+
 // UnmarshalYAML parses a YYYY-MM-DD date string from YAML.
 func (d *Date) UnmarshalYAML(value *yaml.Node) error {
 	t, err := time.Parse("2006-01-02", value.Value)
@@ -25,17 +30,28 @@ func (d *Date) UnmarshalYAML(value *yaml.Node) error {
 	return nil
 }
 
+// UnmarshalYAML parses an RFC3339 timestamp.
+func (t *Timestamp) UnmarshalYAML(value *yaml.Node) error {
+	parsed, err := time.Parse(time.RFC3339, value.Value)
+	if err != nil {
+		return fmt.Errorf("invalid edited_at: expected RFC3339 timestamp, got %q", value.Value)
+	}
+	t.Time = parsed.UTC()
+	return nil
+}
+
 // Post holds the parsed frontmatter and body content of a markdown post file.
 type Post struct {
-	Title    string   `yaml:"title"`
-	Slug     string   `yaml:"slug"`
-	Subtitle string   `yaml:"subtitle"`
-	Tags     []string `yaml:"tags"`
-	Draft      bool     `yaml:"draft"`
-	Series     string   `yaml:"series"`
-	AllowEmdash bool   `yaml:"allow_emdash"`
-	PublishDate *Date  `yaml:"publish_date"`
-	Content    string   `yaml:"-"`
+	Title       string     `yaml:"title"`
+	Slug        string     `yaml:"slug"`
+	Subtitle    string     `yaml:"subtitle"`
+	Tags        []string   `yaml:"tags"`
+	Draft       bool       `yaml:"draft"`
+	Series      string     `yaml:"series"`
+	AllowEmdash bool       `yaml:"allow_emdash"`
+	PublishDate *Date      `yaml:"publish_date"`
+	EditedAt    *Timestamp `yaml:"edited_at"`
+	Content     string     `yaml:"-"`
 }
 
 // ValidationResult holds errors and warnings from frontmatter validation.

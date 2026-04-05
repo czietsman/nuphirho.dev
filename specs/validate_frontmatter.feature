@@ -470,6 +470,52 @@ Feature: Validate frontmatter
     Then the publish date is empty
     And validation passes with no errors
 
+  Scenario: edited_at field is parsed from frontmatter
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Edited Post"
+      slug: edited-post
+      tags: [go]
+      edited_at: 2026-03-25T14:30:00Z
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the edited_at is "2026-03-25T14:30:00Z"
+    And validation passes with no errors
+
+  Scenario: edited_at field is optional
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "No Edit Timestamp"
+      slug: no-edit-timestamp
+      tags: [go]
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then the edited_at is empty
+    And validation passes with no errors
+
+  Scenario: Invalid edited_at fails validation
+    Given a markdown file with frontmatter:
+      """
+      ---
+      title: "Bad edited_at"
+      slug: bad-edited-at
+      tags: [go]
+      edited_at: not-a-timestamp
+      ---
+
+      Content.
+      """
+    When the frontmatter is parsed
+    Then validation fails with error "invalid edited_at"
+
   Scenario: Invalid publish_date fails validation
     Given a markdown file with frontmatter:
       """

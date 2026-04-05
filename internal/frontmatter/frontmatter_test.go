@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/cucumber/godog"
 	"github.com/czietsman/nuphirho.dev/internal/frontmatter"
@@ -133,6 +134,24 @@ func (fc *frontmatterContext) thePublishDateIsEmpty() error {
 	return nil
 }
 
+func (fc *frontmatterContext) theEditedAtIs(expected string) error {
+	if fc.post.EditedAt == nil {
+		return fmt.Errorf("expected edited_at %q, got nil", expected)
+	}
+	actual := fc.post.EditedAt.UTC().Format(time.RFC3339)
+	if actual != expected {
+		return fmt.Errorf("expected edited_at %q, got %q", expected, actual)
+	}
+	return nil
+}
+
+func (fc *frontmatterContext) theEditedAtIsEmpty() error {
+	if fc.post.EditedAt != nil {
+		return fmt.Errorf("expected no edited_at, got %s", fc.post.EditedAt.UTC().Format(time.RFC3339))
+	}
+	return nil
+}
+
 func (fc *frontmatterContext) validationFailsWithError(errMsg string) error {
 	if fc.result.Passed() {
 		return fmt.Errorf("expected validation to fail with %q, but it passed", errMsg)
@@ -162,6 +181,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^validation passes with warning "([^"]*)"$`, fc.validationPassesWithWarning)
 	ctx.Step(`^the publish date is "([^"]*)"$`, fc.thePublishDateIs)
 	ctx.Step(`^the publish date is empty$`, fc.thePublishDateIsEmpty)
+	ctx.Step(`^the edited_at is "([^"]*)"$`, fc.theEditedAtIs)
+	ctx.Step(`^the edited_at is empty$`, fc.theEditedAtIsEmpty)
 	ctx.Step(`^validation fails with error "([^"]*)"$`, fc.validationFailsWithError)
 }
 
