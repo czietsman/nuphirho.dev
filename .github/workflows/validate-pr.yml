@@ -14,6 +14,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
         with:
@@ -24,6 +26,14 @@ jobs:
       - name: Run secret pattern tests
         run: bash tests/test-secret-patterns.sh
 
+      - name: Validate post tags
+        run: |
+          CHANGED_POSTS=$(git diff --name-only --diff-filter=ACM origin/main...HEAD -- 'posts/*.md')
+          if [ -n "$CHANGED_POSTS" ]; then
+            go build -o validate-tags ./cmd/validate-tags/
+            ./validate-tags --tags-file tags.json $CHANGED_POSTS
+          fi
+
       - name: Run Go tests (includes BDD specs)
         run: go test ./... -count=1
 
@@ -31,4 +41,6 @@ jobs:
         run: go install github.com/avito-tech/go-mutesting/cmd/go-mutesting@v0.0.0-20251226130216-48d0401f00fb
 
       - name: Run mutation tests
-        run: $(go env GOPATH)/bin/go-mutesting --exec-timeout=20 ./internal/frontmatter
+        run: |
+          $(go env GOPATH)/bin/go-mutesting --exec-timeout=20 ./internal/frontmatter
+          $(go env GOPATH)/bin/go-mutesting --exec-timeout=20 ./internal/tags
