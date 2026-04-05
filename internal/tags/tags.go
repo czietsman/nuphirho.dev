@@ -97,6 +97,35 @@ func joinTags(tags []string) string {
 	return result
 }
 
+// PostTagResult holds the outcome of validating a post's tags for Dev.to.
+type PostTagResult struct {
+	Skipped  bool
+	Valid    bool
+	Unmapped []string
+}
+
+// ValidatePostTags checks whether a post's tags are valid for Dev.to
+// cross-posting. Draft posts are skipped. Returns unmapped hyphenated
+// tags that need glossary entries.
+func (g Glossary) ValidatePostTags(postTags []string, draft bool) PostTagResult {
+	if draft {
+		return PostTagResult{Skipped: true, Valid: true}
+	}
+
+	validations := g.ValidateTags(postTags, DevTo)
+	var unmapped []string
+	for _, v := range validations {
+		if !v.Valid {
+			unmapped = append(unmapped, v.Tag)
+		}
+	}
+
+	return PostTagResult{
+		Valid:    len(unmapped) == 0,
+		Unmapped: unmapped,
+	}
+}
+
 // TagValidation holds the result of validating a single tag.
 type TagValidation struct {
 	Tag       string
