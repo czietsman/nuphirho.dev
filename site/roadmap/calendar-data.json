@@ -1,0 +1,274 @@
+{
+  "generated": "2026-04-04",
+  "cadence_note": "Sun: announcements, research, long-form | Wed: series (protected) | Fri: provocation, standalone | Sat: philosophical, reflective",
+  "months": [
+    {
+      "month": "2026-06",
+      "label": "June 2026",
+      "future": true,
+      "weeks": [
+        {
+          "label": "8–14 Jun",
+          "days": {
+            "fri": {
+              "category": "provocation",
+              "status": "planned",
+              "label": "Provocation · Follow-up"
+            }
+          }
+        },
+        {
+          "label": "1–7 Jun",
+          "days": {
+            "fri": {
+              "category": "provocation",
+              "status": "planned",
+              "label": "Provocation"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "month": "2026-05",
+      "label": "May 2026",
+      "future": true,
+      "weeks": [
+        {
+          "label": "18–24 May",
+          "days": {
+            "wed": {
+              "category": "series",
+              "status": "planned",
+              "label": "Series · Final"
+            }
+          }
+        },
+        {
+          "label": "11–17 May",
+          "days": {
+            "wed": {
+              "category": "series",
+              "status": "planned",
+              "label": "Series"
+            },
+            "sat": {
+              "category": "provocation",
+              "status": "planned",
+              "label": "Provocation · 4 of 4"
+            }
+          }
+        },
+        {
+          "label": "4–10 May",
+          "days": {
+            "fri": {
+              "category": "standalone",
+              "status": "planned",
+              "label": "Standalone"
+            },
+            "wed": {
+              "category": "series",
+              "status": "planned",
+              "label": "Series"
+            },
+            "sat": {
+              "category": "provocation",
+              "status": "planned",
+              "label": "Provocation · 3 of 4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "month": "2026-04",
+      "label": "April 2026",
+      "future": false,
+      "weeks": [
+        {
+          "label": "27 Apr–3 May",
+          "days": {
+            "fri": {
+              "category": "standalone",
+              "status": "planned",
+              "label": "Standalone"
+            },
+            "wed": {
+              "category": "series",
+              "status": "planned",
+              "label": "Series"
+            },
+            "sat": {
+              "category": "provocation",
+              "status": "planned",
+              "label": "Provocation · 2 of 4"
+            }
+          }
+        },
+        {
+          "label": "20–26 Apr",
+          "days": {
+            "fri": {
+              "category": "standalone",
+              "status": "planned",
+              "label": "Standalone"
+            },
+            "wed": {
+              "category": "series",
+              "status": "planned",
+              "label": "Series"
+            },
+            "sat": {
+              "category": "provocation",
+              "status": "planned",
+              "label": "Provocation · 1 of 4"
+            },
+            "sun": {
+              "category": "standalone",
+              "status": "planned",
+              "label": "Standalone"
+            }
+          }
+        },
+        {
+          "label": "13–19 Apr",
+          "days": {
+            "fri": {
+              "category": "standalone",
+              "status": "planned",
+              "label": "Standalone"
+            },
+            "wed": {
+              "category": "series",
+              "status": "planned",
+              "label": "Series"
+            },
+            "sun": {
+              "category": "standalone",
+              "status": "planned",
+              "label": "Standalone"
+            }
+          }
+        },
+        {
+          "label": "6–12 Apr",
+          "days": {
+            "wed": {
+              "category": "series",
+              "status": "planned",
+              "label": "Series"
+            }
+          }
+        },
+        {
+          "label": "30 Mar–5 Apr",
+          "days": {
+            "sun": {
+              "category": "announcement",
+              "status": "published",
+              "title": "arXiv Paper Live",
+              "platforms": [
+                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7444632829235441664"},
+                {"label": "arXiv", "url": "https://doi.org/10.48550/arXiv.2603.25773"}
+              ]
+            },
+            "wed": {
+              "category": "series",
+              "status": "pending-crosspost",
+              "title": "The Pipeline Bottleneck",
+              "platforms": [
+                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7444995217302208513"},
+                {"label": "Blog ↗", "url": null, "pending": true}
+              ]
+            },
+            "fri": {
+              "category": "provocation",
+              "status": "pending-crosspost",
+              "title": "AI Code Review Has It Backwards",
+              "platforms": [
+                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7445357605184733184"},
+                {"label": "Blog ↗", "url": null, "pending": true}
+              ]
+            },
+            "sat": {
+              "category": "article",
+              "status": "published",
+              "title": "I Followed the Problem Home",
+              "platforms": [
+                {"label": "LI", "url": "https://www.linkedin.com/pulse/i-followed-problem-home-christo-zietsman-qhhxf"},
+                {"label": "Blog", "url": "https://blog.nuphirho.dev/i-followed-the-problem-home"}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "month": "2026-03",
+      "label": "March 2026",
+      "future": false,
+      "weeks": [
+        {
+          "label": "23–29 Mar",
+          "days": {
+            "wed": {
+              "category": "series",
+              "status": "published",
+              "title": "AI-Assisted Security Audit",
+              "platforms": [
+                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7442458502230589440"},
+                {"label": "Blog", "url": "https://blog.nuphirho.dev/ai-assisted-security-audit"}
+              ]
+            },
+            "sat": {
+              "category": "research",
+              "status": "published",
+              "title": "Science Officer Series (4 posts)",
+              "platforms": [
+                {"label": "Blog", "url": "https://blog.nuphirho.dev/echo-chamber-ai-code-review-correlated-error"},
+                {"label": "Dev.to", "url": "https://dev.to/nuphirho"}
+              ]
+            }
+          }
+        },
+        {
+          "label": "16–22 Mar",
+          "days": {
+            "wed": {
+              "category": "series",
+              "status": "published",
+              "title": "From Craftsman to Dark Factory",
+              "platforms": [
+                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7439921787309576192"}
+              ]
+            },
+            "sat": {
+              "category": "standalone",
+              "status": "published",
+              "title": "Learning the Map",
+              "platforms": [
+                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7440107692058099712"},
+                {"label": "Blog", "url": "https://blog.nuphirho.dev/learning-the-map"}
+              ]
+            }
+          }
+        },
+        {
+          "label": "9–15 Mar",
+          "days": {
+            "wed": {
+              "category": "series",
+              "status": "published",
+              "title": "The Trust Barrier",
+              "platforms": [
+                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7437385072825106432"},
+                {"label": "Blog", "url": "https://blog.nuphirho.dev/the-trust-barrier"}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
