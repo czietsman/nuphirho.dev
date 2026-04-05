@@ -20,11 +20,11 @@ import (
 // --- Fakes ---
 
 type fakeHN struct {
-	publishCalls    []string // slugs
-	publishErr      error
-	slugErrors      map[string]error
-	unchangedSlugs  map[string]bool // slugs that should return "unchanged"
-	lastInputs      map[string]hashnode.PostInput // slug -> last input
+	publishCalls   []string // slugs
+	publishErr     error
+	slugErrors     map[string]error
+	unchangedSlugs map[string]bool               // slugs that should return "unchanged"
+	lastInputs     map[string]hashnode.PostInput // slug -> last input
 }
 
 func (f *fakeHN) Publish(input hashnode.PostInput) (*hashnode.PublishResult, error) {
@@ -441,6 +441,9 @@ func buildMarkdown(fields map[string]string) string {
 	}
 	if pd, ok := fields["publish_date"]; ok && pd != "" {
 		sb.WriteString(fmt.Sprintf("publish_date: %s\n", pd))
+	}
+	if editedAt, ok := fields["edited_at"]; ok && editedAt != "" {
+		sb.WriteString(fmt.Sprintf("edited_at: %s\n", editedAt))
 	}
 	sb.WriteString("---\n")
 

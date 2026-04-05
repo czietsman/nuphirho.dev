@@ -20,14 +20,16 @@ Feature: Hashnode client
     Then a publishPost mutation is sent
     And the response contains post ID "post-001" and URL "https://blog.example.com/my-new-post"
 
-  Scenario: Update an existing post by slug
+  Scenario: Update an existing post when edited_at is newer than the remote post
     Given a post exists with slug "existing-post" and ID "post-002"
+    And the published post "existing-post" has updatedAt "2026-03-10T09:00:00Z"
     When the pipeline publishes a post:
       | title    | Updated Post               |
       | slug     | existing-post              |
       | subtitle | Updated subtitle           |
       | content  | Updated content.           |
       | tags     | go                         |
+      | edited_at| 2026-03-11T09:00:00Z      |
     Then an updatePost mutation is sent with ID "post-002"
     And the response contains post URL "https://blog.example.com/existing-post"
 
@@ -149,6 +151,7 @@ Feature: Hashnode client
 
   Scenario: Dry-run for existing post builds update mutation
     Given a post exists with slug "dry-run-update" and ID "post-099"
+    And the published post "dry-run-update" has updatedAt "2026-03-10T09:00:00Z"
     And dry-run mode is enabled
     When the pipeline publishes a post:
       | title    | Dry Run Update             |
@@ -156,6 +159,7 @@ Feature: Hashnode client
       | subtitle | Subtitle                   |
       | content  | Content.                   |
       | tags     | test                       |
+      | edited_at| 2026-03-11T09:00:00Z      |
     Then the dry-run result action is "update"
     And the dry-run result existing ID is "post-099"
 
@@ -228,6 +232,7 @@ Feature: Hashnode client
 
   Scenario: Update post with series ID
     Given a post exists with slug "existing-series" and ID "post-050"
+    And the published post "existing-series" has updatedAt "2026-03-10T09:00:00Z"
     When the pipeline publishes a post with series:
       | title    | Updated Series             |
       | slug     | existing-series            |
@@ -235,14 +240,14 @@ Feature: Hashnode client
       | content  | Content.                   |
       | tags     | go                         |
       | seriesId | series-002                 |
+      | edited_at| 2026-03-11T09:00:00Z      |
     Then an updatePost mutation is sent with ID "post-050"
     And the update request includes series ID "series-002"
 
   # --- Skip unchanged ---
 
-  Scenario: Skip update when content has not changed
+  Scenario: Skip update when edited_at is not set
     Given a post exists with slug "unchanged-post" and ID "post-100"
-    And the existing post "unchanged-post" has title "Same Title" and subtitle "Same Sub" and content "Same content."
     When the pipeline publishes a post:
       | title    | Same Title                 |
       | slug     | unchanged-post             |
@@ -253,14 +258,15 @@ Feature: Hashnode client
     And the result action is "unchanged"
     And the result post ID is "post-100"
 
-  Scenario: Update when content has changed
+  Scenario: Update when edited_at is newer than the remote post
     Given a post exists with slug "changed-post" and ID "post-101"
-    And the existing post "changed-post" has title "Old Title" and subtitle "Old Sub" and content "Old content."
+    And the published post "changed-post" has updatedAt "2026-03-10T09:00:00Z"
     When the pipeline publishes a post:
       | title    | New Title                  |
       | slug     | changed-post               |
       | subtitle | New Sub                    |
       | content  | New content.               |
       | tags     | go                         |
+      | edited_at| 2026-03-11T09:00:00Z      |
     Then an updatePost mutation is sent with ID "post-101"
     And the response contains post URL "https://blog.example.com/changed-post"
