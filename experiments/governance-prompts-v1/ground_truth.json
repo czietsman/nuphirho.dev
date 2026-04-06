@@ -1,0 +1,34 @@
+{
+  "experiment": "governance-prompts-v1",
+  "description": "Structural quality evaluation of AGENTS.md files",
+  "scoring_scale": "0 / 0.5 / 1 per principle, total 0-5",
+  "note": "Scoring uses 0/0.5/1 per principle, total 0-5.",
+  "principles": {
+    "P1": {
+      "name": "Success Definition",
+      "definition": "Does the file define what a correct, complete output looks like? Can the agent determine when its task is done without asking for clarification?"
+    },
+    "P2": {
+      "name": "Assessment Rubric",
+      "definition": "Does the file provide criteria by which the agent can evaluate whether its own output meets the required standard? Tool commands are not a rubric. A rubric specifies what good looks like, not just what to run."
+    },
+    "P3": {
+      "name": "Scope Boundary",
+      "definition": "Does the file define what the agent is and is not permitted to do? Does it explicitly exclude tasks the agent should refuse? Does it tell the agent what to do at the boundary of its mandate?"
+    },
+    "P4": {
+      "name": "Data Classification",
+      "definition": "Does the file specify how different types of input or output should be treated differently? Does it distinguish between content types, sensitivity levels, or data categories?"
+    },
+    "P5": {
+      "name": "Quality Gate",
+      "definition": "Does the file define a mechanism for verifying that output meets the required standard before it is accepted? Does it require the agent to produce evidence of verification?"
+    }
+  },
+  "corpus": {
+    "version": "v1",
+    "path": "agents/",
+    "count": 34,
+    "manifest": "manifest.md"
+  }
+}
