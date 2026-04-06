@@ -32,3 +32,10 @@ experiments/**/__pycache__/
 experiments/**/*.pyc
 experiments/**/.venv/
 experiments/**/.claude/
+
+# Experiment raw scores -- research data, not public artefacts
+experiments/governance-prompts-v1/results/scores*/
+experiments/governance-prompts-v1/results/raw/
+
+# Score prompt template -- personal IP
+experiments/governance-prompts-v1/prompts/
