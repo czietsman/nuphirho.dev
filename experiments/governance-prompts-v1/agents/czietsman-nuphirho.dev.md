@@ -1,4 +1,10 @@
 ---
+source: https://raw.githubusercontent.com/czietsman/nuphirho.dev/main/AGENTS.md
+commit: 64312f10dfb6ff9118d2b11a2e0a189a66c61e9d
+captured: 2026-04-05
+lines: 134
+---
+---
 version: 2
 last-modified: 2026-04-01
 ---
@@ -20,12 +26,6 @@ Do not skip step 1. Do not write production code without a failing test.
 ## BDD specifications
 
 Every change to pipeline logic, validation, or publishing behaviour must have a corresponding Gherkin scenario in `specs/`. If a scenario does not exist for the behaviour you are changing, write one before writing the code.
-
-## No shell scripts
-
-Do not use shell scripts for any logic that can be written in Go. Shell scripts are fragile with multi-line content, special characters, quoting, and error handling. Go handles all of these correctly by default.
-
-Acceptable uses of shell: one-line commands in workflow YAML steps, the Husky pre-push hook, and `tests/test-secret-patterns.sh` (grep-based pattern matching where shell is the natural tool). Everything else is Go.
 
 ## No backwards-compatibility code
 
