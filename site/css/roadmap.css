@@ -49,9 +49,9 @@
 }
 
 .roadmap-page h1 {
-  font-family: 'DM Serif Display', serif;
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 700;
+  color: #c8a96e;
   margin-bottom: 0.5rem;
 }
 
@@ -131,8 +131,8 @@
 }
 
 .roadmap-page .month-header {
-  font-family: 'DM Serif Display', serif;
   font-size: 1rem;
+  font-weight: 600;
   color: var(--roadmap-accent);
   padding: 0.4rem 0 0.8rem;
   border-bottom: 1px solid var(--colour-border);
@@ -187,8 +187,8 @@
 }
 
 .roadmap-page .week-label .dates {
-  font-family: 'DM Serif Display', serif;
   font-size: 0.78rem;
+  font-weight: 600;
   line-height: 1.3;
 }
 
