@@ -1,7 +1,6 @@
 /* Roadmap -- page-specific styles */
 
 :root {
-  --roadmap-accent: var(--colour-accent);
   --roadmap-muted: #6b7280;
   --roadmap-muted2: #3a404f;
   --series-color: #4a9eff;
@@ -42,7 +41,7 @@
 .roadmap-page .brand {
   font-family: 'DM Mono', monospace;
   font-size: 0.7rem;
-  color: var(--roadmap-accent);
+  color: var(--colour-accent);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
@@ -61,7 +60,7 @@
   font-family: 'DM Mono', monospace;
   padding: 0.4rem 0.65rem;
   border: 1px solid var(--colour-border);
-  border-left: 2px solid var(--roadmap-accent);
+  border-left: 2px solid var(--colour-accent);
   display: inline-block;
   margin-top: 0.75rem;
   border-radius: 0 3px 3px 0;
@@ -133,7 +132,7 @@
 .roadmap-page .month-header {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--roadmap-accent);
+  color: var(--colour-accent);
   padding: 0.4rem 0 0.8rem;
   border-bottom: 1px solid var(--colour-border);
   margin-bottom: 1rem;
@@ -227,7 +226,7 @@
 }
 
 .roadmap-page .day.weekend .day-name {
-  color: var(--roadmap-accent);
+  color: var(--colour-accent);
   opacity: 0.45;
 }
 
