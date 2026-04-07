@@ -1,12 +1,12 @@
 /* Roadmap -- page-specific styles */
 
 :root {
-  --roadmap-accent: #c8a96e;
+  --roadmap-accent: var(--colour-accent);
   --roadmap-muted: #6b7280;
   --roadmap-muted2: #3a404f;
   --series-color: #4a9eff;
   --series-bg: rgba(74,158,255,0.08);
-  --standalone-color: #c8a96e;
+  --standalone-color: var(--colour-accent);
   --standalone-bg: rgba(200,169,110,0.08);
   --provocation-color: #e07070;
   --provocation-bg: rgba(224,112,112,0.08);
@@ -51,7 +51,7 @@
 .roadmap-page h1 {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #c8a96e;
+  color: var(--colour-accent);
   margin-bottom: 0.5rem;
 }
 
