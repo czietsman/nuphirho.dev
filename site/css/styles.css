@@ -326,7 +326,7 @@ a {
 }
 
 .wom-page {
-  max-width: 750px;
+  max-width: var(--content-width);
   padding: 4rem 1.5rem 6rem;
 }
 
