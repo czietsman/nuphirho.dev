@@ -14,7 +14,6 @@ type Page struct {
 	MainClass       string
 	CurrentNav      string   // "blog", "about", "words", or "" for none
 	ShowFooter      bool
-	ShowThemeToggle bool
 	PageCSS         []string // additional CSS paths relative to site root
 	PageJS          []string // additional JS paths relative to site root
 	OutputPath      string   // e.g. "index.html", "about/index.html"
@@ -35,7 +34,6 @@ func pages() []Page {
 			BodyClass:       "landing-body",
 			MainClass:       "landing-main",
 			ShowFooter:      false,
-			ShowThemeToggle: false,
 			OutputPath:      "index.html",
 			TemplateName:    "index.html",
 		},
@@ -51,7 +49,6 @@ func pages() []Page {
 			MainClass:       "site-main",
 			CurrentNav:      "about",
 			ShowFooter:      true,
-			ShowThemeToggle: true,
 			OutputPath:      "about/index.html",
 			TemplateName:    "about.html",
 		},
@@ -64,7 +61,6 @@ func pages() []Page {
 			MainClass:       "site-main wom-content",
 			CurrentNav:      "words",
 			ShowFooter:      false,
-			ShowThemeToggle: true,
 			PageCSS:         []string{"css/words-of-meaning.css"},
 			OutputPath:      "words-of-meaning/index.html",
 			TemplateName:    "words-of-meaning.html",
@@ -77,7 +73,6 @@ func pages() []Page {
 			MainID:          "main",
 			MainClass:       "site-main roadmap-content",
 			ShowFooter:      false,
-			ShowThemeToggle: true,
 			PageCSS:         []string{"css/roadmap.css"},
 			PageJS:          []string{"js/roadmap.js"},
 			OutputPath:      "roadmap/index.html",

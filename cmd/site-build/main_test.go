@@ -125,14 +125,8 @@ func TestThemeTogglePresence(t *testing.T) {
 		"--output-dir", outDir,
 	}, &stdout, &stderr)
 
-	// Landing page should NOT have theme toggle
-	landing, _ := os.ReadFile(filepath.Join(outDir, "index.html"))
-	if strings.Contains(string(landing), "theme-toggle") {
-		t.Error("landing page should not have theme toggle")
-	}
-
-	// About, words, roadmap SHOULD have theme toggle
-	for _, page := range []string{"about/index.html", "words-of-meaning/index.html", "roadmap/index.html"} {
+	// All pages should have theme toggle
+	for _, page := range []string{"index.html", "about/index.html", "words-of-meaning/index.html", "roadmap/index.html"} {
 		data, _ := os.ReadFile(filepath.Join(outDir, page))
 		if !strings.Contains(string(data), "theme-toggle") {
 			t.Errorf("%s: missing theme toggle", page)
