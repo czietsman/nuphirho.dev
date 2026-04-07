@@ -92,6 +92,55 @@
       color: #6b7280;
     }
 
+    .wom-header {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid #1e2330;
+      margin-bottom: 2rem;
+    }
+
+    .wom-header-inner {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .wom-site-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #e8e2d9;
+    }
+
+    .wom-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .wom-nav a {
+      font-family: 'DM Mono', monospace;
+      color: #c8a96e;
+      text-decoration: none;
+      font-size: 0.9375rem;
+      transition: color 0.2s ease;
+    }
+
+    .wom-nav a:hover, .wom-nav a:focus {
+      color: #a8894e;
+    }
+
+    .wom-nav a[aria-current="page"] {
+      color: #a8894e;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
     @media (max-width: 600px) {
       .page {
         padding: 2.5rem 1.25rem 4rem;
@@ -104,10 +153,24 @@
       h2 {
         font-size: 1.35rem;
       }
+
+      .wom-header-inner {
+        flex-wrap: wrap;
+      }
     }
   </style>
 </head>
 <body>
+  <header class="wom-header" role="banner">
+    <div class="wom-header-inner">
+      <a href="/" class="wom-site-name" aria-label="nuphirho home">nuphirho</a>
+      <nav class="wom-nav" aria-label="Main navigation">
+        <a href="https://blog.nuphirho.dev">Blog</a>
+        <a href="/about">About</a>
+        <a href="/words-of-meaning" aria-current="page">Words</a>
+      </nav>
+    </div>
+  </header>
   <main class="page">
     <h1>Words of Meaning</h1>
     <p class="subtitle">A living glossary. Not definitions in the dictionary sense. Explanations of why each word was chosen and what it carries.</p>
