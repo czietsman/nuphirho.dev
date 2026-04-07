@@ -14,5 +14,8 @@
   "specification-driven-development": { "devto": "sdd" },
   "ai-governance": { "devto": "aigovernance" },
   "software-verification": { "devto": "softwareverification" },
-  "collaboration": { "devto": "collaboration" }
+  "collaboration": { "devto": "collaboration" },
+  "go-to-market": { "devto": "gotomarket" },
+  "enterprise-saas": { "devto": "enterprisesaas" },
+  "product-strategy": { "devto": "productstrategy" }
 }
