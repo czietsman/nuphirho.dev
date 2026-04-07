@@ -7,12 +7,10 @@
     <div class="container">
       <a href="/" class="site-name" aria-label="nuphirho home">nuphirho</a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="https://blog.nuphirho.dev"{{if isCurrentNav "blog"}} aria-current="page"{{end}}>Blog</a>
         <a href="/about"{{if isCurrentNav "about"}} aria-current="page"{{end}}>About</a>
         <a href="/words-of-meaning"{{if isCurrentNav "words"}} aria-current="page"{{end}}>Words</a>
-        {{- if .ShowThemeToggle}}
+        <a href="https://blog.nuphirho.dev"{{if isCurrentNav "blog"}} aria-current="page"{{end}}>Blog</a>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">Dark</button>
-        {{- end}}
       </nav>
     </div>
   </header>
