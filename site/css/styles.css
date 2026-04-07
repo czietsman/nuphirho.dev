@@ -262,7 +262,7 @@ a {
 
 /* ---- Landing page ---- */
 .landing-body {
-  padding: 0 2rem 2rem;
+  padding: 0;
 }
 
 .landing-body .landing-main {
