@@ -59,10 +59,9 @@ func pages() []Page {
 			OGType:          "website",
 			MainID:          "main",
 			MainClass:       "site-main wom-content",
-			CurrentNav:      "words",
-			ShowFooter:      false,
-			PageCSS:         []string{"css/words-of-meaning.css"},
-			OutputPath:      "words-of-meaning/index.html",
+			CurrentNav:   "words",
+			ShowFooter:   false,
+			OutputPath:   "words-of-meaning/index.html",
 			TemplateName:    "words-of-meaning.html",
 		},
 		{
