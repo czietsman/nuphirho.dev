@@ -58,6 +58,23 @@ All written content, including commit messages and documentation, must follow `d
 
 ---
 
+## Post frontmatter
+
+Every post in `posts/` must include the frontmatter fields documented
+in `internal/frontmatter/frontmatter.go`. Pay particular attention to:
+
+- `publish_date` (YYYY-MM-DD): Controls when the pipeline publishes
+  the post. Posts without `publish_date` publish immediately on merge.
+  Posts with a future `publish_date` are skipped until that date. If
+  a worker prompt specifies a publish date, set this field to the
+  target date. The publish cron runs at 05:00 UTC daily, so
+  time-of-day scheduling is not available.
+
+Before creating a post file, read at least two existing published
+posts in `posts/` to confirm the current frontmatter conventions.
+
+---
+
 ## Security context
 
 This is a public repository. The full directory structure, workflow definitions, Terraform configuration, secret variable names, and pipeline logic are visible to anyone. Treat this as a given constraint, not a problem to solve. Every decision in this repository must be made with that visibility in mind.
