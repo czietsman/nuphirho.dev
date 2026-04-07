@@ -10,7 +10,11 @@ This is the source repository for [nuphirho.dev](https://nuphirho.dev), a techni
 
 The repository contains:
 
-- **site/** -- Static landing page (deployed to GitHub Pages)
+- **site/** -- Static site built from Go templates (deployed to GitHub Pages)
+  - **site/templates/** -- HTML templates (base layout, partials, page content)
+  - **site/css/** -- Stylesheets (shared + page-specific)
+  - **site/js/** -- JavaScript (theme toggle, roadmap calendar)
+  - **site/static/** -- Files copied directly to output (CNAME, calendar data)
 - **posts/** -- Markdown blog post source files
 - **prompts/** -- Reviewed prompt material, including dependency review briefs
 - **specs/** -- BDD feature files describing pipeline behaviour
@@ -33,6 +37,7 @@ AI assists in research, drafting, and refinement. The thinking, decisions, direc
 | CI/CD | GitHub Actions |
 | IaC | Terraform + Cloudflare provider |
 | DNS/CDN/SSL | Cloudflare (free tier) |
+| Site build | Go html/template (cmd/site-build) |
 | Landing page | GitHub Pages (nuphirho.dev) |
 | Primary platform | Hashnode (blog.nuphirho.dev) |
 | Cross-post | Dev.to (automated), Medium (manual) |
