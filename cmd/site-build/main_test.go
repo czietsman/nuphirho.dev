@@ -181,7 +181,6 @@ func TestStaticAssetsCopied(t *testing.T) {
 		"CNAME",
 		"roadmap/calendar-data.json",
 		"css/styles.css",
-		"css/words-of-meaning.css",
 		"css/roadmap.css",
 		"js/theme.js",
 		"js/roadmap.js",
@@ -232,10 +231,10 @@ func TestPageSpecificCSS(t *testing.T) {
 		"--output-dir", outDir,
 	}, &stdout, &stderr)
 
-	// Words page should link to words-of-meaning.css
+	// Words page should NOT have page-specific CSS (styles in shared styles.css)
 	words, _ := os.ReadFile(filepath.Join(outDir, "words-of-meaning/index.html"))
-	if !strings.Contains(string(words), "words-of-meaning.css") {
-		t.Error("words page should link to words-of-meaning.css")
+	if strings.Contains(string(words), "words-of-meaning.css") {
+		t.Error("words page should not link to words-of-meaning.css (merged into styles.css)")
 	}
 
 	// Roadmap page should link to roadmap.css and roadmap.js
