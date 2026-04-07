@@ -3,7 +3,12 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ['site/**']
+    paths:
+      - 'site/templates/**'
+      - 'site/css/**'
+      - 'site/js/**'
+      - 'site/static/**'
+      - 'cmd/site-build/**'
   workflow_dispatch:
 
 permissions: {}
@@ -26,11 +31,18 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          go-version-file: go.mod
+
+      - name: Build site
+        run: go run ./cmd/site-build
+
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
 
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
-          path: site
+          path: site/dist
 
       - name: Deploy to GitHub Pages
         id: deployment

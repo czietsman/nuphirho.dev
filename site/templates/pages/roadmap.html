@@ -1,0 +1,30 @@
+{{define "content"}}
+    <div class="container roadmap-page">
+      <div class="roadmap-header-content">
+        <div class="brand">nuphirho.dev</div>
+        <h1>Publishing Roadmap</h1>
+        <div class="disclaimer">Planned slots only. Nothing is confirmed until published.</div>
+        <div class="cadence-note">
+          <div class="cadence-item"><div class="cadence-dot" style="background:var(--roadmap-accent)"></div> Sun — announcements, research, long-form</div>
+          <div class="cadence-item"><div class="cadence-dot" style="background:var(--series-color)"></div> Wed — series (protected)</div>
+          <div class="cadence-item"><div class="cadence-dot" style="background:var(--standalone-color)"></div> Fri — provocation, standalone</div>
+          <div class="cadence-item"><div class="cadence-dot" style="background:var(--provocation-color)"></div> Sat — philosophical, reflective</div>
+        </div>
+      </div>
+
+      <div class="calendar">
+        <div class="legend">
+          <span class="legend-label">Key:</span>
+          <div class="legend-item"><div class="legend-pip" style="background:var(--published-color)"></div> Published</div>
+          <div class="legend-item"><div class="legend-pip" style="background:var(--pending-color)"></div> Live — blog pending</div>
+          <div class="legend-item"><div class="legend-pip" style="background:var(--series-color)"></div> Series</div>
+          <div class="legend-item"><div class="legend-pip" style="background:var(--standalone-color)"></div> Standalone</div>
+          <div class="legend-item"><div class="legend-pip" style="background:var(--article-color)"></div> Article</div>
+          <div class="legend-item"><div class="legend-pip" style="background:var(--research-color)"></div> Research</div>
+          <div class="legend-item"><div class="legend-pip" style="background:var(--provocation-color)"></div> Provocation</div>
+          <div class="legend-item"><div class="legend-pip" style="background:var(--roadmap-muted2)"></div> Planned</div>
+        </div>
+        <div id="calendar-root"></div>
+      </div>
+    </div>
+{{- end}}
