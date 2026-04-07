@@ -1,12 +1,11 @@
 /* Roadmap -- page-specific styles */
 
 :root {
-  --roadmap-accent: #c8a96e;
   --roadmap-muted: #6b7280;
   --roadmap-muted2: #3a404f;
   --series-color: #4a9eff;
   --series-bg: rgba(74,158,255,0.08);
-  --standalone-color: #c8a96e;
+  --standalone-color: var(--colour-accent);
   --standalone-bg: rgba(200,169,110,0.08);
   --provocation-color: #e07070;
   --provocation-bg: rgba(224,112,112,0.08);
@@ -42,16 +41,16 @@
 .roadmap-page .brand {
   font-family: 'DM Mono', monospace;
   font-size: 0.7rem;
-  color: var(--roadmap-accent);
+  color: var(--colour-accent);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }
 
 .roadmap-page h1 {
-  font-family: 'DM Serif Display', serif;
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 700;
+  color: var(--colour-accent);
   margin-bottom: 0.5rem;
 }
 
@@ -61,7 +60,7 @@
   font-family: 'DM Mono', monospace;
   padding: 0.4rem 0.65rem;
   border: 1px solid var(--colour-border);
-  border-left: 2px solid var(--roadmap-accent);
+  border-left: 2px solid var(--colour-accent);
   display: inline-block;
   margin-top: 0.75rem;
   border-radius: 0 3px 3px 0;
@@ -131,9 +130,9 @@
 }
 
 .roadmap-page .month-header {
-  font-family: 'DM Serif Display', serif;
   font-size: 1rem;
-  color: var(--roadmap-accent);
+  font-weight: 600;
+  color: var(--colour-accent);
   padding: 0.4rem 0 0.8rem;
   border-bottom: 1px solid var(--colour-border);
   margin-bottom: 1rem;
@@ -187,8 +186,8 @@
 }
 
 .roadmap-page .week-label .dates {
-  font-family: 'DM Serif Display', serif;
   font-size: 0.78rem;
+  font-weight: 600;
   line-height: 1.3;
 }
 
@@ -227,7 +226,7 @@
 }
 
 .roadmap-page .day.weekend .day-name {
-  color: var(--roadmap-accent);
+  color: var(--colour-accent);
   opacity: 0.45;
 }
 
