@@ -1,7 +1,7 @@
 ---
 title: "I Followed the Problem Home"
 slug: "i-followed-the-problem-home"
-tags: [ai-governance, epistemology, software-verification, specification-driven-development, collaboration]
+tags: [ai-governance, epistemology, software-verification, collaboration]
 canonical: "https://blog.nuphirho.dev/i-followed-the-problem-home"
 publish_date: 2026-04-04
 ---

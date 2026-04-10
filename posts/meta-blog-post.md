@@ -2,7 +2,7 @@
 title: "Treating Ideas as Releasable Software"
 slug: "treating-ideas-as-releasable-software"
 draft: false
-tags: [ai, process, scientific-method, specification-driven-development]
+tags: [ai, process, scientific-method]
 publish_date: 2026-03-25
 ---
 
