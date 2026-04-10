@@ -8,17 +8,18 @@
       "future": true,
       "weeks": [
         {
-          "label": "8–14 Jun",
+          "label": "8\u201314 Jun",
           "days": {
             "fri": {
               "category": "provocation",
               "status": "planned",
-              "label": "Provocation · Follow-up"
+              "label": "Provocation \u00b7 Agile Manifesto",
+              "pending-title": "The Agile Manifesto Needs Rewriting"
             }
           }
         },
         {
-          "label": "1–7 Jun",
+          "label": "1\u20137 Jun",
           "days": {
             "fri": {
               "category": "provocation",
@@ -35,17 +36,17 @@
       "future": true,
       "weeks": [
         {
-          "label": "18–24 May",
+          "label": "18\u201324 May",
           "days": {
             "wed": {
               "category": "series",
               "status": "planned",
-              "label": "Series · Final"
+              "label": "Series \u00b7 Final"
             }
           }
         },
         {
-          "label": "11–17 May",
+          "label": "11\u201317 May",
           "days": {
             "wed": {
               "category": "series",
@@ -55,12 +56,12 @@
             "sat": {
               "category": "provocation",
               "status": "planned",
-              "label": "Provocation · 4 of 4"
+              "label": "Provocation \u00b7 4 of 4"
             }
           }
         },
         {
-          "label": "4–10 May",
+          "label": "4\u201310 May",
           "days": {
             "fri": {
               "category": "standalone",
@@ -75,7 +76,7 @@
             "sat": {
               "category": "provocation",
               "status": "planned",
-              "label": "Provocation · 3 of 4"
+              "label": "Provocation \u00b7 3 of 4"
             }
           }
         }
@@ -87,7 +88,7 @@
       "future": false,
       "weeks": [
         {
-          "label": "27 Apr–3 May",
+          "label": "27 Apr\u20133 May",
           "days": {
             "fri": {
               "category": "standalone",
@@ -102,12 +103,12 @@
             "sat": {
               "category": "provocation",
               "status": "planned",
-              "label": "Provocation · 2 of 4"
+              "label": "Provocation \u00b7 2 of 4"
             }
           }
         },
         {
-          "label": "20–26 Apr",
+          "label": "20\u201326 Apr",
           "days": {
             "fri": {
               "category": "standalone",
@@ -122,7 +123,7 @@
             "sat": {
               "category": "provocation",
               "status": "planned",
-              "label": "Provocation · 1 of 4"
+              "label": "Provocation \u00b7 1 of 4"
             },
             "sun": {
               "category": "standalone",
@@ -132,7 +133,7 @@
           }
         },
         {
-          "label": "13–19 Apr",
+          "label": "13\u201319 Apr",
           "days": {
             "fri": {
               "category": "standalone",
@@ -152,25 +153,41 @@
           }
         },
         {
-          "label": "6–12 Apr",
+          "label": "6\u201312 Apr",
           "days": {
             "wed": {
               "category": "series",
-              "status": "planned",
-              "label": "Series"
+              "status": "published",
+              "title": "The Go-to-Market Bottleneck",
+              "platforms": [
+                {
+                  "label": "Blog",
+                  "url": "https://blog.nuphirho.dev/the-go-to-market-bottleneck"
+                },
+                {
+                  "label": "Dev.to",
+                  "url": "https://dev.to/nuphirho/the-go-to-market-bottleneck-4ocj"
+                }
+              ]
             }
           }
         },
         {
-          "label": "30 Mar–5 Apr",
+          "label": "30 Mar\u20135 Apr",
           "days": {
             "sun": {
               "category": "announcement",
               "status": "published",
               "title": "arXiv Paper Live",
               "platforms": [
-                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7444632829235441664"},
-                {"label": "arXiv", "url": "https://doi.org/10.48550/arXiv.2603.25773"}
+                {
+                  "label": "LI",
+                  "url": "https://www.linkedin.com/feed/update/urn:li:activity:7444632829235441664"
+                },
+                {
+                  "label": "arXiv",
+                  "url": "https://doi.org/10.48550/arXiv.2603.25773"
+                }
               ]
             },
             "wed": {
@@ -178,8 +195,15 @@
               "status": "pending-crosspost",
               "title": "The Pipeline Bottleneck",
               "platforms": [
-                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7444995217302208513"},
-                {"label": "Blog ↗", "url": null, "pending": true}
+                {
+                  "label": "LI",
+                  "url": "https://www.linkedin.com/feed/update/urn:li:activity:7444995217302208513"
+                },
+                {
+                  "label": "Blog \u2197",
+                  "url": null,
+                  "pending": true
+                }
               ]
             },
             "fri": {
@@ -187,8 +211,15 @@
               "status": "pending-crosspost",
               "title": "AI Code Review Has It Backwards",
               "platforms": [
-                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7445357605184733184"},
-                {"label": "Blog ↗", "url": null, "pending": true}
+                {
+                  "label": "LI",
+                  "url": "https://www.linkedin.com/feed/update/urn:li:activity:7445357605184733184"
+                },
+                {
+                  "label": "Blog \u2197",
+                  "url": null,
+                  "pending": true
+                }
               ]
             },
             "sat": {
@@ -196,8 +227,14 @@
               "status": "published",
               "title": "I Followed the Problem Home",
               "platforms": [
-                {"label": "LI", "url": "https://www.linkedin.com/pulse/i-followed-problem-home-christo-zietsman-qhhxf"},
-                {"label": "Blog", "url": "https://blog.nuphirho.dev/i-followed-the-problem-home"}
+                {
+                  "label": "LI",
+                  "url": "https://www.linkedin.com/pulse/i-followed-problem-home-christo-zietsman-qhhxf"
+                },
+                {
+                  "label": "Blog",
+                  "url": "https://blog.nuphirho.dev/i-followed-the-problem-home"
+                }
               ]
             }
           }
@@ -210,15 +247,21 @@
       "future": false,
       "weeks": [
         {
-          "label": "23–29 Mar",
+          "label": "23\u201329 Mar",
           "days": {
             "wed": {
               "category": "series",
               "status": "published",
               "title": "AI-Assisted Security Audit",
               "platforms": [
-                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7442458502230589440"},
-                {"label": "Blog", "url": "https://blog.nuphirho.dev/ai-assisted-security-audit"}
+                {
+                  "label": "LI",
+                  "url": "https://www.linkedin.com/feed/update/urn:li:activity:7442458502230589440"
+                },
+                {
+                  "label": "Blog",
+                  "url": "https://blog.nuphirho.dev/ai-assisted-security-audit"
+                }
               ]
             },
             "sat": {
@@ -226,21 +269,30 @@
               "status": "published",
               "title": "Science Officer Series (4 posts)",
               "platforms": [
-                {"label": "Blog", "url": "https://blog.nuphirho.dev/echo-chamber-ai-code-review-correlated-error"},
-                {"label": "Dev.to", "url": "https://dev.to/nuphirho"}
+                {
+                  "label": "Blog",
+                  "url": "https://blog.nuphirho.dev/echo-chamber-ai-code-review-correlated-error"
+                },
+                {
+                  "label": "Dev.to",
+                  "url": "https://dev.to/nuphirho"
+                }
               ]
             }
           }
         },
         {
-          "label": "16–22 Mar",
+          "label": "16\u201322 Mar",
           "days": {
             "wed": {
               "category": "series",
               "status": "published",
               "title": "From Craftsman to Dark Factory",
               "platforms": [
-                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7439921787309576192"}
+                {
+                  "label": "LI",
+                  "url": "https://www.linkedin.com/feed/update/urn:li:activity:7439921787309576192"
+                }
               ]
             },
             "sat": {
@@ -248,22 +300,34 @@
               "status": "published",
               "title": "Learning the Map",
               "platforms": [
-                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7440107692058099712"},
-                {"label": "Blog", "url": "https://blog.nuphirho.dev/learning-the-map"}
+                {
+                  "label": "LI",
+                  "url": "https://www.linkedin.com/feed/update/urn:li:activity:7440107692058099712"
+                },
+                {
+                  "label": "Blog",
+                  "url": "https://blog.nuphirho.dev/learning-the-map"
+                }
               ]
             }
           }
         },
         {
-          "label": "9–15 Mar",
+          "label": "9\u201315 Mar",
           "days": {
             "wed": {
               "category": "series",
               "status": "published",
               "title": "The Trust Barrier",
               "platforms": [
-                {"label": "LI", "url": "https://www.linkedin.com/feed/update/urn:li:activity:7437385072825106432"},
-                {"label": "Blog", "url": "https://blog.nuphirho.dev/the-trust-barrier"}
+                {
+                  "label": "LI",
+                  "url": "https://www.linkedin.com/feed/update/urn:li:activity:7437385072825106432"
+                },
+                {
+                  "label": "Blog",
+                  "url": "https://blog.nuphirho.dev/the-trust-barrier"
+                }
               ]
             }
           }
