@@ -3,8 +3,9 @@ title: "Wardley Was Right"
 slug: wardley-was-right
 publish_date: 2026-04-11
 tags:
-  - Simon Wardley
-status: published
+  - ai-assisted-development
+  - agentic-development
+  - software-engineering
 ---
 
 **Simon Wardley** changed the way I think about a problem I thought I had solved.
