@@ -17,5 +17,6 @@
   "collaboration": { "devto": "collaboration" },
   "go-to-market": { "devto": "gotomarket" },
   "enterprise-saas": { "devto": "enterprisesaas" },
-  "product-strategy": { "devto": "productstrategy" }
+  "product-strategy": { "devto": "productstrategy" },
+  "agentic-development": { "devto": "agenticdevelopment" }
 }
