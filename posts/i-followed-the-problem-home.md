@@ -6,7 +6,7 @@ canonical: "https://blog.nuphirho.dev/i-followed-the-problem-home"
 publish_date: 2026-04-04
 ---
 
-[James Bach](https://www.linkedin.com/in/james-marcus-bach/) wrote that failing to detect a problem is not a measurement of non-problemness. He was responding to me. That exchange sent me somewhere I did not expect to go.
+[James Bach](https://www.linkedin.com/in/james-bach-6188a811/) wrote that failing to detect a problem is not a measurement of non-problemness. He was responding to me. That exchange sent me somewhere I did not expect to go.
 
 I am not a philosopher. I am not a mathematician. I am an engineer who has spent twenty years trying to verify that software does what it is supposed to do, and I kept running into the same wall from different directions.
 
