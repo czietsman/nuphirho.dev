@@ -1,7 +1,7 @@
 ---
 title: "Wardley Was Right"
 slug: wardley-was-right
-publish_date: "2026-04-11T06:33:00Z"
+publish_date: 2026-04-11
 tags:
   - Simon Wardley
 status: published
