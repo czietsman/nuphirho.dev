@@ -4,6 +4,7 @@ slug: "treating-ideas-as-releasable-software"
 draft: false
 tags: [ai, process, scientific-method]
 publish_date: 2026-03-25
+edited_at: 2026-04-11T00:00:00Z
 ---
 
 I recently published a four-part series on AI code review, correlated errors, and specification-driven verification. The research behind it took longer than the writing. This post is about that research process, not the conclusions it produced.
