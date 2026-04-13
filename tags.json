@@ -18,5 +18,6 @@
   "go-to-market": { "devto": "gotomarket" },
   "enterprise-saas": { "devto": "enterprisesaas" },
   "product-strategy": { "devto": "productstrategy" },
-  "agentic-development": { "devto": "agenticdevelopment" }
+  "agentic-development": { "devto": "agenticdevelopment" },
+  "organisational-design" : { "devto": "organisationaldesign" }
 }
