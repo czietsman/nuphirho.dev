@@ -55,12 +55,21 @@ type Client struct {
 	DryRun        bool
 	// Log receives diagnostic output when non-nil. Writes are best-effort.
 	Log io.Writer
+	// Now overrides the current time for testing. Defaults to time.Now.
+	Now func() time.Time
 
 	// mutationsSent tracks mutations for test assertions
 	mutationsSent   []string
 	requestCount    int
 	publishedBySlug map[string]publishedPost
 	deletedBySlug   map[string]string
+}
+
+func (c *Client) nowOrDefault() time.Time {
+	if c.Now != nil {
+		return c.Now()
+	}
+	return time.Now()
 }
 
 type publishedPost struct {
@@ -99,9 +108,9 @@ func (c *Client) Publish(input PostInput) (*PublishResult, error) {
 				timeString(existing.PublishedAt), timeString(existing.UpdatedAt),
 				timeString(remote), timeString(input.EditedAt))
 		}
-		if input.EditedAt == nil || !shouldUpdatePublishedPost(existing, input.EditedAt) {
+		if !shouldUpdatePublishedPost(input.EditedAt, c.nowOrDefault()) {
 			if c.Log != nil {
-				fmt.Fprintf(c.Log, "[hashnode] %s: unchanged (editedAt not newer than remote)\n", input.Slug)
+				fmt.Fprintf(c.Log, "[hashnode] %s: unchanged (editedAt not within 24h window)\n", input.Slug)
 			}
 			return &PublishResult{Action: "unchanged", PostID: existing.ID}, nil
 		}
@@ -597,15 +606,12 @@ func parseGraphQLTime(v interface{}) *time.Time {
 	return &utc
 }
 
-func shouldUpdatePublishedPost(post publishedPost, editedAt *time.Time) bool {
+func shouldUpdatePublishedPost(editedAt *time.Time, now time.Time) bool {
 	if editedAt == nil {
 		return false
 	}
-	remote := latestRemoteTimestamp(post.UpdatedAt, post.PublishedAt)
-	if remote == nil {
-		return true
-	}
-	return editedAt.UTC().After(remote.UTC())
+	cutoff := now.UTC().Add(-24 * time.Hour)
+	return editedAt.UTC().After(cutoff)
 }
 
 func latestRemoteTimestamp(values ...*time.Time) *time.Time {
