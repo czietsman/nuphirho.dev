@@ -132,6 +132,7 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 	} else {
 		hnClient := hashnode.New(*hnToken, *hnPubID, http.DefaultClient)
 		hnClient.DryRun = *dryRun
+		hnClient.Log = stderr
 		hn = hnClient
 	}
 
@@ -142,6 +143,7 @@ func Run(args []string, stdout, stderr io.Writer, getenv func(string) string, d 
 	} else {
 		dtClient := devto.New(*dtKey, http.DefaultClient)
 		dtClient.DryRun = *dryRun
+		dtClient.Log = stderr
 		dt = dtClient
 	}
 
