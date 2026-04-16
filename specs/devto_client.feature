@@ -43,6 +43,19 @@ Feature: Dev.to client
     Then no POST or PUT request is made
     And the dry-run result action is "unchanged"
 
+  Scenario: Skip update when remote article has millisecond-precision edited_at timestamp
+    Given an article exists with canonical URL "https://blog.nuphirho.dev/stable-post" and ID 50000
+    And the article "https://blog.nuphirho.dev/stable-post" has remote edited_at "2026-04-11T05:00:30.123Z"
+    When the pipeline creates an article:
+      | title     | Stable Post                                    |
+      | slug      | stable-post                                    |
+      | content   | Content.                                       |
+      | tags      | go                                             |
+      | published | true                                           |
+      | edited_at | 2026-04-10T00:00:00Z                           |
+    Then no POST or PUT request is made
+    And the dry-run result action is "unchanged"
+
   Scenario: Article not found by canonical URL falls through to create
     Given no article exists with canonical URL "https://blog.nuphirho.dev/brand-new"
     When the pipeline creates an article:
