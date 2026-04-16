@@ -270,3 +270,17 @@ Feature: Hashnode client
       | edited_at| 2026-03-11T09:00:00Z      |
     Then an updatePost mutation is sent with ID "post-101"
     And the response contains post URL "https://blog.example.com/changed-post"
+
+  Scenario: Skip update when remote post has millisecond-precision updatedAt timestamp
+    Given a post exists with slug "stable-post" and ID "post-200"
+    And the published post "stable-post" has updatedAt "2026-04-11T05:00:30.123Z"
+    When the pipeline publishes a post:
+      | title    | Stable Post                |
+      | slug     | stable-post                |
+      | subtitle | Subtitle                   |
+      | content  | Content.                   |
+      | tags     | go                         |
+      | edited_at| 2026-04-10T00:00:00Z      |
+    Then no updatePost mutation is sent
+    And the result action is "unchanged"
+    And the result post ID is "post-200"
