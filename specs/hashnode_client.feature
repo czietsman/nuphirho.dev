@@ -23,6 +23,7 @@ Feature: Hashnode client
   Scenario: Update an existing post when edited_at is newer than the remote post
     Given a post exists with slug "existing-post" and ID "post-002"
     And the published post "existing-post" has updatedAt "2026-03-10T09:00:00Z"
+    And the client now is "2026-03-12T05:00:00Z"
     When the pipeline publishes a post:
       | title    | Updated Post               |
       | slug     | existing-post              |
@@ -152,6 +153,7 @@ Feature: Hashnode client
   Scenario: Dry-run for existing post builds update mutation
     Given a post exists with slug "dry-run-update" and ID "post-099"
     And the published post "dry-run-update" has updatedAt "2026-03-10T09:00:00Z"
+    And the client now is "2026-03-12T05:00:00Z"
     And dry-run mode is enabled
     When the pipeline publishes a post:
       | title    | Dry Run Update             |
@@ -233,6 +235,7 @@ Feature: Hashnode client
   Scenario: Update post with series ID
     Given a post exists with slug "existing-series" and ID "post-050"
     And the published post "existing-series" has updatedAt "2026-03-10T09:00:00Z"
+    And the client now is "2026-03-12T05:00:00Z"
     When the pipeline publishes a post with series:
       | title    | Updated Series             |
       | slug     | existing-series            |
@@ -261,6 +264,7 @@ Feature: Hashnode client
   Scenario: Update when edited_at is newer than the remote post
     Given a post exists with slug "changed-post" and ID "post-101"
     And the published post "changed-post" has updatedAt "2026-03-10T09:00:00Z"
+    And the client now is "2026-03-12T05:00:00Z"
     When the pipeline publishes a post:
       | title    | New Title                  |
       | slug     | changed-post               |
@@ -274,6 +278,7 @@ Feature: Hashnode client
   Scenario: Skip update when remote post has millisecond-precision updatedAt timestamp
     Given a post exists with slug "stable-post" and ID "post-200"
     And the published post "stable-post" has updatedAt "2026-04-11T05:00:30.123Z"
+    And the client now is "2026-04-16T05:00:00Z"
     When the pipeline publishes a post:
       | title    | Stable Post                |
       | slug     | stable-post                |
@@ -284,3 +289,31 @@ Feature: Hashnode client
     Then no updatePost mutation is sent
     And the result action is "unchanged"
     And the result post ID is "post-200"
+
+  Scenario: Skip update when edited_at is older than 24 hours
+    Given a post exists with slug "stale-post" and ID "post-300"
+    And the client now is "2026-04-16T05:00:00Z"
+    When the pipeline publishes a post:
+      | title    | Stale Post                 |
+      | slug     | stale-post                 |
+      | subtitle | Subtitle                   |
+      | content  | Content.                   |
+      | tags     | go                         |
+      | edited_at| 2026-04-10T00:00:00Z      |
+    Then no updatePost mutation is sent
+    And the result action is "unchanged"
+    And the result post ID is "post-300"
+
+  Scenario: Update when edited_at is within 24 hours even if remote is newer
+    Given a post exists with slug "fresh-post" and ID "post-301"
+    And the published post "fresh-post" has updatedAt "2026-04-16T04:00:00Z"
+    And the client now is "2026-04-16T05:00:00Z"
+    When the pipeline publishes a post:
+      | title    | Fresh Post                 |
+      | slug     | fresh-post                 |
+      | subtitle | Subtitle                   |
+      | content  | Content.                   |
+      | tags     | go                         |
+      | edited_at| 2026-04-16T00:00:00Z      |
+    Then an updatePost mutation is sent with ID "post-301"
+    And the response contains post URL "https://blog.example.com/fresh-post"

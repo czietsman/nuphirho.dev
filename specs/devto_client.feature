@@ -22,6 +22,7 @@ Feature: Dev.to client
   Scenario: Update an existing article when edited_at is newer than the remote article
     Given an article exists with canonical URL "https://blog.nuphirho.dev/existing-post" and ID 67890
     And the article "https://blog.nuphirho.dev/existing-post" has remote edited_at "2026-03-10T09:00:00Z"
+    And the client now is "2026-03-12T05:00:00Z"
     When the pipeline creates an article:
       | title     | Updated Post                                   |
       | slug      | existing-post                                  |
@@ -46,6 +47,7 @@ Feature: Dev.to client
   Scenario: Skip update when remote article has millisecond-precision edited_at timestamp
     Given an article exists with canonical URL "https://blog.nuphirho.dev/stable-post" and ID 50000
     And the article "https://blog.nuphirho.dev/stable-post" has remote edited_at "2026-04-11T05:00:30.123Z"
+    And the client now is "2026-04-16T05:00:00Z"
     When the pipeline creates an article:
       | title     | Stable Post                                    |
       | slug      | stable-post                                    |
@@ -225,6 +227,7 @@ Feature: Dev.to client
   Scenario: Dry-run for existing article builds update payload
     Given an article exists with canonical URL "https://blog.nuphirho.dev/dry-run-update" and ID 99999
     And the article "https://blog.nuphirho.dev/dry-run-update" has remote edited_at "2026-03-10T09:00:00Z"
+    And the client now is "2026-03-12T05:00:00Z"
     And dry-run mode is enabled
     When the pipeline creates an article:
       | title     | Dry Run Update                                 |
@@ -272,3 +275,31 @@ Feature: Dev.to client
       | tags      | test                                           |
       | published | false                                          |
     Then the dry-run result embeds converted is 2
+
+  # --- 24-hour edit window ---
+
+  Scenario: Skip update when edited_at is older than 24 hours
+    Given an article exists with canonical URL "https://blog.nuphirho.dev/stale-post" and ID 30000
+    And the client now is "2026-04-16T05:00:00Z"
+    When the pipeline creates an article:
+      | title     | Stale Post                                     |
+      | slug      | stale-post                                     |
+      | content   | Content.                                       |
+      | tags      | go                                             |
+      | published | true                                           |
+      | edited_at | 2026-04-10T00:00:00Z                           |
+    Then no POST or PUT request is made
+    And the dry-run result action is "unchanged"
+
+  Scenario: Update when edited_at is within 24 hours even if remote is newer
+    Given an article exists with canonical URL "https://blog.nuphirho.dev/fresh-post" and ID 30001
+    And the article "https://blog.nuphirho.dev/fresh-post" has remote edited_at "2026-04-16T04:00:00Z"
+    And the client now is "2026-04-16T05:00:00Z"
+    When the pipeline creates an article:
+      | title     | Fresh Post                                     |
+      | slug      | fresh-post                                     |
+      | content   | Content.                                       |
+      | tags      | go                                             |
+      | published | true                                           |
+      | edited_at | 2026-04-16T00:00:00Z                           |
+    Then a PUT request is sent to "/api/articles/30001"
