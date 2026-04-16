@@ -11,6 +11,14 @@ import (
 	"time"
 )
 
+// timeString formats a *time.Time for logging. Returns "nil" if t is nil.
+func timeString(t *time.Time) string {
+	if t == nil {
+		return "nil"
+	}
+	return t.Format(time.RFC3339Nano)
+}
+
 // HTTPClient is the interface for making HTTP requests.
 // Inject a fake in tests; use http.DefaultClient in production.
 type HTTPClient interface {
@@ -45,6 +53,8 @@ type Client struct {
 	Endpoint      string
 	HTTP          HTTPClient
 	DryRun        bool
+	// Log receives diagnostic output when non-nil. Writes are best-effort.
+	Log io.Writer
 
 	// mutationsSent tracks mutations for test assertions
 	mutationsSent   []string
@@ -82,8 +92,21 @@ func (c *Client) Publish(input PostInput) (*PublishResult, error) {
 
 	existing := c.publishedBySlug[input.Slug]
 	if existing.ID != "" {
+		if c.Log != nil {
+			remote := latestRemoteTimestamp(existing.UpdatedAt, existing.PublishedAt)
+			fmt.Fprintf(c.Log, "[hashnode] %s: existing post id=%s publishedAt=%s updatedAt=%s remote=%s editedAt=%s\n",
+				input.Slug, existing.ID,
+				timeString(existing.PublishedAt), timeString(existing.UpdatedAt),
+				timeString(remote), timeString(input.EditedAt))
+		}
 		if input.EditedAt == nil || !shouldUpdatePublishedPost(existing, input.EditedAt) {
+			if c.Log != nil {
+				fmt.Fprintf(c.Log, "[hashnode] %s: unchanged (editedAt not newer than remote)\n", input.Slug)
+			}
 			return &PublishResult{Action: "unchanged", PostID: existing.ID}, nil
+		}
+		if c.Log != nil {
+			fmt.Fprintf(c.Log, "[hashnode] %s: updating post\n", input.Slug)
 		}
 		if c.DryRun {
 			return &PublishResult{Action: "update", PostID: existing.ID, DryRun: true}, nil
@@ -182,6 +205,13 @@ func (c *Client) loadPublishedInventory() error {
 	}
 
 	c.publishedBySlug = edgesToPublishedPosts(resp.path("data", "publication", "posts", "edges"))
+	if c.Log != nil {
+		fmt.Fprintf(c.Log, "[hashnode] inventory: %d published posts\n", len(c.publishedBySlug))
+		for slug, p := range c.publishedBySlug {
+			fmt.Fprintf(c.Log, "[hashnode]   slug=%q id=%s publishedAt=%s updatedAt=%s\n",
+				slug, p.ID, timeString(p.PublishedAt), timeString(p.UpdatedAt))
+		}
+	}
 	return nil
 }
 

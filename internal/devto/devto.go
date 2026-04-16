@@ -13,6 +13,14 @@ import (
 	"time"
 )
 
+// timeString formats a *time.Time for logging. Returns "nil" if t is nil.
+func timeString(t *time.Time) string {
+	if t == nil {
+		return "nil"
+	}
+	return t.Format(time.RFC3339Nano)
+}
+
 // HTTPClient is the interface for making HTTP requests.
 // Inject a fake in tests; use http.DefaultClient in production.
 type HTTPClient interface {
@@ -46,6 +54,8 @@ type Client struct {
 	Endpoint string
 	HTTP     HTTPClient
 	DryRun   bool
+	// Log receives diagnostic output when non-nil. Writes are best-effort.
+	Log io.Writer
 
 	// requestsMade tracks requests for test assertions
 	requestsMade []requestRecord
@@ -126,7 +136,17 @@ func (c *Client) CreateArticle(input ArticleInput) (*PublishResult, error) {
 	body := map[string]interface{}{"article": articleBody}
 
 	if existing != nil {
+		if c.Log != nil {
+			remote := latestTime(existing.EditedAt, existing.PublishedAt)
+			fmt.Fprintf(c.Log, "[devto] %s: existing article id=%d publishedAt=%s editedAt=%s remote=%s inputEditedAt=%s\n",
+				canonicalURL, existing.ID,
+				timeString(existing.PublishedAt), timeString(existing.EditedAt),
+				timeString(remote), timeString(input.EditedAt))
+		}
 		if existing.Published == input.Published && !shouldUpdateArticle(existing, input.EditedAt) {
+			if c.Log != nil {
+				fmt.Fprintf(c.Log, "[devto] %s: unchanged (editedAt not newer than remote)\n", canonicalURL)
+			}
 			return &PublishResult{
 				Action:          "unchanged",
 				ArticleID:       existing.ID,
@@ -134,6 +154,9 @@ func (c *Client) CreateArticle(input ArticleInput) (*PublishResult, error) {
 				Published:       input.Published,
 				EmbedsConverted: embedCount,
 			}, nil
+		}
+		if c.Log != nil {
+			fmt.Fprintf(c.Log, "[devto] %s: updating article\n", canonicalURL)
 		}
 		if c.DryRun {
 			return &PublishResult{
@@ -226,6 +249,14 @@ func (c *Client) loadInventory() error {
 			record.ID = int(id)
 		}
 		c.inventory[cu] = record
+	}
+
+	if c.Log != nil {
+		fmt.Fprintf(c.Log, "[devto] inventory: %d articles\n", len(c.inventory))
+		for cu, rec := range c.inventory {
+			fmt.Fprintf(c.Log, "[devto]   canonical=%q id=%d publishedAt=%s editedAt=%s\n",
+				cu, rec.ID, timeString(rec.PublishedAt), timeString(rec.EditedAt))
+		}
 	}
 
 	return nil
