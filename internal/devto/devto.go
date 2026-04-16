@@ -56,11 +56,20 @@ type Client struct {
 	DryRun   bool
 	// Log receives diagnostic output when non-nil. Writes are best-effort.
 	Log io.Writer
+	// Now overrides the current time for testing. Defaults to time.Now.
+	Now func() time.Time
 
 	// requestsMade tracks requests for test assertions
 	requestsMade []requestRecord
 	inventory    map[string]articleRecord
 	sleepFn      func(time.Duration)
+}
+
+func (c *Client) nowOrDefault() time.Time {
+	if c.Now != nil {
+		return c.Now()
+	}
+	return time.Now()
 }
 
 const maxRetries = 3
@@ -143,9 +152,9 @@ func (c *Client) CreateArticle(input ArticleInput) (*PublishResult, error) {
 				timeString(existing.PublishedAt), timeString(existing.EditedAt),
 				timeString(remote), timeString(input.EditedAt))
 		}
-		if existing.Published == input.Published && !shouldUpdateArticle(existing, input.EditedAt) {
+		if existing.Published == input.Published && !shouldUpdateArticle(input.EditedAt, c.nowOrDefault()) {
 			if c.Log != nil {
-				fmt.Fprintf(c.Log, "[devto] %s: unchanged (editedAt not newer than remote)\n", canonicalURL)
+				fmt.Fprintf(c.Log, "[devto] %s: unchanged (editedAt not within 24h window)\n", canonicalURL)
 			}
 			return &PublishResult{
 				Action:          "unchanged",
@@ -395,15 +404,12 @@ func (c *Client) retryDelay(resp *http.Response, attempt int) time.Duration {
 	return time.Duration(1<<uint(attempt)) * time.Second
 }
 
-func shouldUpdateArticle(a *articleRecord, editedAt *time.Time) bool {
+func shouldUpdateArticle(editedAt *time.Time, now time.Time) bool {
 	if editedAt == nil {
 		return false
 	}
-	remote := latestTime(a.EditedAt, a.PublishedAt)
-	if remote == nil {
-		return true
-	}
-	return editedAt.UTC().After(remote.UTC())
+	cutoff := now.UTC().Add(-24 * time.Hour)
+	return editedAt.UTC().After(cutoff)
 }
 
 func stringValue(v interface{}) string {

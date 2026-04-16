@@ -306,6 +306,15 @@ func (dc *devtoContext) dryRunModeIsEnabled() error {
 	return nil
 }
 
+func (dc *devtoContext) theClientNowIs(ts string) error {
+	t, err := time.Parse(time.RFC3339, ts)
+	if err != nil {
+		return fmt.Errorf("parsing now %q: %w", ts, err)
+	}
+	dc.client.Now = func() time.Time { return t }
+	return nil
+}
+
 // --- When steps ---
 
 func (dc *devtoContext) thePipelineCreatesAnArticle(table *godog.Table) error {
@@ -590,6 +599,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the Dev\.to API returns (\d+) rate limit errors? before succeeding$`, dc.theDevToAPIReturnsRateLimitErrorsBeforeSucceeding)
 	ctx.Step(`^the Dev\.to API returns (\d+) rate limit errors? with Retry-After header "([^"]*)"$`, dc.theDevToAPIReturnsRateLimitErrorWithRetryAfterHeader)
 	ctx.Step(`^dry-run mode is enabled$`, dc.dryRunModeIsEnabled)
+	ctx.Step(`^the client now is "([^"]*)"$`, dc.theClientNowIs)
 
 	// When
 	ctx.Step(`^the pipeline creates an article:$`, dc.thePipelineCreatesAnArticle)

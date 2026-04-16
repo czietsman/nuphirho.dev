@@ -333,6 +333,15 @@ func (hc *hashnodeContext) dryRunModeIsEnabled() error {
 	return nil
 }
 
+func (hc *hashnodeContext) theClientNowIs(ts string) error {
+	t, err := time.Parse(time.RFC3339, ts)
+	if err != nil {
+		return fmt.Errorf("parsing now %q: %w", ts, err)
+	}
+	hc.client.Now = func() time.Time { return t }
+	return nil
+}
+
 func (hc *hashnodeContext) theHashnodeAPIReturnsAnAuthenticationError() error {
 	hc.fake.authError = true
 	return nil
@@ -717,6 +726,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^no draft exists with slug "([^"]*)"$`, hc.noDraftExistsWithSlug)
 	ctx.Step(`^a draft exists with slug "([^"]*)" and ID "([^"]*)"$`, hc.aDraftExistsWithSlugAndID)
 	ctx.Step(`^dry-run mode is enabled$`, hc.dryRunModeIsEnabled)
+	ctx.Step(`^the client now is "([^"]*)"$`, hc.theClientNowIs)
 	ctx.Step(`^the Hashnode API returns an authentication error$`, hc.theHashnodeAPIReturnsAnAuthenticationError)
 	ctx.Step(`^the Hashnode API returns a publication not found error$`, hc.theHashnodeAPIReturnsAPublicationNotFoundError)
 	ctx.Step(`^the Hashnode API is unreachable$`, hc.theHashnodeAPIIsUnreachable)
