@@ -19,5 +19,7 @@
   "enterprise-saas": { "devto": "enterprisesaas" },
   "product-strategy": { "devto": "productstrategy" },
   "agentic-development": { "devto": "agenticdevelopment" },
-  "organisational-design" : { "devto": "organisationaldesign" }
+  "organisational-design" : { "devto": "organisationaldesign" },
+  "promptq": { "devto": "promptq" },
+  "research": { "devto": "research" }
 }
