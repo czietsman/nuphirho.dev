@@ -77,5 +77,20 @@ func pages() []Page {
 			OutputPath:      "roadmap/index.html",
 			TemplateName:    "roadmap.html",
 		},
+                {
+			Title:        "Novel Findings | nuphirho.dev",
+			Description:  "Confirmed novel contributions from the nuphirho.dev research programme.",
+			Canonical:    "https://nuphirho.dev/novel-findings",
+			OGTitle:      "Novel Findings | nuphirho.dev",
+			OGDescription: "Confirmed novel contributions from the nuphirho.dev research programme.",
+			OGURL:        "https://nuphirho.dev/novel-findings",
+			OGType:       "website",
+			MainID:       "main",
+			MainClass:    "site-main",
+			CurrentNav:   "novel-findings",
+			ShowFooter:   true,
+			OutputPath:   "novel-findings/index.html",
+			TemplateName: "novel-findings.html",
+		},		
 	}
 }
