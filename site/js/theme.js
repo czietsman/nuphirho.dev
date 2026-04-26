@@ -75,12 +75,25 @@
   // Expose toggle for the button
   window.nuphirhoToggleTheme = toggleTheme;
 
-  // Bind button once DOM is ready
+  // Bind all UI elements once DOM is ready
   document.addEventListener('DOMContentLoaded', function () {
-    var button = document.getElementById('theme-toggle');
-    if (button) {
+    // 1. Theme Toggle Logic
+    var themeButton = document.getElementById('theme-toggle');
+    if (themeButton) {
       updateToggleLabel(getCurrentTheme());
-      button.addEventListener('click', toggleTheme);
+      themeButton.addEventListener('click', toggleTheme);
     }
-  });
+
+    // 2. Burger Menu Logic
+    var burger = document.getElementById('burger-menu');
+    var nav = document.getElementById('site-nav');
+    
+    if (burger && nav) {
+      burger.addEventListener('click', function() {
+        var active = burger.classList.toggle('active');
+        nav.classList.toggle('active');
+        burger.setAttribute('aria-expanded', active);
+      });
+    }
+  });	
 })();
