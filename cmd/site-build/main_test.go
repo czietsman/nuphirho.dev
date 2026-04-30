@@ -212,10 +212,10 @@ func TestFooterPresence(t *testing.T) {
 		t.Error("about page should have footer")
 	}
 
-	// Landing page should NOT have footer
+	// Landing page should have footer
 	landing, _ := os.ReadFile(filepath.Join(outDir, "index.html"))
-	if strings.Contains(string(landing), "site-footer") {
-		t.Error("landing page should not have footer")
+	if !strings.Contains(string(landing), "site-footer") {
+		t.Error("landing page should have footer")
 	}
 }
 
