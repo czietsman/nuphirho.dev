@@ -16,11 +16,12 @@
       <nav class="site-nav" id="site-nav" aria-label="Main navigation">
         <a href="/about"{{if isCurrentNav "about"}} aria-current="page"{{end}}>Who am I</a>
         <a href="/words-of-meaning"{{if isCurrentNav "words"}} aria-current="page"{{end}}>Words</a>
-        <a href="https://promptq.ai"{{if isCurrentNav "promptq"}} aria-current="page"{{end}}>PromptQ</a>
+        <a href="https://promptq.ai"{{if isCurrentNav "promptq"}} aria-current="page"{{end}} target="_blank" rel="noopener">PromptQ</a>
 	<a href="https://blog.nuphirho.dev"{{if isCurrentNav "blog"}} aria-current="page"{{end}}>Blog</a>
         <a href="/novel-findings"{{if isCurrentNav "novel-findings"}} aria-current="page"{{end}}>Novel Findings</a>
-	<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">Dark</button>
       </nav>
+
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">Dark</button>
     </div>
   </header>
 {{- end}}
