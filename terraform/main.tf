@@ -127,8 +127,8 @@ resource "cloudflare_record" "dmarc" {
 
 locals {
   user_email_routings = {
-    "privacy"             = var.email_routing_privacy_destination
-    "contact"             = var.email_routing_contact_destination
+    "privacy" = var.email_routing_privacy_destination
+    "contact" = var.email_routing_contact_destination
   }
 }
 
