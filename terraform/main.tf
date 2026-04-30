@@ -122,3 +122,31 @@ resource "cloudflare_record" "dmarc" {
   proxied = false
   ttl     = 1
 }
+
+# ── Email Routing Rules ───────────────────────────────────────
+
+locals {
+  user_email_routings = {
+    "privacy" = var.email_routing_privacy_destination
+    "contact" = var.email_routing_contact_destination
+  }
+}
+
+resource "cloudflare_email_routing_rule" "users" {
+  for_each = local.user_email_routings
+
+  zone_id = data.cloudflare_zone.nuphirho.id
+  name    = "Forward ${each.key}@nuphirho.dev"
+  enabled = true
+
+  matcher {
+    type  = "literal"
+    field = "to"
+    value = "${each.key}@nuphirho.dev"
+  }
+
+  action {
+    type  = "forward"
+    value = [each.value]
+  }
+}
