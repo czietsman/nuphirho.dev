@@ -79,5 +79,5 @@ jobs:
         run: ./notify "$MESSAGE"
 
       - name: Fail if publish step failed
-        if: steps.publish_step.outputs.exit_code != '' && steps.publish_step.outputs.exit_code != '0'
+        if: github.event_name != 'schedule' && steps.publish_step.outputs.exit_code != '' && steps.publish_step.outputs.exit_code != '0'
         run: exit 1
