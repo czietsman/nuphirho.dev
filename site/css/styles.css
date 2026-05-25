@@ -482,3 +482,132 @@ a {
   }
 }
 
+/* ---- Novel Findings page ---- */
+
+.page-subtitle {
+  margin-block-start: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--colour-text-secondary);
+  line-height: 1.5;
+}
+
+.cluster-intro {
+  color: var(--colour-text-secondary);
+  font-size: 0.9375rem;
+  margin-block-end: 1.5rem;
+  font-style: italic;
+}
+
+.finding {
+  border-inline-start: 3px solid var(--colour-border);
+  padding-inline-start: 1.25rem;
+  padding-block: 0.25rem;
+  margin-block-end: 2rem;
+  transition: var(--transition-theme);
+}
+
+.finding-watch {
+  border-inline-start-color: var(--colour-accent-muted);
+  opacity: 0.85;
+}
+
+.finding-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-block-end: 0.75rem;
+  color: var(--colour-text);
+}
+
+.finding p {
+  font-size: 0.9375rem;
+  margin-block-end: 0.75rem;
+  color: var(--colour-text-secondary);
+}
+
+.finding p:last-child {
+  margin-block-end: 0;
+}
+
+.finding-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.finding-note {
+  font-size: 0.875rem;
+  color: var(--colour-muted);
+  font-style: italic;
+}
+
+.meta-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--colour-text-secondary);
+}
+
+.meta-detail {
+  font-size: 0.875rem;
+  color: var(--colour-text-secondary);
+}
+
+.finding-publication {
+  font-size: 0.875rem;
+  color: var(--colour-text-secondary);
+}
+
+/* Confidence badges */
+.confidence-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.15em 0.55em;
+  border-radius: 0.25rem;
+  line-height: 1.4;
+  white-space: nowrap;
+  font-family: 'DM Mono', monospace;
+}
+
+.confidence-high {
+  background-color: #1a4f2a;
+  color: #a8f0b8;
+}
+
+.confidence-confirmed {
+  background-color: #1a3a4f;
+  color: #a0d4f0;
+}
+
+.confidence-provisional {
+  background-color: #4f3a1a;
+  color: #f0c87a;
+}
+
+.confidence-watch {
+  background-color: #2a2a2a;
+  color: #b0b0b0;
+}
+
+[data-theme="dark"] .confidence-high {
+  background-color: #0f3018;
+  color: #7de09a;
+}
+
+[data-theme="dark"] .confidence-confirmed {
+  background-color: #0f2030;
+  color: #7abfe0;
+}
+
+[data-theme="dark"] .confidence-provisional {
+  background-color: #30200f;
+  color: #e0b060;
+}
+
+[data-theme="dark"] .confidence-watch {
+  background-color: #1a1a1a;
+  color: #909090;
+}
+
