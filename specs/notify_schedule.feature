@@ -22,3 +22,7 @@ Feature: Daily publish notifications
   Scenario: Daily notification can report today's publish failures
     Given the notify summary configuration
     Then today's publish failures are included in the daily notification
+
+  Scenario: Scheduled publish failures do not fail the workflow outright
+    Given the publish workflow configuration
+    Then scheduled publish failures are reported in the notification instead of failing the workflow

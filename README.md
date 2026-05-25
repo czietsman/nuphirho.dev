@@ -103,7 +103,7 @@ go run ./cmd/notify "Post 4 is live. Monitor engagement."
 Or via the `Send Notification` GitHub Actions workflow using the `message` input.
 
 The scheduled publish run also sends a daily Telegram notification when there is something to report.
-That notification includes posts queued for tomorrow plus target-level publish changes from the scheduled run. Unchanged posts are not reported.
+That notification includes posts queued for tomorrow plus target-level publish changes from the scheduled run. Unchanged posts are not reported, and scheduled publish failures are summarised there instead of failing the workflow outright.
 
 Required secrets:
 

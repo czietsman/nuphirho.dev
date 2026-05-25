@@ -706,9 +706,13 @@ func (c *Client) doGraphQLRaw(query string, vars map[string]interface{}) (*gqlNo
 		return nil, fmt.Errorf("reading response: %w", err)
 	}
 
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, unexpectedResponseError(resp.StatusCode, resp.Header.Get("Content-Type"), respBody)
+	}
+
 	var result map[string]interface{}
 	if err := json.Unmarshal(respBody, &result); err != nil {
-		return nil, fmt.Errorf("parsing response: %w", err)
+		return nil, fmt.Errorf("parsing response: %w; %s", err, responsePreview(resp.StatusCode, resp.Header.Get("Content-Type"), respBody))
 	}
 
 	// Check for GraphQL errors
@@ -725,4 +729,20 @@ func (c *Client) doGraphQLRaw(query string, vars map[string]interface{}) (*gqlNo
 	}
 
 	return &gqlNode{raw: result}, nil
+}
+
+func unexpectedResponseError(statusCode int, contentType string, body []byte) error {
+	return fmt.Errorf("unexpected response from Hashnode: %s", responsePreview(statusCode, contentType, body))
+}
+
+func responsePreview(statusCode int, contentType string, body []byte) string {
+	preview := strings.TrimSpace(string(body))
+	const maxPreview = 200
+	if len(preview) > maxPreview {
+		preview = preview[:maxPreview] + "..."
+	}
+	if contentType == "" {
+		contentType = "unknown content type"
+	}
+	return fmt.Sprintf("HTTP %d, %s, body=%q", statusCode, contentType, preview)
 }
