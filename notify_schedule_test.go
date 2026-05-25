@@ -23,6 +23,7 @@ func TestPublishWorkflowIncludesDailyNotificationStep(t *testing.T) {
 		"steps.notification.outputs.has_message == 'true'",
 		"TELEGRAM_BOT_TOKEN",
 		"TELEGRAM_CHAT_ID",
+		"github.event_name != 'schedule' && steps.publish_step.outputs.exit_code != '' && steps.publish_step.outputs.exit_code != '0'",
 	}
 
 	for _, fragment := range fragments {
