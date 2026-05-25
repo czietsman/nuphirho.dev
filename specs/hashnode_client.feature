@@ -134,6 +134,13 @@ Feature: Hashnode client
       | tags     | test                       |
     Then the error contains "connection"
 
+  Scenario: HTML error responses include response diagnostics
+    Given the Hashnode API returns an HTML error response
+    When the client checks for a post with slug "any-slug"
+    Then the error contains "unexpected response from Hashnode"
+    And the error contains "HTTP 502"
+    And the error contains "text/html; charset=utf-8"
+
   # --- Dry-run ---
 
   Scenario: Dry-run for new post builds mutation without sending
