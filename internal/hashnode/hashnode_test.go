@@ -30,6 +30,7 @@ type fakeHTTP struct {
 	authError    bool
 	pubNotFound  bool
 	unreachable  bool
+	customResp   *http.Response
 	requests     []*http.Request
 	lastVars     map[string]interface{} // last request variables for assertion
 }
@@ -48,6 +49,10 @@ func (f *fakeHTTP) Do(req *http.Request) (*http.Response, error) {
 
 	if f.unreachable {
 		return nil, fmt.Errorf("connection refused")
+	}
+
+	if f.customResp != nil {
+		return f.customResp, nil
 	}
 
 	body, _ := io.ReadAll(req.Body)
@@ -257,6 +262,14 @@ func jsonResponse(data interface{}) *http.Response {
 	}
 }
 
+func htmlResponse(statusCode int, content string) *http.Response {
+	return &http.Response{
+		StatusCode: statusCode,
+		Body:       io.NopCloser(strings.NewReader(content)),
+		Header:     http.Header{"Content-Type": []string{"text/html; charset=utf-8"}},
+	}
+}
+
 // --- godog context ---
 
 type hashnodeContext struct {
@@ -354,6 +367,11 @@ func (hc *hashnodeContext) theHashnodeAPIReturnsAPublicationNotFoundError() erro
 
 func (hc *hashnodeContext) theHashnodeAPIIsUnreachable() error {
 	hc.fake.unreachable = true
+	return nil
+}
+
+func (hc *hashnodeContext) theHashnodeAPIReturnsAnHTMLErrorResponse() error {
+	hc.fake.customResp = htmlResponse(502, "<html><body>Bad gateway</body></html>")
 	return nil
 }
 
@@ -730,6 +748,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the Hashnode API returns an authentication error$`, hc.theHashnodeAPIReturnsAnAuthenticationError)
 	ctx.Step(`^the Hashnode API returns a publication not found error$`, hc.theHashnodeAPIReturnsAPublicationNotFoundError)
 	ctx.Step(`^the Hashnode API is unreachable$`, hc.theHashnodeAPIIsUnreachable)
+	ctx.Step(`^the Hashnode API returns an HTML error response$`, hc.theHashnodeAPIReturnsAnHTMLErrorResponse)
 	ctx.Step(`^a series exists with name "([^"]*)" and ID "([^"]*)"$`, hc.aSeriesExistsWithNameAndID)
 	ctx.Step(`^no series exists with name "([^"]*)"$`, hc.noSeriesExistsWithName)
 
@@ -788,5 +807,30 @@ func TestFeatures(t *testing.T) {
 
 	if suite.Run() != 0 {
 		t.Fatal("non-zero status returned, failed to run feature tests")
+	}
+}
+
+func TestParseErrorIncludesHashnodeResponseDetails(t *testing.T) {
+	t.Parallel()
+
+	fake := newFakeHTTP()
+	fake.customResp = htmlResponse(502, "<html><body>Bad gateway</body></html>")
+
+	client := hashnode.New("test-token", "pub123", fake)
+	_, err := client.CheckPostBySlug("anything")
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+
+	msg := err.Error()
+	for _, fragment := range []string{
+		"unexpected response from Hashnode",
+		"HTTP 502",
+		"text/html; charset=utf-8",
+		"Bad gateway",
+	} {
+		if !strings.Contains(msg, fragment) {
+			t.Fatalf("expected error to contain %q, got %q", fragment, msg)
+		}
 	}
 }
