@@ -29,10 +29,14 @@
 
 	onMount(() => {
 		initTheme();
+	});
+
+	$effect(() => {
+		const path = $page.url.pathname;
 		fetch('/api/stats', {
 			method: 'POST',
 			headers: { 'content-type': 'application/json' },
-			body: JSON.stringify({ path: window.location.pathname })
+			body: JSON.stringify({ path })
 		}).catch(() => {});
 	});
 </script>
