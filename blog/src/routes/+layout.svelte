@@ -29,7 +29,7 @@
 
 	onMount(() => {
 		initTheme();
-		fetch('/api/visit', {
+		fetch('/api/stats', {
 			method: 'POST',
 			headers: { 'content-type': 'application/json' },
 			body: JSON.stringify({ path: window.location.pathname })
