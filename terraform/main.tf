@@ -3,6 +3,7 @@
 # 2026-03-06  Migrate S3 backend endpoint to endpoints.s3
 # 2026-03-06  Set blog CNAME to DNS-only (Hashnode/Vercel requires unproxied)
 # 2026-03-08  Point blog CNAME to GitHub Pages (static frontend)
+# 2026-06-06  Retarget blog CNAME to Cloudflare Pages (nuphirho-blog.pages.dev)
 # 2026-03-26  Add MX, SPF, DMARC for Cloudflare Email Routing
 
 terraform {
@@ -39,11 +40,12 @@ data "cloudflare_zone" "nuphirho" {
   name = "nuphirho.dev"
 }
 
-# Blog subdomain CNAME to GitHub Pages (static frontend)
+# Blog subdomain CNAME to Cloudflare Pages
+# Cloudflare Pages handles the custom domain once cloudflare_pages_domain is applied.
 resource "cloudflare_record" "blog" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "blog"
-  content = "czietsman.github.io"
+  content = "nuphirho-blog.pages.dev"
   type    = "CNAME"
   proxied = true
   ttl     = 1 # Auto when proxied
