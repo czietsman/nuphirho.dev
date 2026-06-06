@@ -1,6 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import matter from 'gray-matter';
+import { marked } from 'marked';
 
 export interface PostMeta {
 	title: string;
@@ -26,20 +27,25 @@ function convertEmbeds(md: string): string {
 	);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildMeta(data: Record<string, any>, slug: string): PostMeta {
+	return {
+		title: String(data.title ?? ''),
+		slug,
+		subtitle: data.subtitle ? String(data.subtitle) : undefined,
+		tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+		series: data.series ? String(data.series) : undefined,
+		publishDate: String(data.publish_date),
+	};
+}
+
 async function parsePost(filename: string): Promise<PostMeta | null> {
 	const raw = await readFile(resolve(POSTS_DIR, filename), 'utf-8');
 	const { data } = matter(raw);
 
 	if (data.draft === true || !data.publish_date) return null;
 
-	return {
-		title: String(data.title ?? ''),
-		slug: String(data.slug ?? filename.replace(/\.md$/, '')),
-		subtitle: data.subtitle ? String(data.subtitle) : undefined,
-		tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-		series: data.series ? String(data.series) : undefined,
-		publishDate: String(data.publish_date),
-	};
+	return buildMeta(data, String(data.slug ?? filename.replace(/\.md$/, '')));
 }
 
 export async function getAllPosts(): Promise<PostMeta[]> {
@@ -64,18 +70,9 @@ export async function getPost(slug: string): Promise<Post | null> {
 		const postSlug = String(data.slug ?? file.replace(/\.md$/, ''));
 		if (postSlug !== slug) continue;
 
-		const { marked } = await import('marked');
-		const html = marked.parse(convertEmbeds(content)) as string;
-
 		return {
-			title: String(data.title ?? ''),
-			slug: postSlug,
-			subtitle: data.subtitle ? String(data.subtitle) : undefined,
-			tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-			series: data.series ? String(data.series) : undefined,
-			publishDate: String(data.publish_date),
-			brief: undefined,
-			html,
+			...buildMeta(data, postSlug),
+			html: marked.parse(convertEmbeds(content)) as string,
 		};
 	}
 
