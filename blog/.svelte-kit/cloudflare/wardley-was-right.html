@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono&display=swap" rel="stylesheet" />
+	<script>
+		// Apply theme before body renders to avoid flash
+		(function(){
+			var k='nuphirho-theme';
+			var s=null;try{s=localStorage.getItem(k);}catch(e){}
+			var t=s||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+			document.documentElement.setAttribute('data-theme',t);
+		})();
+	</script>
+	<link href="./_app/immutable/entry/start.aETX-UfI.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/bIT_w4Yp.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/Cvc1K2yR.js" rel="modulepreload">
+		<link href="./_app/immutable/entry/app.CA7gUK1n.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/kNaey6uv.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/xihTtKlq.js" rel="modulepreload">
+		<link href="./_app/immutable/nodes/0.DpZu6CNe.js" rel="modulepreload">
+		<link href="./_app/immutable/nodes/3.cAswv7VT.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/BkMs4SBr.js" rel="modulepreload">
+		<!--jot9ci--><!--[-1--><!--]--><!----><title>Wardley Was Right — nuphirho</title>
+		<link href="./_app/immutable/assets/0.BkIMbwug.css" rel="stylesheet">
+</head>
+<body>
+	<div><!--[--><!--[0--><!--[--><a href="#main" class="skip-link">Skip to content</a> <header class="site-header"><div class="container"><a href="https://nuphirho.dev" class="site-name" aria-label="nuphirho home">nuphirho</a> <nav class="site-nav" aria-label="Main navigation"><a href="/about">This Blog</a> <a href="https://nuphirho.dev/words-of-meaning">Words</a> <a href="/">Posts</a> <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme">Dark</button></nav></div></header> <main id="main" class="site-main"><!--[--><div class="container"><article><header class="post-header"><h1 class="post-title">Wardley Was Right</h1> <!--[-1--><!--]--> <div class="post-meta"><time datetime="Sat Apr 11 2026 00:00:00 GMT+0000 (Coordinated Universal Time)">11 April 2026</time> <!--[-1--><!--]--> <!--[0--><div class="tags"><!--[--><span class="tag">ai-assisted-development</span><span class="tag">agentic-development</span><span class="tag">software-engineering</span><!--]--></div><!--]--></div></header> <div class="post-content"><!----><p><strong>Simon Wardley</strong> changed the way I think about a problem I thought I had solved.</p>
+<p>He published a post a few weeks ago about what happens to software engineers when agents write the code. His answer: the role survives, the title probably does not. The people who matter are the ones who can maintain a chain of comprehension over a billion lines of code they did not write and cannot read. He called them AI wranglers, agentic herders. Alice, the software engineer you fired because a thought leader said you no longer needed her.</p>
+<p>I read it and posted a comment. I was confident. Executable specifications, I said. If the spec proves itself in the pipeline, nobody needs to read the code. The human writes intent. The agents write code. The pipeline is the reviewer.</p>
+<p>Wardley replied in four words: &quot;agreed, up until the specification part.&quot;</p>
+<p>He was right.</p>
+<p>Not entirely right. But right enough that I spent the next morning following the challenge instead of defending the position. That is usually more productive.</p>
+<hr>
+<p>The chain of comprehension problem is real. At a billion lines of code, reading is not a strategy. Something has to carry the comprehension that used to live in the engineer&#39;s head. My argument was that executable specifications are that something. A BDD scenario that runs in the pipeline is a piece of comprehension that is smaller than the code, verifiable, and does not depend on any individual&#39;s memory of what was intended.</p>
+<p>Wardley&#39;s pushback was precise: it is not clear yet what those emerging practices are.</p>
+<p>He was pointing at a scale problem I had underweighted. Executable specifications work within a bounded context. Within a single service, a single domain, a single team&#39;s scope of ownership, BDD scenarios that run and mutate are a mature enough practice to defend. But across a billion lines the scenario explosion problem makes it unmanageable. The number of valid scenarios grows with the product of features and their interactions. Across domain boundaries, that number is combinatorially out of reach. Nobody writes BDD scenarios for what happens when the system fails at that scale in a specific sequence. Who owns that scenario?</p>
+<p>The organisations operating at that scale do not use specifications as the primary comprehension mechanism. The pipeline is still the reviewer. But what the pipeline is checking is not behaviour. It is properties.</p>
+<p>That is a different thing.</p>
+<hr>
+<p>The distinction that came out of following the challenge is between behavioural comprehension and property comprehension. A BDD specification captures behavioural intent: given this context, when this action, then this outcome. It is precise, it is owned, and it fails deterministically when the behaviour changes. A fitness function captures a system property: latency stays below this threshold, coupling between these services stays below this score, security posture does not degrade. It runs across the whole system and fails when the architecture drifts.</p>
+<p>Both are verifiable artefacts. Neither is a human reading code. But they operate at different levels and answer different questions.</p>
+<p>Behavioural specifications within domains. Contract tests at service boundaries. Architectural fitness functions across the system. Observability in production where the emergent behaviour is too complex to specify in advance. Each layer comprehends its own scope. The layers compose.</p>
+<p>Wardley&#39;s craft-to-engineering-discipline shift is the right frame for what happens next. SREs did not stop caring about servers. They started caring about the system properties that matter at scale: reliability, observability, deployment safety. The shift from software engineer to whatever comes next is the same shape. Stop caring about the code. Start caring about the specifications at the domain level, the fitness functions at the system level, and the governance model that connects them.</p>
+<p>The question I did not have an answer to when I posted that comment, and still do not have a complete answer to now, is what the governance model looks like when the agents are generating both the code and the specifications simultaneously. The comprehension hierarchy I described above assumes humans are writing the specifications that the agents implement. What happens when the agents are writing the specifications too?</p>
+<p>That is the open question Wardley&#39;s pushback correctly identifies. The practices are co-evolving. What they settle into at a billion lines of AI-generated code, governed by AI-generated specifications, is not yet known.</p>
+<p>What I am more confident about is the principle: comprehension has to live in verifiable artefacts, not in people&#39;s heads. What those artefacts turn out to be at each level of scale is still being worked out. But the direction is clear. You are not going back to reading code. The question is what you are going forward to.</p>
+<p>That is the problem I am working on.</p>
+<!----></div></article> <a href="/" class="back-link">← All posts</a></div><!--]--><!----></main> <footer class="site-footer"><div class="container"><span>© 2026 Christo Zietsman</span> <span class="footer-links"><a href="https://doi.org/10.48550/arXiv.2603.25773">arXiv Paper 1</a> <a href="https://doi.org/10.48550/arXiv.2604.21090">arXiv Paper 2</a> <a href="https://github.com/czietsman">GitHub</a> <a href="https://www.linkedin.com/in/christo-zietsman/">LinkedIn</a> <a href="https://nuphirho.dev/privacy">Privacy</a> <a href="https://nuphirho.dev/cookies">Cookies</a></span></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_f3603i = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("./_app/immutable/entry/start.aETX-UfI.js"),
+						import("./_app/immutable/entry/app.CA7gUK1n.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 3],
+							data: [null,{type:"data",data:{post:{title:"Wardley Was Right",slug:"wardley-was-right",subtitle:void 0,tags:["ai-assisted-development","agentic-development","software-engineering"],series:void 0,publishDate:"Sat Apr 11 2026 00:00:00 GMT+0000 (Coordinated Universal Time)",brief:void 0,html:"\u003Cp>\u003Cstrong>Simon Wardley\u003C/strong> changed the way I think about a problem I thought I had solved.\u003C/p>\n\u003Cp>He published a post a few weeks ago about what happens to software engineers when agents write the code. His answer: the role survives, the title probably does not. The people who matter are the ones who can maintain a chain of comprehension over a billion lines of code they did not write and cannot read. He called them AI wranglers, agentic herders. Alice, the software engineer you fired because a thought leader said you no longer needed her.\u003C/p>\n\u003Cp>I read it and posted a comment. I was confident. Executable specifications, I said. If the spec proves itself in the pipeline, nobody needs to read the code. The human writes intent. The agents write code. The pipeline is the reviewer.\u003C/p>\n\u003Cp>Wardley replied in four words: &quot;agreed, up until the specification part.&quot;\u003C/p>\n\u003Cp>He was right.\u003C/p>\n\u003Cp>Not entirely right. But right enough that I spent the next morning following the challenge instead of defending the position. That is usually more productive.\u003C/p>\n\u003Chr>\n\u003Cp>The chain of comprehension problem is real. At a billion lines of code, reading is not a strategy. Something has to carry the comprehension that used to live in the engineer&#39;s head. My argument was that executable specifications are that something. A BDD scenario that runs in the pipeline is a piece of comprehension that is smaller than the code, verifiable, and does not depend on any individual&#39;s memory of what was intended.\u003C/p>\n\u003Cp>Wardley&#39;s pushback was precise: it is not clear yet what those emerging practices are.\u003C/p>\n\u003Cp>He was pointing at a scale problem I had underweighted. Executable specifications work within a bounded context. Within a single service, a single domain, a single team&#39;s scope of ownership, BDD scenarios that run and mutate are a mature enough practice to defend. But across a billion lines the scenario explosion problem makes it unmanageable. The number of valid scenarios grows with the product of features and their interactions. Across domain boundaries, that number is combinatorially out of reach. Nobody writes BDD scenarios for what happens when the system fails at that scale in a specific sequence. Who owns that scenario?\u003C/p>\n\u003Cp>The organisations operating at that scale do not use specifications as the primary comprehension mechanism. The pipeline is still the reviewer. But what the pipeline is checking is not behaviour. It is properties.\u003C/p>\n\u003Cp>That is a different thing.\u003C/p>\n\u003Chr>\n\u003Cp>The distinction that came out of following the challenge is between behavioural comprehension and property comprehension. A BDD specification captures behavioural intent: given this context, when this action, then this outcome. It is precise, it is owned, and it fails deterministically when the behaviour changes. A fitness function captures a system property: latency stays below this threshold, coupling between these services stays below this score, security posture does not degrade. It runs across the whole system and fails when the architecture drifts.\u003C/p>\n\u003Cp>Both are verifiable artefacts. Neither is a human reading code. But they operate at different levels and answer different questions.\u003C/p>\n\u003Cp>Behavioural specifications within domains. Contract tests at service boundaries. Architectural fitness functions across the system. Observability in production where the emergent behaviour is too complex to specify in advance. Each layer comprehends its own scope. The layers compose.\u003C/p>\n\u003Cp>Wardley&#39;s craft-to-engineering-discipline shift is the right frame for what happens next. SREs did not stop caring about servers. They started caring about the system properties that matter at scale: reliability, observability, deployment safety. The shift from software engineer to whatever comes next is the same shape. Stop caring about the code. Start caring about the specifications at the domain level, the fitness functions at the system level, and the governance model that connects them.\u003C/p>\n\u003Cp>The question I did not have an answer to when I posted that comment, and still do not have a complete answer to now, is what the governance model looks like when the agents are generating both the code and the specifications simultaneously. The comprehension hierarchy I described above assumes humans are writing the specifications that the agents implement. What happens when the agents are writing the specifications too?\u003C/p>\n\u003Cp>That is the open question Wardley&#39;s pushback correctly identifies. The practices are co-evolving. What they settle into at a billion lines of AI-generated code, governed by AI-generated specifications, is not yet known.\u003C/p>\n\u003Cp>What I am more confident about is the principle: comprehension has to live in verifiable artefacts, not in people&#39;s heads. What those artefacts turn out to be at each level of scale is still being worked out. But the direction is clear. You are not going back to reading code. The question is what you are going forward to.\u003C/p>\n\u003Cp>That is the problem I am working on.\u003C/p>\n"}},uses:{params:["slug"]}}],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+</body>
+</html>
