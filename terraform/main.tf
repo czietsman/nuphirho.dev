@@ -5,6 +5,7 @@
 # 2026-03-08  Point blog CNAME to GitHub Pages (static frontend)
 # 2026-06-06  Retarget blog CNAME to Cloudflare Pages (nuphirho-blog.pages.dev)
 # 2026-06-09  Revert blog CNAME to GitHub Pages pending Cloudflare Pages testing
+# 2026-06-09  Switch blog CNAME to Cloudflare Pages (testing passed)
 # 2026-03-26  Add MX, SPF, DMARC for Cloudflare Email Routing
 
 terraform {
@@ -41,12 +42,11 @@ data "cloudflare_zone" "nuphirho" {
   name = "nuphirho.dev"
 }
 
-# Blog subdomain CNAME — pointing at GitHub Pages while Cloudflare Pages is being tested.
-# Switch back to nuphirho-blog.pages.dev once testing passes.
+# Blog subdomain CNAME to Cloudflare Pages
 resource "cloudflare_record" "blog" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "blog"
-  content = "czietsman.github.io"
+  content = "nuphirho-blog.pages.dev"
   type    = "CNAME"
   proxied = true
   ttl     = 1 # Auto when proxied
