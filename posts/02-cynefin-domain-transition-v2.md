@@ -5,6 +5,7 @@ draft: false
 tags: ["cynefin", "specifications", "complexity", "ai", "software-engineering"]
 allow_emdash: true
 series: "The Specification as Quality Gate"
+publish_date: 2026-04-02
 ---
 
 *This is Part 2 of a four-part series, "The Specification as Quality Gate." [Part 1](/echo-chamber-ai-code-review-correlated-error) developed the correlated error hypothesis. This post grounds the specification-first argument in complexity science. Parts 3 and 4 will follow.*
