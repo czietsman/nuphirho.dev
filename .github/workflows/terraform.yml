@@ -13,6 +13,7 @@ permissions: {}
 
 env:
   TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  TF_VAR_cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
   TF_VAR_email_routing_contact_destination: ${{ secrets.EMAIL_ROUTING_CONTACT_DESTINATION }}
   TF_VAR_email_routing_privacy_destination: ${{ secrets.EMAIL_ROUTING_PRIVACY_DESTINATION }}
   AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
