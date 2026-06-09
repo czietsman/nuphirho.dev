@@ -1,0 +1,10 @@
+name = "nuphirho-blog"
+compatibility_date = "2024-09-23"
+
+# KV namespace binding for visitor counter
+# The namespace ID is set in Cloudflare Pages dashboard (or via Terraform)
+# and injected at deploy time. This stub is only for local `wrangler dev`.
+[[kv_namespaces]]
+binding = "BLOG_ANALYTICS"
+id = "placeholder-replace-with-real-id"
+preview_id = "placeholder-replace-with-real-id"
