@@ -58,6 +58,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
 }
 
 export async function getPost(slug: string): Promise<Post | null> {
+	if (!/^[\w-]+$/.test(slug)) return null;
 	const files = await readdir(POSTS_DIR);
 	const mds = files.filter((f) => f.endsWith('.md'));
 
