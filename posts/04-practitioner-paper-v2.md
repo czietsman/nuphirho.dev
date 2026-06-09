@@ -4,6 +4,7 @@ slug: "specification-as-quality-gate-three-hypotheses"
 draft: false
 tags: ["ai", "code-review", "specifications", "software-engineering", "bdd", "cynefin", "formal-methods"]
 series: "The Specification as Quality Gate"
+publish_date: 2026-03-22
 ---
 
 *This is Part 4 of a four-part series, "The Specification as Quality Gate." [Part 1](/echo-chamber-ai-code-review-correlated-error) developed the correlated error hypothesis. [Part 2](/executable-specifications-cynefin-domain-transition) grounded the argument in complexity science. [Part 3](/what-specifications-cannot-catch-residual-defect-taxonomy) mapped what specifications cannot catch. This post is the complete argument.*
