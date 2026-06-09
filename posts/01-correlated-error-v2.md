@@ -4,7 +4,7 @@ slug: "echo-chamber-ai-code-review-correlated-error"
 draft: false
 tags: ["ai", "code-review", "specifications", "bdd", "software-engineering"]
 series: "The Specification as Quality Gate"
-publish_date: 2026-04-02
+publish_date: 2026-03-22
 ---
 
 *This is Part 1 of a four-part series, "The Specification as Quality Gate." The series develops three hypotheses about executable specifications, AI code review, and what each is actually for. Parts 2, 3, and 4 will follow.*

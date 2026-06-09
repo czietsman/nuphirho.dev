@@ -4,7 +4,7 @@ slug: "what-specifications-cannot-catch-residual-defect-taxonomy"
 draft: false
 tags: ["specifications", "testing", "ai", "bdd", "software-engineering", "formal-methods"]
 series: "The Specification as Quality Gate"
-publish_date: 2026-04-02
+publish_date: 2026-03-22
 ---
 
 *This is Part 3 of a four-part series, "The Specification as Quality Gate." [Part 1](/echo-chamber-ai-code-review-correlated-error) developed the correlated error hypothesis. [Part 2](/executable-specifications-cynefin-domain-transition) grounded the argument in complexity science. This post maps what executable specifications cannot catch. Part 4 will follow.*
