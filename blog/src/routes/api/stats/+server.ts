@@ -9,8 +9,8 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		return json({ error: 'invalid JSON' }, { status: 400 });
 	}
 
-	if (!path || typeof path !== 'string') {
-		return json({ error: 'path required' }, { status: 400 });
+	if (!path || typeof path !== 'string' || path.length > 500 || !/^\/[\w\-.~%/]*$/.test(path)) {
+		return json({ error: 'invalid path' }, { status: 400 });
 	}
 
 	const kv = platform?.env?.BLOG_ANALYTICS;
