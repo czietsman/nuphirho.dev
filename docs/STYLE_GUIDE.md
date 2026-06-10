@@ -79,7 +79,7 @@ Process matters more than technology. AI has changed the economics of rigorous e
 
 - Must work on both light and dark backgrounds.
 - Prefer SVG with transparent backgrounds or theme-aware colours.
-- Mermaid diagrams are preferred where possible (version-controllable, theme-aware, supported by Hashnode).
+- Mermaid diagrams are preferred where possible (version-controllable, theme-aware, render correctly in the SvelteKit blog).
 - Screenshots should be used sparingly and considered for both theme contexts.
 - Provide alt text for all images.
 
@@ -142,7 +142,7 @@ This is a guide, not a rigid template. Let the content shape the structure.
 
 ## Security
 
-- HTTPS enforced at all layers: TLD (.dev), CDN (Cloudflare), platform (Hashnode).
+- HTTPS enforced at all layers: TLD (.dev), CDN (Cloudflare), platform (Cloudflare Pages).
 - No credentials, tokens, or secrets in post content or screenshots.
 - All infrastructure managed as code with secrets in GitHub Secrets, never in the repository.
 
@@ -168,7 +168,7 @@ This is a guide, not a rigid template. Let the content shape the structure.
 
 ### Source of truth
 
-- blog.nuphirho.dev (Hashnode, custom subdomain)
+- blog.nuphirho.dev (SvelteKit on Cloudflare Pages)
 
 ### Cross-post targets
 
@@ -212,3 +212,9 @@ Strong ideas need time to form. Draft, step away, return. The CI/CD pipeline sup
 ### Seek feedback before publishing
 
 The tendency to work independently means posts could benefit from a second perspective. The pipeline should include a review step, even if the reviewer is AI-assisted.
+
+---
+
+## Re-evaluation
+
+This document should be re-evaluated when: the blog platform changes; a new cross-posting target is added or removed; the canonical URL changes; style patterns in published posts consistently diverge from the guidance here; or twelve months have elapsed since the last review, whichever comes first. Owner: Christo Zietsman.
