@@ -1,6 +1,7 @@
 ---
 version: 2
 last-modified: 2026-06-10
+promptq-score: 6.5/7
 ---
 
 # Agent Instructions
@@ -16,6 +17,8 @@ Follow strict TDD for every code change:
 3. Refactor. Confirm all tests still pass.
 
 Do not skip step 1. Do not write production code without a failing test.
+
+TDD applies to Go, TypeScript, and Svelte code changes. Infrastructure changes (Terraform, GitHub Actions YAML), documentation, and configuration files are excluded. For Terraform, apply the plan-review-apply discipline in its own section. For workflow YAML, verify by reviewing the trigger conditions and step structure before pushing. The "Tests run" field in the completion evidence report should reflect whichever verification was applicable to the change type.
 
 ## BDD specifications
 
@@ -142,8 +145,14 @@ This repository is a deliberate, high-stakes experiment. The author has chosen a
 
 Posts are sourced from `posts/*.md` (YAML frontmatter + Markdown body). Posts with `draft: true` or without a `publish_date` are excluded at build time. The `/api/stats` endpoint reads and writes to the `BLOG_ANALYTICS` Cloudflare KV namespace.
 
-Before adding or modifying any file under `blog/src/routes/` or `blog/src/lib/`, confirm it does not expose server-side secrets or internal state through a prerendered page or API response. The Worker runs in a Cloudflare context — `platform.env` bindings are the only permitted route to secrets. Do not access `process.env` in server routes.
+Before adding or modifying any file under `blog/src/routes/` or `blog/src/lib/`, verify that no `platform.env` values, KV binding names, or internal state are written into prerendered HTML. After building, search the output in `.svelte-kit/cloudflare/` for any KV binding name or environment variable name. If the build output cannot be inspected, raise it with the user before merging. The Worker runs in a Cloudflare context -- `platform.env` bindings are the only permitted route to secrets. Do not access `process.env` in server routes.
 
 `blog/src/lib/posts.ts` uses lazy dynamic imports for `node:fs/promises` and `node:path` (not top-level static imports). This is required because static Node built-in imports are bundled into `_worker.js` and fail at Cloudflare Worker init time. Do not convert these back to static top-level imports.
 
 This file is the authoritative source of agent constraints for the entire repository, including the blog. Do not create a separate AGENTS.md inside `blog/`.
+
+---
+
+## Re-evaluation
+
+This document should be re-evaluated when: the underlying model is updated or changed; a new tool, MCP server, or capability is added to this agent's context; the repository's deployment architecture changes (new hosting platform, new CI provider, new secret management approach); agent output on standard tasks deviates from expected behaviour across two or more consecutive runs; or six months have elapsed since the last review, whichever comes first. Owner: Christo Zietsman.
