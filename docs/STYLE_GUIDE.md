@@ -85,6 +85,51 @@ Process matters more than technology. AI has changed the economics of rigorous e
 
 ---
 
+## Design system
+
+Both `blog/src/app.css` and `main-site/src/app.css` define a shared token vocabulary. All CSS in Svelte components and route files must reference these tokens. Do not hardcode values that have a defined token.
+
+### Colour tokens
+
+Every theme-sensitive colour must reference a `--colour-*` or named semantic token defined in `:root` and overridden in `[data-theme="dark"]`.
+
+| Token | Role |
+|---|---|
+| `--colour-bg` | Page background |
+| `--colour-surface` | Card and panel background |
+| `--colour-text` | Primary body text |
+| `--colour-text-secondary` | Muted and secondary text |
+| `--colour-link` | Link colour |
+| `--colour-link-hover` | Link hover colour |
+| `--colour-border` | Borders and dividers |
+| `--colour-accent` | Brand accent (gold) |
+| `--colour-accent-muted` | Muted accent |
+| `--colour-blockquote-border` | Blockquote left border |
+| `--colour-blockquote-bg` | Blockquote fill |
+
+Additional tokens exist per app (tag colours in the blog; confidence badge colours, roadmap palette, and separator tokens in the main site). If a new colour is needed for a theme-sensitive element, define it as a token in both `:root` and `[data-theme="dark"]` before using it.
+
+Exception: white (`#ffffff`) or transparent values that are intentionally theme-independent (white text on a coloured button, transparent overlays) may be written as literals.
+
+### Radius tokens
+
+Every `border-radius` value must reference a `--radius-*` token.
+
+| Token | Value | Use |
+|---|---|---|
+| `--radius-xs` | `0.125rem` | Tight corners: icon chips, burger bars |
+| `--radius-sm` | `0.25rem` | Tags, inline code, small badges |
+| `--radius-md` | `0.375rem` | Buttons, inputs, week blocks |
+| `--radius-lg` | `0.5rem` | Cards, code blocks, images |
+
+Exception: `border-radius: 50%` for circular elements (dots, avatars) is written as a literal -- it is a shape instruction, not a size token.
+
+### Adding tokens
+
+When a new token is needed: define it in `:root` in both CSS files (or the relevant one if component-specific), add the dark-mode override in `[data-theme="dark"]`, and document it in this table before using it in any component.
+
+---
+
 ## Post Standards
 
 ### Length
@@ -186,6 +231,42 @@ This is a guide, not a rigid template. Let the content shape the structure.
 ### Future consideration
 
 - X (not yet, revisit once the content pipeline is established)
+
+---
+
+## Compliance rubric
+
+Use this checklist before publishing a post or merging a design or CSS change. The repo owner reviews against these criteria before accepting the work.
+
+### Written content
+
+- [ ] British English spelling throughout (colour, organised, behaviour, recognise, practise)
+- [ ] No em dashes; commas, full stops, or restructured sentences used instead
+- [ ] No emoji
+- [ ] First person singular for personal experience; no passive voice where first person is more direct
+- [ ] Canonical URL set to `blog.nuphirho.dev`
+- [ ] All cited work attributed; sources linked to originals, not summaries or aggregators
+- [ ] AI assistance not disclosed in the post body (it is stated on the about page; no repetition needed)
+- [ ] Word count within the 1,200 to 1,800 word target, or deviation is deliberate and the content justifies it
+- [ ] Opening states clearly what the post is about and why it matters
+- [ ] No superlatives unless earned and evidenced
+
+### Design and code
+
+- [ ] All theme-sensitive colours reference `--colour-*` or named semantic tokens; no hardcoded hex or rgb values for themed elements
+- [ ] All `border-radius` values reference `--radius-*` tokens; no hardcoded pixel or rem values
+- [ ] New colour tokens defined in both `:root` and `[data-theme="dark"]` before use
+- [ ] Visual content (diagrams, screenshots) tested in both light and dark mode
+- [ ] Alt text provided for all images
+- [ ] No credentials, tokens, or secret names visible in screenshots or post content
+
+### Pipeline and frontmatter
+
+- [ ] `draft: false` in frontmatter when ready to publish
+- [ ] `publish_date` set to the intended publication date (YYYY-MM-DD)
+- [ ] `slug` matches the filename and is unique across `posts/`
+- [ ] Required frontmatter fields present per `internal/frontmatter/frontmatter.go`
+- [ ] Post renders correctly on `blog.nuphirho.dev` before cross-posting
 
 ---
 
