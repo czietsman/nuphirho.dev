@@ -1,6 +1,6 @@
 ---
 version: 2
-last-modified: 2026-04-01
+last-modified: 2026-06-10
 ---
 
 # Agent Instructions
@@ -136,22 +136,14 @@ This repository is a deliberate, high-stakes experiment. The author has chosen a
 
 ---
 
-## blog-nuphirho.dev
+## blog/ — blog.nuphirho.dev
 
-These constraints apply when an agent is performing work on the `~/me/blog-nuphirho.dev` repository.
+`blog/` is the SvelteKit app that serves `blog.nuphirho.dev`. It is deployed as a Cloudflare Pages project (`nuphirho-blog`) with a Cloudflare Worker for the `/api/stats` endpoint. All pages are prerendered at build time; the Worker handles only runtime API calls.
 
-This is a pure static site deployed via GitHub Pages from the repository root. Every file committed to that repository is publicly accessible at blog.nuphirho.dev. There are no secrets, no build pipeline, and no server-side logic.
+Posts are sourced from `posts/*.md` (YAML frontmatter + Markdown body). Posts with `draft: true` or without a `publish_date` are excluded at build time. The `/api/stats` endpoint reads and writes to the `BLOG_ANALYTICS` Cloudflare KV namespace.
 
-Before creating or moving any file into `blog-nuphirho.dev`, confirm with the user that public accessibility is intended. Do not assume a file is safe to commit because it contains no secrets -- consider whether its presence or content is appropriate for public access.
+Before adding or modifying any file under `blog/src/routes/` or `blog/src/lib/`, confirm it does not expose server-side secrets or internal state through a prerendered page or API response. The Worker runs in a Cloudflare context — `platform.env` bindings are the only permitted route to secrets. Do not access `process.env` in server routes.
 
-Record that confirmation in the commit message as a single line:
+`blog/src/lib/posts.ts` uses lazy dynamic imports for `node:fs/promises` and `node:path` (not top-level static imports). This is required because static Node built-in imports are bundled into `_worker.js` and fail at Cloudflare Worker init time. Do not convert these back to static top-level imports.
 
-    Public-accessibility confirmed: [brief description of what is
-    being published and why it is appropriate for public access]
-
-If the confirmation has not been given explicitly in the current
-session, treat it as not given. Do not infer it from context.
-
-All work on blog-nuphirho.dev is performed by agents running in the nuphirho.dev repository context. This is intentional. It keeps agent constraints in a single file that is not subject to public Pages deployment, and ensures the same security context, agent scope, and secret hygiene rules apply without duplication.
-
-Do not create an AGENTS.md in blog-nuphirho.dev. This file is the authoritative source of constraints for both repositories.
+This file is the authoritative source of agent constraints for the entire repository, including the blog. Do not create a separate AGENTS.md inside `blog/`.
