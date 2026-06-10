@@ -2,6 +2,7 @@
 version: 2
 last-modified: 2026-06-10
 promptq-score: 6.5/7
+promptq-version: 1.3.1
 ---
 
 # Agent Instructions
@@ -52,8 +53,20 @@ Do not summarise. Do not add commentary. Fill in the four fields and
 stop. If a field does not apply to the task, write "N/A" rather than
 omitting it.
 
-This report is the evidence manifest for the task. It is the basis
-on which the director verifies that the work is complete and correct.
+This report is the evidence manifest for the task. The repo owner
+reviews it against the following rubric before merging the branch:
+
+1. **Traceability:** the files listed in "Files changed" match the
+   pull request diff. If they do not match, the report is incomplete.
+2. **Reproducibility:** the test command in "Tests run" can be re-run
+   and produces the stated outcome. If it cannot, the evidence is
+   unverifiable.
+3. **Specificity:** "Confirmed" names a specific observable behaviour
+   or state, not a general claim. "Build passes" is not specific.
+   "All 12 tests pass; blog renders posts at /[slug]" is specific.
+
+A report that fails any criterion is not accepted. The agent revises
+it before the branch is merged.
 
 ## Style guide
 
@@ -155,4 +168,4 @@ This file is the authoritative source of agent constraints for the entire reposi
 
 ## Re-evaluation
 
-This document should be re-evaluated when: the underlying model is updated or changed; a new tool, MCP server, or capability is added to this agent's context; the repository's deployment architecture changes (new hosting platform, new CI provider, new secret management approach); agent output on standard tasks deviates from expected behaviour across two or more consecutive runs; or six months have elapsed since the last review, whichever comes first. Owner: Christo Zietsman.
+This document should be re-evaluated when: the underlying model is updated or changed; a new tool, MCP server, or capability is added to this agent's context; the repository's deployment architecture changes (new hosting platform, new CI provider, new secret management approach); agent output on standard tasks deviates from expected behaviour across two or more consecutive runs; or three months have elapsed since the last review, whichever comes first. Owner: the repo owner.
