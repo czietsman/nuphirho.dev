@@ -24,7 +24,7 @@ Process matters more than technology. AI has changed the economics of rigorous e
 
 Christo Zietsman. Based in Somerset West, Western Cape, South Africa. 20+ years of experience spanning mine seismology (ISSI/IMS), expert systems for antenna design (Antenna Magus), enterprise backup (Attix5/Redstor), and cybersecurity (CyberSentriq). Masters in Continuum Mechanics, Cum Laude, Stellenbosch University.
 
-Currently Director of Technology Innovation at CyberSentriq. Content referencing CyberSentriq requires CPTO approval before publishing. General approaches and patterns are shareable; proprietary details are not.
+Currently Director of Technology Innovation at CyberSentriq. General approaches and patterns are shareable; proprietary details are not.
 
 ### AI transparency
 
