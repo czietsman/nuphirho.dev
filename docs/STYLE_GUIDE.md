@@ -217,4 +217,4 @@ The tendency to work independently means posts could benefit from a second persp
 
 ## Re-evaluation
 
-This document should be re-evaluated when: the blog platform changes; a new cross-posting target is added or removed; the canonical URL changes; style patterns in published posts consistently diverge from the guidance here; or twelve months have elapsed since the last review, whichever comes first. Owner: Christo Zietsman.
+This document should be re-evaluated when: the blog platform changes; a new cross-posting target is added or removed; the canonical URL changes; style patterns in published posts consistently diverge from the guidance here; or three months have elapsed since the last review, whichever comes first. Owner: the repo owner.
