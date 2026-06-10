@@ -131,7 +131,6 @@ This is a guide, not a rigid template. Let the content shape the structure.
 
 - General approaches, lessons learned, and patterns may be shared.
 - Proprietary details, internal data, and confidential information are never shared.
-- Approval from the CPTO is required before publishing content that references CyberSentriq work directly.
 - When in doubt, generalise. The principle matters more than the specific implementation.
 
 ### Corrections
