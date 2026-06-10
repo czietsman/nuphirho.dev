@@ -1,0 +1,40 @@
+name: Deploy Main Site
+
+on:
+  push:
+    branches: [main]
+    paths: ['main-site/**']
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+
+      - uses: actions/setup-node@49933ea55394ebd3bee0d0b6c8fc17bba236cd0a # v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: main-site/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: main-site
+
+      - name: Build
+        run: npm run build
+        working-directory: main-site
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@da0e0dfe52010571df3e97fd2dda07aeef77e87f # v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy .svelte-kit/cloudflare --project-name=nuphirho-main
+          workingDirectory: main-site
