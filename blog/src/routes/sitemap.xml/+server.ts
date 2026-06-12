@@ -16,9 +16,10 @@ export const GET: RequestHandler = async () => {
 		(path) => `  <url><loc>${BASE}${path}</loc></url>`
 	);
 
-	const postUrls = posts.map(
-		(p) => `  <url><loc>${BASE}/${esc(p.slug)}</loc><lastmod>${p.publishDate}</lastmod></url>`
-	);
+	const postUrls = posts.map((p) => {
+		const lastmod = new Date(p.publishDate).toISOString().slice(0, 10);
+		return `  <url><loc>${BASE}/${esc(p.slug)}</loc><lastmod>${lastmod}</lastmod></url>`;
+	});
 
 	const body = [
 		'<?xml version="1.0" encoding="UTF-8"?>',
