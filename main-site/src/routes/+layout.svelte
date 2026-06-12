@@ -23,7 +23,27 @@
 	onMount(initTheme);
 
 	function closeMenu() { menuOpen = false; }
+
+	const websiteJsonLd = JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		name: 'nuphirho',
+		url: 'https://nuphirho.dev',
+		author: {
+			'@type': 'Person',
+			name: 'Christo Zietsman',
+			url: 'https://nuphirho.dev/about'
+		}
+	});
 </script>
+
+<svelte:head>
+	<meta property="og:site_name" content="nuphirho" />
+	<meta property="og:locale" content="en_GB" />
+	<meta name="twitter:card" content="summary" />
+	<link rel="canonical" href="https://nuphirho.dev{$page.url.pathname}" />
+	{@html `<script type="application/ld+json">${websiteJsonLd}</script>`}
+</svelte:head>
 
 <a href="#main" class="skip-link">Skip to content</a>
 

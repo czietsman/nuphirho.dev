@@ -1,0 +1,22 @@
+# nuphirho
+
+nuphirho.dev is the home of Christo Zietsman — technologist, engineering leader, and writer.
+
+## About
+
+Christo Zietsman has 20+ years of experience spanning mine seismology, antenna design expert systems, enterprise backup, and cybersecurity. He holds a Masters in Continuum Mechanics (Cum Laude, Stellenbosch University) and currently leads technology innovation at CyberSentriq.
+
+The name nuphirho comes from the Greek letters nu, phi, and rho — rooted in physics and mathematics. It reflects intellectual curiosity and engineering rigour.
+
+## Pages
+
+- Home: https://nuphirho.dev/
+- About: https://nuphirho.dev/about
+- Novel Findings: https://nuphirho.dev/novel-findings
+- Roadmap: https://nuphirho.dev/roadmap
+- Words of Meaning: https://nuphirho.dev/words-of-meaning
+- Blog: https://blog.nuphirho.dev
+
+## Contact
+
+privacy@nuphirho.dev
