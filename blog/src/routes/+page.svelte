@@ -8,6 +8,10 @@
 <svelte:head>
 	<title>nuphirho — Posts</title>
 	<meta name="description" content="Writing on software engineering, process, and AI." />
+	<meta property="og:title" content="nuphirho — Posts" />
+	<meta property="og:description" content="Writing on software engineering, process, and AI." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://blog.nuphirho.dev/" />
 </svelte:head>
 
 <div class="container">
