@@ -1,0 +1,28 @@
+# nuphirho blog
+
+Technical writing by Christo Zietsman on software engineering, AI-assisted development, cybersecurity, and systems thinking.
+
+## About the author
+
+Christo Zietsman is a technologist with 20+ years of experience spanning mine seismology, antenna design expert systems, enterprise backup, and cybersecurity. He holds a Masters in Continuum Mechanics (Cum Laude, Stellenbosch University) and currently leads technology innovation at CyberSentriq.
+
+## About this site
+
+blog.nuphirho.dev is a technical blog focused on:
+
+- AI-assisted engineering practices (BDD, mutation testing, verification layers)
+- Security engineering and threat modelling
+- Software architecture and process over technology
+- Honest reflection on what works and what does not
+
+Content is written in British English. Posts show reasoning, not just conclusions. AI assists with drafting; the thinking and decisions are the author's.
+
+## Content
+
+- All posts: https://blog.nuphirho.dev/
+- RSS feed: https://blog.nuphirho.dev/rss.xml
+- Sitemap: https://blog.nuphirho.dev/sitemap.xml
+
+## Contact
+
+privacy@nuphirho.dev
