@@ -6,6 +6,7 @@
 	let { children }: { children: Snippet } = $props();
 
 	let theme = $state('light');
+	let menuOpen = $state(false);
 
 	function initTheme() {
 		const stored = localStorage.getItem('nuphirho-theme');
@@ -27,6 +28,8 @@
 		try { localStorage.setItem('nuphirho-theme', theme); } catch {}
 	}
 
+	function closeMenu() { menuOpen = false; }
+
 	onMount(() => {
 		initTheme();
 	});
@@ -46,15 +49,29 @@
 <header class="site-header">
 	<div class="container">
 		<a href="https://nuphirho.dev" class="site-name" aria-label="nuphirho home">nuphirho</a>
-		<nav class="site-nav" aria-label="Main navigation">
-			<a href="/about" aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>This Blog</a>
-			<a href="https://nuphirho.dev/words-of-meaning">Words</a>
-			<a href="/" aria-current={$page.url.pathname === '/' ? 'page' : undefined}>Posts</a>
-			<button id="theme-toggle" class="theme-toggle" type="button" onclick={toggle}
-				aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}>
-				{theme === 'dark' ? 'Light' : 'Dark'}
-			</button>
+
+		<button
+			class="burger-menu"
+			class:active={menuOpen}
+			aria-label="Toggle navigation"
+			aria-expanded={menuOpen}
+			onclick={() => { menuOpen = !menuOpen; }}
+		>
+			<span></span>
+			<span></span>
+			<span></span>
+		</button>
+
+		<nav class="site-nav" class:active={menuOpen} aria-label="Main navigation">
+			<a href="/about" aria-current={$page.url.pathname === '/about' ? 'page' : undefined} onclick={closeMenu}>This Blog</a>
+			<a href="https://nuphirho.dev/words-of-meaning" onclick={closeMenu}>Words</a>
+			<a href="/" aria-current={$page.url.pathname === '/' ? 'page' : undefined} onclick={closeMenu}>Posts</a>
 		</nav>
+
+		<button id="theme-toggle" class="theme-toggle" type="button" onclick={toggle}
+			aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}>
+			{theme === 'dark' ? 'Light' : 'Dark'}
+		</button>
 	</div>
 </header>
 
