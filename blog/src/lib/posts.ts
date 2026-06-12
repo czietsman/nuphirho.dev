@@ -93,6 +93,30 @@ export async function getPost(slug: string): Promise<Post | null> {
 	return null;
 }
 
+export async function getPostMarkdown(slug: string): Promise<string | null> {
+	if (!/^[\w-]+$/.test(slug)) return null;
+
+	const { readdir, readFile } = await import('node:fs/promises');
+	const { resolve } = await import('node:path');
+	const dir = await postsDir();
+	const files = await readdir(dir);
+	const mds = files.filter((f) => f.endsWith('.md'));
+
+	for (const file of mds) {
+		const raw = await readFile(resolve(dir, file), 'utf-8');
+		const { data, content } = matter(raw);
+
+		if (data.draft === true || !data.publish_date) continue;
+
+		const postSlug = String(data.slug ?? file.replace(/\.md$/, ''));
+		if (postSlug !== slug) continue;
+
+		return content.trim();
+	}
+
+	return null;
+}
+
 export function formatDate(iso: string): string {
 	const d = new Date(iso);
 	return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
