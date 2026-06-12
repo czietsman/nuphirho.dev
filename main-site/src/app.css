@@ -17,6 +17,18 @@
   --colour-accent-muted: #a8894e;
   --transition-theme: background-color 0.3s ease, color 0.3s ease,
     border-color 0.3s ease, box-shadow 0.3s ease;
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --confidence-high-bg: #1a4f2a;
+  --confidence-high-text: #a8f0b8;
+  --confidence-confirmed-bg: #1a3a4f;
+  --confidence-confirmed-text: #a0d4f0;
+  --confidence-provisional-bg: #4f3a1a;
+  --confidence-provisional-text: #f0c87a;
+  --confidence-watch-bg: #2a2a2a;
+  --confidence-watch-text: #b0b0b0;
   --content-width: 720px;
   --body-size: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
   --line-height: 1.65;
@@ -35,6 +47,14 @@
   --colour-blockquote-bg: #1a1a1a;
   --colour-separator: #333333;
   --colour-muted: #a09c94;
+  --confidence-high-bg: #0f3018;
+  --confidence-high-text: #7de09a;
+  --confidence-confirmed-bg: #0f2030;
+  --confidence-confirmed-text: #7abfe0;
+  --confidence-provisional-bg: #30200f;
+  --confidence-provisional-text: #e0b060;
+  --confidence-watch-bg: #1a1a1a;
+  --confidence-watch-text: #909090;
 }
 
 /* Scrollbar */
@@ -125,7 +145,7 @@ body {
 .theme-toggle {
   background: none;
   border: 1px solid var(--colour-border);
-  border-radius: 0.375rem;
+  border-radius: var(--radius-md);
   padding: 0.375rem 0.5rem;
   cursor: pointer;
   color: var(--colour-text-secondary);
@@ -434,7 +454,7 @@ a {
   width: 100%;
   height: 2px;
   background-color: var(--colour-accent);
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   transition: all 0.3s ease;
   transform-origin: center; 
 }
@@ -565,50 +585,30 @@ a {
   font-weight: 600;
   letter-spacing: 0.03em;
   padding: 0.15em 0.55em;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-sm);
   line-height: 1.4;
   white-space: nowrap;
   font-family: 'DM Mono', monospace;
 }
 
 .confidence-high {
-  background-color: #1a4f2a;
-  color: #a8f0b8;
+  background-color: var(--confidence-high-bg);
+  color: var(--confidence-high-text);
 }
 
 .confidence-confirmed {
-  background-color: #1a3a4f;
-  color: #a0d4f0;
+  background-color: var(--confidence-confirmed-bg);
+  color: var(--confidence-confirmed-text);
 }
 
 .confidence-provisional {
-  background-color: #4f3a1a;
-  color: #f0c87a;
+  background-color: var(--confidence-provisional-bg);
+  color: var(--confidence-provisional-text);
 }
 
 .confidence-watch {
-  background-color: #2a2a2a;
-  color: #b0b0b0;
-}
-
-[data-theme="dark"] .confidence-high {
-  background-color: #0f3018;
-  color: #7de09a;
-}
-
-[data-theme="dark"] .confidence-confirmed {
-  background-color: #0f2030;
-  color: #7abfe0;
-}
-
-[data-theme="dark"] .confidence-provisional {
-  background-color: #30200f;
-  color: #e0b060;
-}
-
-[data-theme="dark"] .confidence-watch {
-  background-color: #1a1a1a;
-  color: #909090;
+  background-color: var(--confidence-watch-bg);
+  color: var(--confidence-watch-text);
 }
 
 /* Roadmap -- page-specific styles */
@@ -676,7 +676,7 @@ a {
   border-left: 2px solid var(--colour-accent);
   display: inline-block;
   margin-top: 0.75rem;
-  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
 }
 
 .roadmap-page .cadence-note {
@@ -734,7 +734,7 @@ a {
 .roadmap-page .legend-pip {
   width: 6px;
   height: 6px;
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   flex-shrink: 0;
 }
 
@@ -775,7 +775,7 @@ a {
   display: grid;
   grid-template-columns: 90px repeat(7, 1fr);
   border: 1px solid var(--colour-border);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   margin-bottom: 0.75rem;
 }
@@ -854,7 +854,7 @@ a {
 }
 
 .roadmap-page .post {
-  border-radius: 3px;
+  border-radius: var(--radius-xs);
   padding: 0.3rem 0.4rem;
   font-size: 0.65rem;
   line-height: 1.3;
@@ -888,7 +888,7 @@ a {
   font-family: 'DM Mono', monospace;
   font-size: 0.5rem;
   padding: 0.04rem 0.25rem;
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   background: rgba(255,255,255,0.06);
   color: var(--roadmap-muted);
   letter-spacing: 0.04em;

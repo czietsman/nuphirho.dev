@@ -24,7 +24,7 @@ Process matters more than technology. AI has changed the economics of rigorous e
 
 Christo Zietsman. Based in Somerset West, Western Cape, South Africa. 20+ years of experience spanning mine seismology (ISSI/IMS), expert systems for antenna design (Antenna Magus), enterprise backup (Attix5/Redstor), and cybersecurity (CyberSentriq). Masters in Continuum Mechanics, Cum Laude, Stellenbosch University.
 
-Currently Director of Technology Innovation at CyberSentriq. Content referencing CyberSentriq requires CPTO approval before publishing. General approaches and patterns are shareable; proprietary details are not. Approval has not yet been obtained.
+Currently Director of Technology Innovation at CyberSentriq. General approaches and patterns are shareable; proprietary details are not.
 
 ### AI transparency
 
@@ -52,11 +52,11 @@ Nu, phi, rho: Greek letters from physics and mathematics. Used as a gaming profi
 
 ### Identity across platforms
 
-- Blog: nuphirho on Hashnode (blog.nuphirho.dev)
+- Main site: nuphirho.dev (SvelteKit on Cloudflare Pages)
+- Blog: blog.nuphirho.dev (SvelteKit on Cloudflare Pages)
 - Cross-post: nuphirho on Dev.to
 - GitHub: czietsman (existing account, repo is czietsman/nuphirho.dev)
 - LinkedIn: christo-zietsman (existing profile)
-- The about page on Hashnode connects nuphirho to Christo Zietsman by name.
 
 ---
 
@@ -72,47 +72,46 @@ Nu, phi, rho: Greek letters from physics and mathematics. Used as a gaming profi
 | IaC | Terraform + Cloudflare provider | Free |
 | DNS/CDN/SSL | Cloudflare (free tier) | Free |
 | Domain | Cloudflare Registrar | ~$12-15/year |
-| Primary platform | Hashnode (blog.nuphirho.dev) | Free (includes custom domain, SSL, CDN) |
+| Frontend framework | SvelteKit + adapter-cloudflare | Free |
+| Landing page hosting | Cloudflare Pages (nuphirho.dev) | Free |
+| Blog hosting | Cloudflare Pages + Workers (blog.nuphirho.dev) | Free |
+| Blog visitor counter | Cloudflare KV | Free (within limits) |
 | Cross-post | Dev.to (API, automated) | Free |
 | Cross-post | Medium (manual, URL import) | Free |
 | Amplification | LinkedIn | Free |
-| Future consideration | X | Not yet |
 
 The domain is the only cost. Everything else is enterprise-grade tooling at zero cost.
 
 ### Why these choices
 
 - **GitHub (public):** The repo itself is a portfolio piece. Demonstrates the process openly. GitHub Actions are free and unlimited for public repos.
-- **Hashnode:** Free custom domain mapping, built-in developer community for discoverability, GraphQL API for automated publishing, supports light/dark themes, native Mermaid diagram support.
+- **SvelteKit + Cloudflare Pages:** Full prerender at build time. Zero cold-start latency. The Worker only handles the `/api/stats` endpoint. No tracking cookies, no third-party analytics.
 - **Dev.to:** REST API with simple API key auth. Built-in developer audience. Supports canonical URLs.
 - **Medium:** API is no longer issuing new integration tokens. Medium is a manual cross-post target using the "Import a story" URL feature. The pipeline handles this gracefully.
-- **Cloudflare:** Free tier includes DNS, CDN, SSL. Mature Terraform provider. Domain registered here so DNS, CDN, and registrar are in one place.
-- **Terraform:** Infrastructure as code. Cloudflare DNS configuration managed declaratively.
+- **Cloudflare:** Free tier includes DNS, CDN, SSL, Pages, Workers, and KV. Mature Terraform provider. Domain registered here so DNS, CDN, and registrar are in one place.
+- **Terraform:** Infrastructure as code. Cloudflare DNS and Pages configuration managed declaratively.
 
 ### Security
 
-- HTTPS enforced at three layers: .dev TLD (HSTS preload list), Cloudflare (free SSL/TLS), Hashnode (Let's Encrypt auto-provisioned).
+- HTTPS enforced at multiple layers: .dev TLD (HSTS preload list), Cloudflare (free SSL/TLS).
 - No credentials, tokens, or secrets in the repository or post content.
 - All secrets stored in GitHub Secrets.
+- No third-party tracking scripts or analytics on either site. Visitor counter is path-only, privacy-respecting, and runs on Cloudflare KV.
 - Security is a core tenet of the blog, both in content and in practice.
 
 ### Canonical URLs
 
-Always set to blog.nuphirho.dev. Every cross-posted article must reference the canonical URL on the blog subdomain. This protects SEO and ensures the blog builds authority over time. The root domain is reserved for future applications.
+Always set to blog.nuphirho.dev. Every cross-posted article must reference the canonical URL on the blog subdomain. This protects SEO and ensures the blog builds authority over time.
 
 ---
 
 ## Content Strategy
 
-### First blog post
-
-About setting up the blog itself: the platform choices, the pipeline, the process, and the domain. A meta-post that demonstrates the philosophy in action.
-
 ### Planned content areas
 
 - AI-assisted software delivery (complementing the LinkedIn series).
 - Engineering process and practice (BDD, mutation testing, executable specifications).
-- Introducing tools and practices to existing platforms and teams (e.g. split.io, Auth0).
+- Introducing tools and practices to existing platforms and teams.
 - Organisational transformation and technology innovation.
 
 ### LinkedIn series
@@ -125,46 +124,40 @@ About setting up the blog itself: the platform choices, the pipeline, the proces
 
 ```
 czietsman/nuphirho.dev
-├── docs/
-│   ├── STYLE_GUIDE.md
-│   └── PROJECT_BRIEF.md
-├── specs/
-│   └── (BDD feature files)
-├── terraform/
-│   └── (Cloudflare DNS configuration)
-├── .github/
-│   └── workflows/
-│       └── (GitHub Actions pipeline)
-├── posts/
-│   └── (markdown blog post files)
-├── .gitignore
+├── blog/                         # SvelteKit app — blog.nuphirho.dev
+│   └── src/
+│       ├── lib/posts.ts          # Post loading and markdown parsing
+│       └── routes/               # Post list, post detail, /api/stats
+├── main-site/                    # SvelteKit app — nuphirho.dev
+│   └── src/
+│       ├── lib/Roadmap.svelte    # Publishing calendar component
+│       └── routes/               # Landing, about, words-of-meaning, etc.
+├── site/                         # Go template static site (legacy)
+├── posts/                        # Markdown blog post source files
+├── cmd/
+│   ├── publish/                  # Reconcile posts/ with Dev.to
+│   ├── notify/                   # Send Telegram notifications
+│   ├── notify-summary/           # Scheduled notification digest
+│   ├── site-build/               # Build Go template site
+│   └── validate-tags/            # Validate post tag values
+├── internal/
+│   ├── devto/                    # Dev.to REST API client
+│   ├── frontmatter/              # Post metadata schema and parsing
+│   ├── hashnode/                 # Hashnode GraphQL API client
+│   ├── pipeline/                 # Publishing orchestration
+│   └── tags/                     # Tag validation
+├── terraform/                    # Cloudflare infrastructure as code
+├── .github/workflows/            # CI/CD pipelines
+├── docs/                         # Project brief and style guide
+├── specs/                        # BDD feature files
+├── tests/                        # Shell-based test scripts
+├── prompts/                      # Reviewed prompt material
+├── papers/                       # Academic paper builds
+├── experiments/                  # Research projects
+├── AGENTS.md                     # Agent instructions (authoritative)
+├── CLAUDE.md                     # Points to AGENTS.md
 └── README.md
 ```
-
----
-
-## What Needs to Happen Next
-
-### Immediate
-
-1. Create `.gitignore` and `README.md` for the repo.
-2. Commit `docs/STYLE_GUIDE.md` and `docs/PROJECT_BRIEF.md`.
-3. Write BDD specs (Gherkin) describing the content pipeline behaviour.
-4. Set up Hashnode account, connect blog.nuphirho.dev custom domain.
-5. Generate Dev.to API key.
-6. Store API keys and tokens in GitHub Secrets.
-
-### Pipeline
-
-7. Terraform configuration for Cloudflare DNS (pointing to Hashnode).
-8. GitHub Actions workflow: push to main triggers publish to Hashnode and Dev.to.
-9. Handle Medium as a manual step with documented process.
-
-### First post
-
-10. Draft the first blog post about setting up the blog.
-11. Review against the style guide.
-12. Publish through the pipeline.
 
 ---
 
