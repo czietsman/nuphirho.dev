@@ -3,11 +3,32 @@
 	import { formatDate } from '$lib/posts';
 
 	let { data }: { data: PageData } = $props();
+
+	const canonicalUrl = $derived(`https://blog.nuphirho.dev/${data.post.slug}`);
+	const description = $derived(data.post.subtitle ?? data.post.title);
+
+	const jsonLd = $derived({
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		headline: data.post.title,
+		description,
+		datePublished: data.post.publishDate,
+		url: canonicalUrl,
+		author: { '@type': 'Person', name: 'Christo Zietsman', url: 'https://nuphirho.dev/about' },
+		publisher: { '@type': 'Organization', name: 'nuphirho', url: 'https://blog.nuphirho.dev' }
+	});
 </script>
 
 <svelte:head>
 	<title>{data.post.title} — nuphirho</title>
-	{#if data.post.subtitle}<meta name="description" content={data.post.subtitle} />{/if}
+	<meta name="description" content={description} />
+	<meta property="og:title" content={data.post.title} />
+	<meta property="og:description" content={description} />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content={canonicalUrl} />
+	<meta property="article:published_time" content={data.post.publishDate} />
+	<link rel="canonical" href={canonicalUrl} />
+	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`}
 </svelte:head>
 
 <div class="container">

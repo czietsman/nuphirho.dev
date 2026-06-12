@@ -44,6 +44,14 @@
 	});
 </script>
 
+<svelte:head>
+	<meta property="og:site_name" content="nuphirho" />
+	<meta property="og:locale" content="en_GB" />
+	<meta name="twitter:card" content="summary" />
+	<link rel="canonical" href="https://blog.nuphirho.dev{$page.url.pathname}" />
+	<link rel="alternate" type="application/rss+xml" title="nuphirho" href="https://blog.nuphirho.dev/rss.xml" />
+</svelte:head>
+
 <a href="#main" class="skip-link">Skip to content</a>
 
 <header class="site-header">
