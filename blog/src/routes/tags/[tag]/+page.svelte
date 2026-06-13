@@ -6,18 +6,15 @@
 </script>
 
 <svelte:head>
-	<title>nuphirho — Posts</title>
-	<meta name="description" content="Writing on software engineering, process, and AI." />
-	<meta property="og:title" content="nuphirho — Posts" />
-	<meta property="og:description" content="Writing on software engineering, process, and AI." />
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://blog.nuphirho.dev/" />
+	<title>#{data.tag} — nuphirho</title>
+	<meta name="description" content="Posts tagged {data.tag} on nuphirho." />
+	<link rel="canonical" href="https://blog.nuphirho.dev/tags/{data.tag}" />
 </svelte:head>
 
 <div class="container">
 	<div class="page-intro">
-		<h1>Posts</h1>
-		<p>Writing on software engineering, process, and AI.</p>
+		<h1>#{data.tag}</h1>
+		<p>{data.posts.length} post{data.posts.length === 1 ? '' : 's'}</p>
 	</div>
 	<ul class="post-list">
 		{#each data.posts as post (post.slug)}
@@ -28,16 +25,10 @@
 				<div class="post-item-meta">
 					<time datetime={post.publishDate}>{formatDate(post.publishDate)} · {post.readingTimeMinutes} min read</time>
 					{#if post.series}<span>{post.series}</span>{/if}
-					{#if post.tags.length}
-						<div class="tags">
-							{#each post.tags as tag}
-								<a href="/tags/{tag}" class="tag">{tag}</a>
-							{/each}
-						</div>
-					{/if}
 				</div>
 				{#if post.subtitle}<p>{post.subtitle}</p>{/if}
 			</li>
 		{/each}
 	</ul>
+	<a href="/" class="back-link">← All posts</a>
 </div>
