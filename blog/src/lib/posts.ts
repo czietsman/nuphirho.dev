@@ -1,5 +1,15 @@
 import matter from 'gray-matter';
 import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
+import hljs from 'highlight.js';
+
+marked.use(markedHighlight({
+	langPrefix: 'hljs language-',
+	highlight(code, lang) {
+		const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+		return hljs.highlight(code, { language }).value;
+	}
+}));
 
 export interface PostMeta {
 	title: string;
@@ -117,7 +127,4 @@ export async function getPostMarkdown(slug: string): Promise<string | null> {
 	return null;
 }
 
-export function formatDate(iso: string): string {
-	const d = new Date(iso);
-	return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-}
+export { formatDate } from './format.js';
