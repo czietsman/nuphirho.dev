@@ -37,8 +37,7 @@
 			<h1 class="post-title">{data.post.title}</h1>
 			{#if data.post.subtitle}<p class="post-subtitle">{data.post.subtitle}</p>{/if}
 			<div class="post-meta">
-				<time datetime={data.post.publishDate}>{formatDate(data.post.publishDate)}</time>
-				<span class="reading-time">{data.post.readingTimeMinutes} min read</span>
+				<time datetime={data.post.publishDate}>{formatDate(data.post.publishDate)} · {data.post.readingTimeMinutes} min read</time>
 				{#if data.post.series}<span>{data.post.series}</span>{/if}
 				{#if data.post.tags.length}
 					<div class="tags">
