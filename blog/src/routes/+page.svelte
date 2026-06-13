@@ -26,8 +26,7 @@
 					<a href="/{post.slug}">{post.title}</a>
 				</h2>
 				<div class="post-item-meta">
-					<time datetime={post.publishDate}>{formatDate(post.publishDate)}</time>
-					<span class="reading-time">{post.readingTimeMinutes} min read</span>
+					<time datetime={post.publishDate}>{formatDate(post.publishDate)} · {post.readingTimeMinutes} min read</time>
 					{#if post.series}<span>{post.series}</span>{/if}
 					{#if post.tags.length}
 						<div class="tags">

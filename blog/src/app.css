@@ -239,9 +239,6 @@ a:hover, a:focus {
   flex-wrap: wrap;
 }
 
-/* Reading time */
-.reading-time::before { content: '·'; margin-inline-end: 0.75rem; }
-
 /* Tags */
 .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
