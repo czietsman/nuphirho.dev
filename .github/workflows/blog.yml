@@ -6,12 +6,16 @@ on:
     paths:
       - 'posts/**'
       - 'blog/**'
+  pull_request:
+    paths:
+      - 'posts/**'
+      - 'blog/**'
   workflow_dispatch:
 
 permissions: {}
 
 concurrency:
-  group: blog-deploy
+  group: blog-deploy-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -20,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
+      deployments: write
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
@@ -42,5 +48,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy .svelte-kit/cloudflare --project-name=nuphirho-blog
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy .svelte-kit/cloudflare --project-name=nuphirho-blog${{ github.event_name == 'pull_request' && format(' --branch={0}', github.head_ref) || '' }}
           workingDirectory: blog
