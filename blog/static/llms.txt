@@ -23,6 +23,14 @@ Content is written in British English. Posts show reasoning, not just conclusion
 - RSS feed: https://blog.nuphirho.dev/rss.xml
 - Sitemap: https://blog.nuphirho.dev/sitemap.xml
 
+## Machine-readable post format
+
+Each post is available as plain Markdown (frontmatter stripped) at:
+
+  https://blog.nuphirho.dev/[slug].md
+
+Replace `[slug]` with the post slug from the post URL. The response is `text/markdown; charset=utf-8`.
+
 ## Contact
 
 privacy@nuphirho.dev
