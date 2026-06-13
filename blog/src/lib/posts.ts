@@ -85,6 +85,10 @@ function buildToc(content: string): TocEntry[] {
 		}));
 }
 
+function stripManualSeriesNav(html: string): string {
+	return html.replace(/<p><em>Series:[\s\S]*?<\/p>/g, '');
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function buildMeta(data: Record<string, any>, slug: string, content: string): PostMeta {
 	return {
@@ -165,7 +169,7 @@ export async function getPost(slug: string): Promise<Post | null> {
 
 	return {
 		...target.meta,
-		html: marked.parse(convertEmbeds(target.content)) as string,
+		html: stripManualSeriesNav(marked.parse(convertEmbeds(target.content)) as string),
 		toc: buildToc(target.content),
 		prevInSeries,
 		nextInSeries,
