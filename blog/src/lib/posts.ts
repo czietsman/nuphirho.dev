@@ -3,6 +3,18 @@ import { marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 
+function slugifyHeading(text: string): string {
+	return text
+		.replace(/<[^>]+>/g, '')                                          // strip HTML tags
+		.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))  // decode numeric entities
+		.replace(/&[a-z]+;/g, '')                                         // strip remaining named entities
+		.replace(/[`*_~[\]()]/g, '')                                      // strip inline markdown
+		.toLowerCase()
+		.replace(/[^a-z0-9\s-]/g, '')
+		.trim()
+		.replace(/\s+/g, '-');
+}
+
 marked.use(markedHighlight({
 	langPrefix: 'hljs language-',
 	highlight(code, lang) {
@@ -10,6 +22,21 @@ marked.use(markedHighlight({
 		return hljs.highlight(code, { language }).value;
 	}
 }));
+
+marked.use({
+	renderer: {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		heading(this: any, text: string, depth: number) {
+			const id = slugifyHeading(text);
+			return `<h${depth} id="${id}">${text}</h${depth}>\n`;
+		}
+	}
+});
+
+export interface TocEntry {
+	id: string;
+	text: string;
+}
 
 export interface PostMeta {
 	title: string;
@@ -24,6 +51,9 @@ export interface PostMeta {
 
 export interface Post extends PostMeta {
 	html: string;
+	toc: TocEntry[];
+	prevInSeries?: { slug: string; title: string };
+	nextInSeries?: { slug: string; title: string };
 }
 
 // node:fs/promises and node:path are imported lazily inside functions so they
@@ -41,6 +71,18 @@ function convertEmbeds(md: string): string {
 function readingTimeMinutes(content: string): number {
 	const words = content.trim().split(/\s+/).filter(Boolean).length;
 	return Math.max(1, Math.ceil(words / 200));
+}
+
+function buildToc(content: string): TocEntry[] {
+	const tokens = marked.lexer(content);
+	return tokens
+		.filter((t): t is { type: 'heading'; depth: number; text: string; raw: string } =>
+			t.type === 'heading' && (t as { depth: number }).depth === 2
+		)
+		.map((t) => ({
+			id: slugifyHeading(t.text),
+			text: t.text,
+		}));
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -92,6 +134,9 @@ export async function getPost(slug: string): Promise<Post | null> {
 	const files = await readdir(dir);
 	const mds = files.filter((f) => f.endsWith('.md'));
 
+	const allMeta: PostMeta[] = [];
+	let target: { meta: PostMeta; content: string } | null = null;
+
 	for (const file of mds) {
 		const raw = await readFile(resolve(dir, file), 'utf-8');
 		const { data, content } = matter(raw);
@@ -99,15 +144,32 @@ export async function getPost(slug: string): Promise<Post | null> {
 		if (data.draft === true || !data.publish_date) continue;
 
 		const postSlug = String(data.slug ?? file.replace(/\.md$/, ''));
-		if (postSlug !== slug) continue;
-
-		return {
-			...buildMeta(data, postSlug, content),
-			html: marked.parse(convertEmbeds(content)) as string,
-		};
+		const meta = buildMeta(data, postSlug, content);
+		allMeta.push(meta);
+		if (postSlug === slug) target = { meta, content };
 	}
 
-	return null;
+	if (!target) return null;
+
+	let prevInSeries: { slug: string; title: string } | undefined;
+	let nextInSeries: { slug: string; title: string } | undefined;
+
+	if (target.meta.series) {
+		const seriesPosts = allMeta
+			.filter((p) => p.series === target!.meta.series)
+			.sort((a, b) => new Date(a.publishDate).getTime() - new Date(b.publishDate).getTime());
+		const idx = seriesPosts.findIndex((p) => p.slug === slug);
+		if (idx > 0) prevInSeries = { slug: seriesPosts[idx - 1].slug, title: seriesPosts[idx - 1].title };
+		if (idx < seriesPosts.length - 1) nextInSeries = { slug: seriesPosts[idx + 1].slug, title: seriesPosts[idx + 1].title };
+	}
+
+	return {
+		...target.meta,
+		html: marked.parse(convertEmbeds(target.content)) as string,
+		toc: buildToc(target.content),
+		prevInSeries,
+		nextInSeries,
+	};
 }
 
 export async function getPostMarkdown(slug: string): Promise<string | null> {
