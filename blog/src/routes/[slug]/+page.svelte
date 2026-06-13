@@ -42,15 +42,38 @@
 				{#if data.post.tags.length}
 					<div class="tags">
 						{#each data.post.tags as tag}
-							<span class="tag">{tag}</span>
+							<a href="/tags/{tag}" class="tag">{tag}</a>
 						{/each}
 					</div>
 				{/if}
 			</div>
 		</header>
+
+		{#if data.post.toc.length >= 3}
+			<nav class="toc" aria-label="Table of contents">
+				<h2>Contents</h2>
+				<ol>
+					{#each data.post.toc as entry}
+						<li><a href="#{entry.id}">{entry.text}</a></li>
+					{/each}
+				</ol>
+			</nav>
+		{/if}
+
 		<div class="post-content">
 			{@html data.post.html}
 		</div>
+
+		{#if data.post.prevInSeries || data.post.nextInSeries}
+			<nav class="series-nav" aria-label="Series navigation">
+				{#if data.post.prevInSeries}
+					<a href="/{data.post.prevInSeries.slug}" class="series-prev">← {data.post.prevInSeries.title}</a>
+				{/if}
+				{#if data.post.nextInSeries}
+					<a href="/{data.post.nextInSeries.slug}" class="series-next">{data.post.nextInSeries.title} →</a>
+				{/if}
+			</nav>
+		{/if}
 	</article>
 	<a href="/" class="back-link">← All posts</a>
 </div>

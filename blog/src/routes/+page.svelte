@@ -31,7 +31,7 @@
 					{#if post.tags.length}
 						<div class="tags">
 							{#each post.tags as tag}
-								<span class="tag">{tag}</span>
+								<a href="/tags/{tag}" class="tag">{tag}</a>
 							{/each}
 						</div>
 					{/if}

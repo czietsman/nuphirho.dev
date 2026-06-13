@@ -21,11 +21,15 @@ export const GET: RequestHandler = async () => {
 		return `  <url><loc>${BASE}/${esc(p.slug)}</loc><lastmod>${lastmod}</lastmod></url>`;
 	});
 
+	const tags = [...new Set(posts.flatMap((p) => p.tags))];
+	const tagUrls = tags.map((t) => `  <url><loc>${BASE}/tags/${esc(t)}</loc></url>`);
+
 	const body = [
 		'<?xml version="1.0" encoding="UTF-8"?>',
 		'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
 		...staticUrls,
 		...postUrls,
+		...tagUrls,
 		'</urlset>'
 	].join('\n');
 
