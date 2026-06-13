@@ -19,6 +19,7 @@ export interface PostMeta {
 	series?: string;
 	publishDate: string; // ISO date string
 	brief?: string;
+	readingTimeMinutes: number;
 }
 
 export interface Post extends PostMeta {
@@ -37,8 +38,13 @@ function convertEmbeds(md: string): string {
 	);
 }
 
+function readingTimeMinutes(content: string): number {
+	const words = content.trim().split(/\s+/).filter(Boolean).length;
+	return Math.max(1, Math.ceil(words / 200));
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function buildMeta(data: Record<string, any>, slug: string): PostMeta {
+function buildMeta(data: Record<string, any>, slug: string, content: string): PostMeta {
 	return {
 		title: String(data.title ?? ''),
 		slug,
@@ -46,6 +52,7 @@ function buildMeta(data: Record<string, any>, slug: string): PostMeta {
 		tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
 		series: data.series ? String(data.series) : undefined,
 		publishDate: String(data.publish_date),
+		readingTimeMinutes: readingTimeMinutes(content),
 	};
 }
 
@@ -58,11 +65,11 @@ async function parsePost(filename: string, dir: string): Promise<PostMeta | null
 	const { readFile } = await import('node:fs/promises');
 	const { resolve } = await import('node:path');
 	const raw = await readFile(resolve(dir, filename), 'utf-8');
-	const { data } = matter(raw);
+	const { data, content } = matter(raw);
 
 	if (data.draft === true || !data.publish_date) return null;
 
-	return buildMeta(data, String(data.slug ?? filename.replace(/\.md$/, '')));
+	return buildMeta(data, String(data.slug ?? filename.replace(/\.md$/, '')), content);
 }
 
 export async function getAllPosts(): Promise<PostMeta[]> {
@@ -95,7 +102,7 @@ export async function getPost(slug: string): Promise<Post | null> {
 		if (postSlug !== slug) continue;
 
 		return {
-			...buildMeta(data, postSlug),
+			...buildMeta(data, postSlug, content),
 			html: marked.parse(convertEmbeds(content)) as string,
 		};
 	}
