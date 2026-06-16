@@ -52,11 +52,11 @@
 		{#if data.post.toc.length >= 3}
 			<nav class="toc" aria-label="Table of contents">
 				<h2>Contents</h2>
-				<ol>
+				<ul>
 					{#each data.post.toc as entry}
 						<li><a href="#{entry.id}">{entry.text}</a></li>
 					{/each}
-				</ol>
+				</ul>
 			</nav>
 		{/if}
 
