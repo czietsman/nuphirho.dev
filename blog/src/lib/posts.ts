@@ -56,6 +56,15 @@ export interface Post extends PostMeta {
 	nextInSeries?: { slug: string; title: string };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isPostVisible(data: Record<string, any>, today: string): boolean {
+	if (data.draft === true || !data.publish_date) return false;
+	const publishDate = data.publish_date instanceof Date
+		? data.publish_date.toISOString().slice(0, 10)
+		: String(data.publish_date).slice(0, 10);
+	return publishDate <= today;
+}
+
 // node:fs/promises and node:path are imported lazily inside functions so they
 // are never present in the Cloudflare Worker bundle at module load time.
 // These functions only run during SSR prerender at build time.
@@ -113,7 +122,8 @@ async function parsePost(filename: string, dir: string): Promise<PostMeta | null
 	const raw = await readFile(resolve(dir, filename), 'utf-8');
 	const { data, content } = matter(raw);
 
-	if (data.draft === true || !data.publish_date) return null;
+	const today = new Date().toISOString().slice(0, 10);
+	if (!isPostVisible(data, today)) return null;
 
 	return buildMeta(data, String(data.slug ?? filename.replace(/\.md$/, '')), content);
 }
@@ -141,11 +151,12 @@ export async function getPost(slug: string): Promise<Post | null> {
 	const allMeta: PostMeta[] = [];
 	let target: { meta: PostMeta; content: string } | null = null;
 
+	const today = new Date().toISOString().slice(0, 10);
 	for (const file of mds) {
 		const raw = await readFile(resolve(dir, file), 'utf-8');
 		const { data, content } = matter(raw);
 
-		if (data.draft === true || !data.publish_date) continue;
+		if (!isPostVisible(data, today)) continue;
 
 		const postSlug = String(data.slug ?? file.replace(/\.md$/, ''));
 		const meta = buildMeta(data, postSlug, content);
@@ -185,11 +196,12 @@ export async function getPostMarkdown(slug: string): Promise<string | null> {
 	const files = await readdir(dir);
 	const mds = files.filter((f) => f.endsWith('.md'));
 
+	const today = new Date().toISOString().slice(0, 10);
 	for (const file of mds) {
 		const raw = await readFile(resolve(dir, file), 'utf-8');
 		const { data, content } = matter(raw);
 
-		if (data.draft === true || !data.publish_date) continue;
+		if (!isPostVisible(data, today)) continue;
 
 		const postSlug = String(data.slug ?? file.replace(/\.md$/, ''));
 		if (postSlug !== slug) continue;
