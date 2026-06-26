@@ -16,17 +16,11 @@ The repository contains:
 - **main-site/** -- SvelteKit app for nuphirho.dev (Cloudflare Pages)
   - **main-site/src/routes/** -- Landing page, about, words-of-meaning, novel-findings, roadmap, privacy, cookies
   - **main-site/src/lib/Roadmap.svelte** -- Publishing calendar component
-- **site/** -- Go template static site builder (legacy; replaced by main-site/)
-  - **site/templates/** -- HTML templates (base layout, partials, page content)
-  - **site/css/** -- Stylesheets (shared + page-specific)
-  - **site/js/** -- JavaScript (theme toggle, roadmap calendar)
-  - **site/static/** -- Files copied directly to output (CNAME, calendar data)
 - **posts/** -- Markdown blog post source files with YAML frontmatter
 - **cmd/** -- Go CLI tools
   - **cmd/publish** -- Reconcile posts/ with Hashnode and Dev.to
   - **cmd/notify** -- Send Telegram notifications
   - **cmd/notify-summary** -- Scheduled notification digest
-  - **cmd/site-build** -- Build static site from Go templates
   - **cmd/validate-tags** -- Validate post tag values
 - **internal/** -- Shared Go packages
   - **internal/hashnode** -- Hashnode GraphQL API client
@@ -75,7 +69,6 @@ The domain is the only cost.
 | `blog.yml` | Push to main, paths: `posts/**` `blog/**` | Build and deploy blog to Cloudflare Pages |
 | `main-site.yml` | Push to main, paths: `main-site/**` | Build and deploy main site to Cloudflare Pages |
 | `publish.yml` | Push to main, paths: `posts/**`; daily cron | Reconcile posts/ with Dev.to |
-| `pages.yml` | Push to main, paths: `site/**` | Build Go template site to GitHub Pages (legacy) |
 | `terraform.yml` | Push/PR to main, paths: `terraform/**` | Plan and apply Cloudflare infrastructure |
 | `validate-pr.yml` | Pull requests | Run Go tests, linters, mutation testing |
 | `notify.yml` | Workflow dispatch | Send manual Telegram notification |
