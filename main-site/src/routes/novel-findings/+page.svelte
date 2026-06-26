@@ -250,23 +250,6 @@
 
 		<hr>
 
-		<h2>Cluster 16: Regulatory science</h2>
-
-		<div class="finding">
-			<h3 class="finding-title">Finding 29: No structural completeness requirement for AI governance documents in any confirmed jurisdiction</h3>
-			<p>No published regulatory instrument in any confirmed jurisdiction requires the document governing an AI system (system prompt, AGENTS.md, governance policy) to meet a structural completeness criterion before deployment.</p>
-			<p class="finding-meta"><span class="confidence-badge confidence-high">Verified</span></p>
-		</div>
-
-		<div class="finding">
-			<h3 class="finding-title">Finding 32: Within-session governance authority decay</h3>
-			<p>A governance document can be structurally complete at authorship time and still lose effective authority during a single session. As operational history accumulates in an agent's context window, the governing specification is progressively displaced by accumulated content. The agent continues executing, but under the effective influence of its history rather than its governing document. The mechanism is content-driven, not length-driven: replacing history with governance reinsertion substantially restores compliance. No published AI governance framework identifies this as a distinct failure mode or proposes governance reinsertion as a design primitive.</p>
-			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
-			<p class="finding-note">Liu et al. (2026, arXiv:2605.08060) demonstrate empirically that expanding context window history degrades cooperative intent in multi-agent systems. The governance authority framing is the programme's extension of those empirical findings.</p>
-		</div>
-
-		<hr>
-
 		<h2>Cluster 14: Citation integrity and verification methodology</h2>
 
 		<div class="finding">
@@ -298,13 +281,13 @@
 		<div class="finding">
 			<h3 class="finding-title">Finding 37: Style guides lack compliance rubrics</h3>
 			<p>Style guides -- documents specifying writing standards, editorial policy, and content design -- systematically lack a compliance rubric: they specify what content should look like but provide no mechanism for verifying that content conforms to the specification. No style guide in the evaluated corpus included a structured compliance-checking mechanism. The absence is systematic, not incidental.</p>
-			<p class="finding-meta"><span class="confidence-badge confidence-provisional">Provisional</span></p>
+			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
 		</div>
 
 		<div class="finding">
 			<h3 class="finding-title">Finding 38: Branding guides lack compliance rubrics</h3>
 			<p>Brand guidelines -- identity manuals, brand playbooks, and brand governance documents -- systematically omit the compliance rubric that would make them auditable. The guides specify desired brand properties without providing a structured check that content produced under those guidelines actually satisfies them. The pattern holds across technology companies, professional services firms, and media organisations.</p>
-			<p class="finding-meta"><span class="confidence-badge confidence-provisional">Provisional</span></p>
+			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
 		</div>
 
 		<div class="finding">
@@ -323,6 +306,23 @@
 			<h3 class="finding-title">Finding 42: AI as experimental apparatus for unified instruction theory</h3>
 			<p>Using AI systems as experimental apparatus for testing theories from human communication, persuasion, diplomacy, and negotiation disciplines -- with the explicit goal of developing a unified theory of instruction applicable across human and artificial intelligence systems -- is a methodological position not established in the literature. Adjacent research uses AI as social-science experimental subject, applies human communication theories to AI behaviour, or optimises AI for specific communication tasks. None frames AI as controlled apparatus for cross-substrate theory construction with instruction as the unit of analysis.</p>
 			<p class="finding-meta"><span class="confidence-badge confidence-high">Verified</span></p>
+		</div>
+
+		<hr>
+
+		<h2>Cluster 16: Regulatory science</h2>
+
+		<div class="finding">
+			<h3 class="finding-title">Finding 29: No structural completeness requirement for AI governance documents in any confirmed jurisdiction</h3>
+			<p>No published regulatory instrument in any confirmed jurisdiction requires the document governing an AI system (system prompt, AGENTS.md, governance policy) to meet a structural completeness criterion before deployment.</p>
+			<p class="finding-meta"><span class="confidence-badge confidence-high">Verified</span></p>
+		</div>
+
+		<div class="finding">
+			<h3 class="finding-title">Finding 32: Within-session governance authority decay</h3>
+			<p>A governance document can be structurally complete at authorship time and still lose effective authority during a single session. As operational history accumulates in an agent's context window, the governing specification is progressively displaced by accumulated content. The agent continues executing, but under the effective influence of its history rather than its governing document. The mechanism is content-driven, not length-driven: replacing history with governance reinsertion substantially restores compliance. No published AI governance framework identifies this as a distinct failure mode or proposes governance reinsertion as a design primitive.</p>
+			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
+			<p class="finding-note">Liu et al. (2026, arXiv:2605.08060) demonstrate empirically that expanding context window history degrades cooperative intent in multi-agent systems. The governance authority framing is the programme's extension of those empirical findings.</p>
 		</div>
 
 		<hr>
