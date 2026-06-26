@@ -2,6 +2,7 @@
 title: "I love my AI goggles"
 slug: ai-goggles
 publish_date: 2026-06-05
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7465324456626806784
 tags:
   - personal-practice
   - ai-assisted-development

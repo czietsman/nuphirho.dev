@@ -2,6 +2,7 @@
 title: "Amdahl's Law does not apply here"
 slug: amdahl-reframe
 publish_date: 2026-05-29
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7463661099272384512
 tags:
   - ai-assisted-development
   - software-engineering

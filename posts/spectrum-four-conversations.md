@@ -2,6 +2,7 @@
 title: "Four conversations, four different worlds"
 slug: spectrum-four-conversations
 publish_date: 2026-06-10
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470575403691298817
 tags:
   - personal-practice
   - ai-assisted-development

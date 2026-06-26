@@ -2,6 +2,7 @@
 title: "How the article was built"
 slug: meta-how-we-built-this
 publish_date: 2026-06-15
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7465844939617320960
 tags:
   - ai-assisted-development
   - personal-practice

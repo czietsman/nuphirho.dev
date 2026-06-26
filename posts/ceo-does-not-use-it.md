@@ -2,6 +2,7 @@
 title: "The CEO does not use it"
 slug: ceo-does-not-use-it
 publish_date: 2026-06-19
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470569819784925184
 tags:
   - personal-practice
   - ai-assisted-development
