@@ -5,6 +5,7 @@ subtitle: "Why the path forward isn't trusting AI, but building a process that m
 tags: [ai, process, bdd, trust, software-engineering]
 series: "Process Over Technology"
 publish_date: 2026-03-10
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7433440845887848448
 ---
 
 The biggest obstacle to AI in software engineering isn't the technology. It's trust.

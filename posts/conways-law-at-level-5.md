@@ -2,6 +2,7 @@
 title: "Conway's Law at Level 5"
 slug: conways-law-at-level-5
 publish_date: 2026-04-15
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7433557740825931776
 tags:
   - ai-assisted-development
   - agentic-development

@@ -2,6 +2,7 @@
 title: "10x the clarity"
 slug: 10x-engineer-reframe
 publish_date: 2026-06-01
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7464233594819911680
 tags:
   - ai-assisted-development
   - software-engineering
