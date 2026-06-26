@@ -7,6 +7,7 @@
 # 2026-06-09  Revert blog CNAME to GitHub Pages pending Cloudflare Pages testing
 # 2026-06-09  Switch blog CNAME to Cloudflare Pages (testing passed)
 # 2026-03-26  Add MX, SPF, DMARC for Cloudflare Email Routing
+# 2026-06-26  Switch root and www DNS from GitHub Pages to Cloudflare Pages (nuphirho-main)
 
 terraform {
   required_version = ">= 1.0"
@@ -52,32 +53,21 @@ resource "cloudflare_record" "blog" {
   ttl     = 1 # Auto when proxied
 }
 
-# Root domain A records for GitHub Pages
-locals {
-  github_pages_ips = [
-    "185.199.108.153",
-    "185.199.109.153",
-    "185.199.110.153",
-    "185.199.111.153",
-  ]
-}
-
+# Root domain CNAME to Cloudflare Pages
 resource "cloudflare_record" "root" {
-  for_each = toset(local.github_pages_ips)
-
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "@"
-  content = each.value
-  type    = "A"
+  content = "nuphirho-main.pages.dev"
+  type    = "CNAME"
   proxied = true
   ttl     = 1 # Auto when proxied
 }
 
-# www CNAME to GitHub Pages
+# www CNAME to Cloudflare Pages
 resource "cloudflare_record" "www" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "www"
-  content = "czietsman.github.io"
+  content = "nuphirho-main.pages.dev"
   type    = "CNAME"
   proxied = true
   ttl     = 1 # Auto when proxied
