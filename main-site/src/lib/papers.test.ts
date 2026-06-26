@@ -7,15 +7,16 @@ describe('papers', () => {
 	});
 
 	it('lists papers in reverse chronological order', () => {
-		const years = papers.map((p) => p.year);
-		expect(years).toEqual([...years].sort((a, b) => b - a));
+		const dates = papers.map((p) => new Date(p.date).getTime());
+		expect(dates).toEqual([...dates].sort((a, b) => b - a));
 	});
 
-	it('each paper has a non-empty title, url, and summary', () => {
+	it('each paper has a non-empty title, url, summary, and date', () => {
 		for (const p of papers) {
 			expect(p.title.length).toBeGreaterThan(0);
 			expect(p.url.length).toBeGreaterThan(0);
 			expect(p.summary.length).toBeGreaterThan(0);
+			expect(p.date.length).toBeGreaterThan(0);
 		}
 	});
 
@@ -25,18 +26,21 @@ describe('papers', () => {
 		}
 	});
 
-	it('contains the specification completeness paper', () => {
+	it('contains the specification completeness paper with correct date', () => {
 		const found = papers.find((p) => p.url === 'https://arxiv.org/abs/2606.25120');
 		expect(found).toBeDefined();
+		expect(found?.date).toBe('23 Jun 2026');
 	});
 
-	it('contains the structural quality gaps paper', () => {
+	it('contains the structural quality gaps paper with correct date', () => {
 		const found = papers.find((p) => p.url === 'https://arxiv.org/abs/2604.21090');
 		expect(found).toBeDefined();
+		expect(found?.date).toBe('22 Apr 2026');
 	});
 
-	it('contains the specification as quality gate paper', () => {
+	it('contains the specification as quality gate paper with correct date', () => {
 		const found = papers.find((p) => p.url === 'https://arxiv.org/abs/2603.25773');
 		expect(found).toBeDefined();
+		expect(found?.date).toBe('26 Mar 2026');
 	});
 });
