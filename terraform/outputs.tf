@@ -8,9 +8,9 @@ output "blog_record" {
   value       = cloudflare_record.blog.hostname
 }
 
-output "root_records" {
-  description = "Root domain A records for GitHub Pages"
-  value       = [for r in cloudflare_record.root : r.hostname]
+output "root_record" {
+  description = "Root domain CNAME record for Cloudflare Pages"
+  value       = cloudflare_record.root.hostname
 }
 
 output "www_record" {
