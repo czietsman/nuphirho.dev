@@ -2,6 +2,7 @@
 title: "The UK nuclear regulator named the governance gap"
 slug: regulated-industry-1-onr-nuclear
 publish_date: 2026-06-03
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7467472926229991424
 tags:
   - ai-governance
   - research
