@@ -2,6 +2,7 @@
 title: "The migration strategy of the future"
 slug: migration-strategy-future
 publish_date: 2026-05-13
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7433583304777490433
 tags:
   - software-engineering
   - specification-driven-development
@@ -10,7 +11,7 @@ tags:
 
 I had an insight today that changes how I think about platform migrations.
 
-I have been building a proof of concept with microfrontends: hosting Auth0 components in a Vue shell that pulls in our Vue-based platform natively and embeds our Angular-based platform alongside it. Both covered end to end by behavioural specifications, including the shell-to-microfrontend boundary.
+I have been building a proof of concept with microfrontends, hosting Auth0 components in a Vue shell that pulls in our Vue-based platform natively and embeds our Angular-based platform alongside it. Both covered end to end by behavioural specifications, including the shell-to-microfrontend boundary.
 
 Then it landed: if I can completely cover an existing application's behaviour with executable specs (every user flow, every edge case, every interaction), I do not need the original codebase anymore. The specs become the portable truth.
 

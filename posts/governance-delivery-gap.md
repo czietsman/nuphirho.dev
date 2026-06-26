@@ -9,7 +9,7 @@ tags:
 
 Think about the sign-up flow for almost any product. Full name, email address, telephone number. Simple data. But the moment you ask what you can display, to whom, and under what circumstances, you are already in contested territory.
 
-Can the MSP see the end user's email address? Can the distributor? Can your own support team? What about the user's mailbox? Is that user data, organisational data, or both? At each layer of the stack the question changes, and the policy usually says the same thing: this is PII, handle it accordingly.
+Can the MSP see the end user's email address? Can the distributor? Can your own support team? What about the user's mailbox: is that user data, organisational data, or both? At each layer of the stack the question changes, and the policy usually says the same thing: this is PII, handle it accordingly.
 
 That answer is not wrong. It is incomplete. And the developer who receives it has no choice but to build to the most restrictive interpretation, because the policy gave them no basis for anything else.
 
