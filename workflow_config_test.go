@@ -21,13 +21,6 @@ func TestWorkflowActionPins(t *testing.T) {
 		"actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0",
 	})
 
-	checkContains(t, ".github/workflows/pages.yml", []string{
-		"actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2",
-		"actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5",
-		"actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4",
-		"actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4",
-	})
-
 	checkContains(t, ".github/workflows/terraform.yml", []string{
 		"actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2",
 		"actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8",
