@@ -2,6 +2,7 @@
 title: "The dumb policy was my fuel"
 slug: shadow-ai-policy-fuel
 publish_date: 2026-06-16
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470562380696055809
 tags:
   - ai-governance
   - personal-practice

@@ -2,6 +2,7 @@
 title: "Organisational factors get amplified by AI"
 slug: microsoft-wti-2026
 publish_date: 2026-06-26
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7472686594676645889
 tags:
   - ai-governance
   - research

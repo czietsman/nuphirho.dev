@@ -2,6 +2,7 @@
 title: "The $20 experiment"
 slug: economic-constraint-experiment
 publish_date: 2026-06-23
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470565360631435264
 tags:
   - personal-practice
   - research

@@ -2,6 +2,7 @@
 title: "The premium has moved"
 slug: commercial-model-risk
 publish_date: 2026-06-13
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470559185521438720
 tags:
   - ai-assisted-development
   - personal-practice
