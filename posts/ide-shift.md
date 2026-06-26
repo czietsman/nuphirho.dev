@@ -2,6 +2,7 @@
 title: "The IDE is the hardware now"
 slug: ide-shift
 publish_date: 2026-05-25
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7464233265529253888
 tags:
   - ai-assisted-development
   - software-engineering

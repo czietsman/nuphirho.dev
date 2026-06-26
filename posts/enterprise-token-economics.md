@@ -2,6 +2,7 @@
 title: "The commercial model is the constraint"
 slug: enterprise-token-economics
 publish_date: 2026-06-18
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470563573023494144
 tags:
   - ai-governance
   - ai-assisted-development

@@ -2,6 +2,7 @@
 title: "The innovator's job"
 slug: unicorn-project-innovator
 publish_date: 2026-06-22
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470571676414435328
 tags:
   - personal-practice
   - ai-assisted-development

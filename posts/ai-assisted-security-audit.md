@@ -5,6 +5,7 @@ draft: false
 tags: [security, ai, architecture, software-engineering, process]
 series: "Process Over Technology"
 publish_date: 2026-03-25
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7433469779660890113
 ---
 
 Last year I started working on a large, unfamiliar codebase. Go, new CI/CD pipelines, new deployment patterns. My job was integration work, not security. I was using AI to accelerate my understanding of the system, reading through services, tracing data flows, building a mental model of how the pieces fit together.
