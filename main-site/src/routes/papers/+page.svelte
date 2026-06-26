@@ -16,7 +16,7 @@
 		<ul class="paper-list">
 			{#each papers as paper}
 				<li class="paper-entry">
-					<span class="paper-year">{paper.year}</span>
+					<span class="paper-year">{paper.date}</span>
 					<div class="paper-body">
 						<a href={paper.url} class="paper-title" rel="noopener noreferrer" target="_blank">{paper.title}</a>
 						<p class="paper-summary">{paper.summary}</p>
