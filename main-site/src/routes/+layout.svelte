@@ -70,6 +70,7 @@
 			<a href="https://promptq.ai" target="_blank" rel="noopener">PromptQ</a>
 			<a href="https://blog.nuphirho.dev">Blog</a>
 			<a href="/novel-findings" aria-current={$page.url.pathname === '/novel-findings' ? 'page' : undefined} onclick={closeMenu}>Novel Findings</a>
+			<a href="/papers" aria-current={$page.url.pathname === '/papers' ? 'page' : undefined} onclick={closeMenu}>Papers</a>
 		</nav>
 
 		<button
@@ -90,8 +91,7 @@
 	<div class="container">
 		<span>&copy; 2026 Christo Zietsman</span>
 		<span class="footer-links">
-			<a href="https://doi.org/10.48550/arXiv.2603.25773">arXiv Paper 1</a>
-			<a href="https://doi.org/10.48550/arXiv.2604.21090">arXiv Paper 2</a>
+			<a href="/papers">Papers</a>
 			<a href="https://github.com/czietsman">GitHub</a>
 			<a href="https://www.linkedin.com/in/christo-zietsman/">LinkedIn</a>
 			<a href="/privacy">Privacy</a>
