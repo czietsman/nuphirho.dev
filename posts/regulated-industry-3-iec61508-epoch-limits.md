@@ -2,6 +2,7 @@
 title: "IEC 61508 and the governance document that never expires"
 slug: regulated-industry-3-iec61508-epoch-limits
 publish_date: 2026-06-24
+linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7472884323071975424
 tags:
   - ai-governance
   - research
