@@ -36,3 +36,28 @@ describe('post page cover image', () => {
 		expect(screen.queryByText(/LINKEDIN ONLY TEASER TEXT/)).toBeNull();
 	});
 });
+
+describe('post page social image meta', () => {
+	it('emits og:image and twitter:image when a cover image is set', () => {
+		render(Page, {
+			data: { post: { ...basePost, coverImage: 'https://blog.nuphirho.dev/hero.png' } },
+		});
+		expect(document.head.querySelector('meta[property="og:image"]')).toHaveAttribute(
+			'content',
+			'https://blog.nuphirho.dev/hero.png'
+		);
+		expect(document.head.querySelector('meta[name="twitter:image"]')).toHaveAttribute(
+			'content',
+			'https://blog.nuphirho.dev/hero.png'
+		);
+		expect(document.head.querySelector('meta[name="twitter:card"]')).toHaveAttribute(
+			'content',
+			'summary_large_image'
+		);
+	});
+
+	it('emits no og:image when there is no cover image', () => {
+		render(Page, { data: { post: { ...basePost } } });
+		expect(document.head.querySelector('meta[property="og:image"]')).toBeNull();
+	});
+});
