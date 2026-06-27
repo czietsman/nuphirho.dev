@@ -1,7 +1,7 @@
 ---
 title: "AI governance has no Authorised Person"
 slug: regulated-industry-2-accountability-roles
-publish_date: 2026-07-08
+publish_date: 2026-07-01
 tags:
   - ai-governance
   - research

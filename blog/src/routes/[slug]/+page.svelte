@@ -33,6 +33,9 @@
 
 <div class="container">
 	<article>
+		{#if data.post.coverImage}
+			<img class="cover-image" src={data.post.coverImage} alt={data.post.title} />
+		{/if}
 		<header class="post-header">
 			<h1 class="post-title">{data.post.title}</h1>
 			{#if data.post.subtitle}<p class="post-subtitle">{data.post.subtitle}</p>{/if}
