@@ -45,6 +45,7 @@ export interface PostMeta {
 	tags: string[];
 	series?: string;
 	publishDate: string; // ISO date string
+	coverImage?: string;
 	brief?: string;
 	readingTimeMinutes: number;
 }
@@ -107,6 +108,7 @@ function buildMeta(data: Record<string, any>, slug: string, content: string): Po
 		tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
 		series: data.series ? String(data.series) : undefined,
 		publishDate: String(data.publish_date),
+		coverImage: data.cover_image ? String(data.cover_image) : undefined,
 		readingTimeMinutes: readingTimeMinutes(content),
 	};
 }
