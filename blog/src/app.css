@@ -254,6 +254,14 @@ a:hover, a:focus {
 }
 
 /* Single post */
+.cover-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-block-end: 2.5rem;
+}
+
 .post-header { margin-block-end: 2.5rem; }
 
 .post-title {
