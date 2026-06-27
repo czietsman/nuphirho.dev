@@ -2,6 +2,43 @@
 title: "The Governance Document That Never Expires"
 slug: the-governance-document-that-never-expires
 publish_date: 2026-06-30
+format: article
+linkedin_url:
+cover_image: the-governance-document-that-never-expires.png
+cover_image_prompt: |
+  Create an image: A wide, dark antique aeronautical chart in landscape format, the surface aged
+  and textured like a formal navigation document from an earlier era of aviation certification.
+  Across the centre and right two-thirds, fine gold line work traces airways, flight path
+  corridors, and route sectors: curved arcs, precise bearings, and formally bounded regions
+  suggesting an en-route or qualification chart. The line work is meticulous and hierarchical,
+  each boundary precisely drawn. Near the centre, one formally delineated region -- bounded by
+  the same precise gold lines as the surrounding structure -- is conspicuously empty, its interior
+  in deep, unbroken shadow while the flight paths around it remain illuminated and active. A warm
+  amber glow emanates from the route structure at the centre, fading to deep navy at all edges.
+  The empty region reads as uncharted territory within an otherwise precisely specified domain.
+  Aged parchment texture throughout. Panoramic composition with negative space on the left third
+  for visual balance. No text, no people, no faces. 16:9 aspect ratio.
+cover_post: |
+  You wrote a system prompt. Or an AGENTS.md file. Or an AI policy document.
+
+  When does it expire?
+
+  Not when does it get reviewed. When does it lose its authority over the system it governs.
+
+  Most AI governance documents do not answer that question. They govern the system indefinitely as the model updates, the deployment context shifts, the task domain expands. No trigger fires. No revalidation is required.
+
+  Aviation solved this thirty years ago. A qualification document does not persist by assumption. It persists by demonstration. The deployer bears the burden of showing the prior qualification still holds. The default is invalidity, not continuity.
+
+  A new paper asks: does that logic apply to AI governance documents? A governance document is a static artefact with evaluable structural properties, even when the system it governs is not.
+
+  The companion empirical paper (arXiv:2604.21090) tested the field. Across 34 real practitioner governance documents, zero declare any trigger for revalidation. Not one.
+
+  Aviation's default: assume invalidity.
+  AI governance's default: assume permanent authority.
+
+  Full article at blog.nuphirho.dev/the-governance-document-that-never-expires
+
+  arXiv:2606.25120
 tags:
   - ai-governance
   - aviation
