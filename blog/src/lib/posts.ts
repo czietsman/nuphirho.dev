@@ -99,6 +99,20 @@ function stripManualSeriesNav(html: string): string {
 	return html.replace(/<p><em>Series:[\s\S]*?<\/p>/g, '');
 }
 
+const SITE_ORIGIN = 'https://blog.nuphirho.dev';
+
+// resolveCoverImage normalises a cover_image frontmatter value to an absolute
+// URL. A bare filename or root-relative path is joined to the blog origin so it
+// works as an og:image (social crawlers require an absolute URL) and resolves
+// correctly regardless of the post's slug depth. Absolute URLs pass through.
+export function resolveCoverImage(value: unknown): string | undefined {
+	if (!value) return undefined;
+	const s = String(value).trim();
+	if (!s) return undefined;
+	if (/^https?:\/\//i.test(s)) return s;
+	return `${SITE_ORIGIN}/${s.replace(/^\//, '')}`;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function buildMeta(data: Record<string, any>, slug: string, content: string): PostMeta {
 	return {
@@ -108,7 +122,7 @@ function buildMeta(data: Record<string, any>, slug: string, content: string): Po
 		tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
 		series: data.series ? String(data.series) : undefined,
 		publishDate: String(data.publish_date),
-		coverImage: data.cover_image ? String(data.cover_image) : undefined,
+		coverImage: resolveCoverImage(data.cover_image),
 		readingTimeMinutes: readingTimeMinutes(content),
 	};
 }
