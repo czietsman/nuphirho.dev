@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isPostVisible } from './posts.js';
+import { isPostVisible, resolveCoverImage } from './posts.js';
 
 describe('isPostVisible', () => {
 	const today = '2026-06-25';
@@ -27,5 +27,31 @@ describe('isPostVisible', () => {
 	it('handles Date objects from gray-matter YAML parsing', () => {
 		expect(isPostVisible({ draft: false, publish_date: new Date('2026-12-31') }, today)).toBe(false);
 		expect(isPostVisible({ draft: false, publish_date: new Date('2026-01-01') }, today)).toBe(true);
+	});
+});
+
+describe('resolveCoverImage', () => {
+	it('returns undefined when no cover image is set', () => {
+		expect(resolveCoverImage(undefined)).toBeUndefined();
+		expect(resolveCoverImage('')).toBeUndefined();
+	});
+
+	it('converts a bare relative filename to an absolute blog URL', () => {
+		expect(resolveCoverImage('the-governance-document-that-never-expires.png')).toBe(
+			'https://blog.nuphirho.dev/the-governance-document-that-never-expires.png'
+		);
+	});
+
+	it('strips a leading slash before joining to the origin', () => {
+		expect(resolveCoverImage('/hero.png')).toBe('https://blog.nuphirho.dev/hero.png');
+	});
+
+	it('leaves an absolute http(s) URL unchanged', () => {
+		expect(resolveCoverImage('https://cdn.example.com/hero.png')).toBe(
+			'https://cdn.example.com/hero.png'
+		);
+		expect(resolveCoverImage('http://cdn.example.com/hero.png')).toBe(
+			'http://cdn.example.com/hero.png'
+		);
 	});
 });
