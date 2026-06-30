@@ -2,7 +2,7 @@
 title: "Instructions versus specifications"
 slug: regulated-industry-4-do178c-aviation
 publish_date: 2026-07-01
-linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7472884455649718273
+linkedin_url:
 tags:
   - ai-governance
   - research
