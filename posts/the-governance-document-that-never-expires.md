@@ -3,7 +3,7 @@ title: "The Governance Document That Never Expires"
 slug: the-governance-document-that-never-expires
 publish_date: 2026-06-30
 format: article
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_you-wrote-a-system-prompt-or-an-agentsmd-ugcPost-7476401732361842688-zd9I/
 cover_image: the-governance-document-that-never-expires.png
 cover_image_prompt: |
   Create an image: A wide, dark antique aeronautical chart in landscape format, the surface aged
