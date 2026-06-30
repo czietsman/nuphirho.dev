@@ -2,7 +2,7 @@
 title: "A theory about pricing, regulation, and who gets to use AI"
 slug: fable-theory
 publish_date: 2026-06-17
-linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7472884192503029760
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_i-have-a-theory-peter-thiels-founders-activity-7472899082991198209-1-cO
 tags:
   - ai-governance
   - personal-practice
