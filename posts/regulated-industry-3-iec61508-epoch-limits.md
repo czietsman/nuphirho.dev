@@ -2,7 +2,7 @@
 title: "IEC 61508 and the governance document that never expires"
 slug: regulated-industry-3-iec61508-epoch-limits
 publish_date: 2026-06-24
-linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7472884323071975424
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_iec-61508-is-the-foundational-standard-for-activity-7475435798046371842-gAK2
 tags:
   - ai-governance
   - research

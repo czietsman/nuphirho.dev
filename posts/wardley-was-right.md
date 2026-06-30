@@ -2,6 +2,7 @@
 title: "Wardley Was Right"
 slug: wardley-was-right
 publish_date: 2026-04-11
+cover_image: wardley-was-right.jpg
 tags:
   - ai-assisted-development
   - agentic-development
