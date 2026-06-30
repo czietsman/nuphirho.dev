@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isPostVisible, resolveCoverImage } from './posts.js';
+import { isPostVisible, resolveCoverImage, buildMeta } from './posts.js';
 
 describe('isPostVisible', () => {
 	const today = '2026-06-25';
@@ -53,5 +53,26 @@ describe('resolveCoverImage', () => {
 		expect(resolveCoverImage('http://cdn.example.com/hero.png')).toBe(
 			'http://cdn.example.com/hero.png'
 		);
+	});
+});
+
+describe('buildMeta', () => {
+	it('exposes linkedinUrl when linkedin_url frontmatter is set', () => {
+		const meta = buildMeta(
+			{ title: 'Title', publish_date: '2026-01-01', linkedin_url: 'https://www.linkedin.com/feed/update/urn:li:share:123' },
+			'slug',
+			'content'
+		);
+		expect(meta.linkedinUrl).toBe('https://www.linkedin.com/feed/update/urn:li:share:123');
+	});
+
+	it('leaves linkedinUrl undefined when linkedin_url frontmatter is absent', () => {
+		const meta = buildMeta({ title: 'Title', publish_date: '2026-01-01' }, 'slug', 'content');
+		expect(meta.linkedinUrl).toBeUndefined();
+	});
+
+	it('leaves linkedinUrl undefined when linkedin_url frontmatter is empty', () => {
+		const meta = buildMeta({ title: 'Title', publish_date: '2026-01-01', linkedin_url: '' }, 'slug', 'content');
+		expect(meta.linkedinUrl).toBeUndefined();
 	});
 });
