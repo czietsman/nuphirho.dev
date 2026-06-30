@@ -26,6 +26,11 @@
 	<meta property="og:description" content={description} />
 	<meta property="og:type" content="article" />
 	<meta property="og:url" content={canonicalUrl} />
+	{#if data.post.coverImage}
+		<meta property="og:image" content={data.post.coverImage} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image" content={data.post.coverImage} />
+	{/if}
 	<meta property="article:published_time" content={data.post.publishDate} />
 	<link rel="canonical" href={canonicalUrl} />
 	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`}
