@@ -48,7 +48,6 @@ export interface PostMeta {
 	coverImage?: string;
 	brief?: string;
 	readingTimeMinutes: number;
-	linkedinUrl?: string;
 }
 
 export interface Post extends PostMeta {
@@ -115,7 +114,7 @@ export function resolveCoverImage(value: unknown): string | undefined {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function buildMeta(data: Record<string, any>, slug: string, content: string): PostMeta {
+function buildMeta(data: Record<string, any>, slug: string, content: string): PostMeta {
 	return {
 		title: String(data.title ?? ''),
 		slug,
@@ -125,7 +124,6 @@ export function buildMeta(data: Record<string, any>, slug: string, content: stri
 		publishDate: String(data.publish_date),
 		coverImage: resolveCoverImage(data.cover_image),
 		readingTimeMinutes: readingTimeMinutes(content),
-		linkedinUrl: data.linkedin_url ? String(data.linkedin_url) : undefined,
 	};
 }
 

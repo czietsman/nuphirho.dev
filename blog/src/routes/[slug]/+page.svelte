@@ -54,9 +54,6 @@
 						{/each}
 					</div>
 				{/if}
-				{#if data.post.linkedinUrl}
-					<a href={data.post.linkedinUrl} class="linkedin-link" rel="noopener noreferrer" target="_blank">Discuss on LinkedIn</a>
-				{/if}
 			</div>
 		</header>
 

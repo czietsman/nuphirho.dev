@@ -264,11 +264,6 @@ a:hover, a:focus {
 
 .post-header { margin-block-end: 2.5rem; }
 
-.linkedin-link {
-  font-size: 0.8125rem;
-  color: var(--colour-text-secondary);
-}
-
 .post-title {
   font-size: clamp(1.75rem, 1.25rem + 2vw, 2.5rem);
   font-weight: 700;
