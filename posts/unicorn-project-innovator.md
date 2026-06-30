@@ -2,7 +2,7 @@
 title: "The innovator's job"
 slug: unicorn-project-innovator
 publish_date: 2026-06-22
-linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470571676414435328
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_gene-kim-wrote-about-the-innovators-job-activity-7474711022646296576-HZdK
 tags:
   - personal-practice
   - ai-assisted-development

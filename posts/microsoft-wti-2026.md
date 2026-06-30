@@ -2,7 +2,7 @@
 title: "Organisational factors get amplified by AI"
 slug: microsoft-wti-2026
 publish_date: 2026-06-26
-linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7472686594676645889
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-2026-microsoft-work-trend-index-surveyed-activity-7476160573760724992-jIlv
 tags:
   - ai-governance
   - research
