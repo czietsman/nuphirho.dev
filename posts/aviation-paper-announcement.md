@@ -2,8 +2,8 @@
 title: "The paper is live"
 slug: aviation-paper-announcement
 publish_date: 2026-06-29
-draft: true
-linkedin_url:
+draft: false
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-paper-is-live-arxiv260625120-the-share-7476382809008398336-aRH7/
 tags:
   - ai-governance
   - research

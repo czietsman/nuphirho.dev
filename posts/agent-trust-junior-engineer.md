@@ -2,6 +2,7 @@
 title: "Agents Are Not Junior Engineers. Here Is What They Actually Are."
 slug: agent-trust-junior-engineer
 publish_date: 2026-06-12
+cover_image: agent-trust-junior-engineer.png
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:ugcPost:7465647240980840448
 tags:
   - ai-governance
