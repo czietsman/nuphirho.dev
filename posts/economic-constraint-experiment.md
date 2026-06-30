@@ -2,7 +2,7 @@
 title: "The $20 experiment"
 slug: economic-constraint-experiment
 publish_date: 2026-06-23
-linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470565360631435264
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_my-personal-claude-subscription-costs-20-activity-7475073412969779200-9mfZ
 tags:
   - personal-practice
   - research
