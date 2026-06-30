@@ -2,6 +2,7 @@
 title: "Gold In My Citation Framework"
 slug: promptq-d1d5-use-case
 publish_date: 2026-06-08
+cover_image: promptq-d1d5-use-case.png
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:ugcPost:7469008254258278400
 tags:
   - ai-governance

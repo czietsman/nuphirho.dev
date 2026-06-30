@@ -2,7 +2,7 @@
 title: "The CEO does not use it"
 slug: ceo-does-not-use-it
 publish_date: 2026-06-19
-linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470569819784925184
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-ceo-does-not-use-it-so-the-signal-is-activity-7475798186025078784-uq0o
 tags:
   - personal-practice
   - ai-assisted-development
