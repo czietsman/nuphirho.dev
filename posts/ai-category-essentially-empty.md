@@ -1,7 +1,7 @@
 ---
 title: "What business process can AI genuinely not assist with?"
 slug: ai-category-essentially-empty
-publish_date: 2026-07-06
+publish_date: 2026-07-03
 linkedin_url:
 tags:
   - ai-assisted-development
