@@ -6,7 +6,7 @@
 <div class="container">
 	<div class="page-header">
 		<h1 class="page-title">Novel Findings</h1>
-		<p class="page-subtitle">Confirmed novel contributions from the nuphirho.dev research programme. Last updated: 25 June 2026</p>
+		<p class="page-subtitle">Confirmed novel contributions from the nuphirho.dev research programme. Last updated: 8 July 2026</p>
 	</div>
 
 	<div class="manifesto-content">
@@ -308,6 +308,20 @@
 			<p class="finding-meta"><span class="confidence-badge confidence-high">Verified</span></p>
 		</div>
 
+		<div class="finding">
+			<h3 class="finding-title">Finding 43: Unified theory of instruction across human and AI systems</h3>
+			<p>There is no published unified theory of instruction spanning human communication systems (rhetoric, persuasion, diplomacy, negotiation) and artificial-intelligence instruction-following, and no one has operationalised human communication theories as a unified set of formal instruction variables tested at scale across both human and artificial agents. The programme's reframing of instruction as a coordination mechanism under uncertainty, unifying the two domains, occupies an unclaimed synthesis space. This is a synthesis proposal the programme is building, not a validated pre-existing theory.</p>
+			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
+			<p class="finding-note">Prior art cited and distinguished: Gorsky, Caspi and Chajut (2007), human cognitive domain only; the RIGID framework (Kwak and Pardos 2026), an AI-mediated instructional-design workflow, not a unified human-AI theory; Hackenburg et al. (2025), asymmetric AI-persuades-human, not a symmetric instruction-variable system.</p>
+		</div>
+
+		<div class="finding">
+			<h3 class="finding-title">Finding 44: Coordination under contested authority as a distinct coordination domain</h3>
+			<p>Coordination under contested authority and legitimacy uncertainty, the problem of whether an instruction is binding when multiple actors claim authority and the legitimacy of those claims is itself uncertain, is a distinct coordination domain supplied by the diplomacy and negotiation literature (two-level games, constructive ambiguity, costly signalling, mandate and recognition verification) and only weakly represented in the organisational-theory grounding of multi-agent coordination. Existing work assumes authority is known and then studies coordination; this framing reverses the dependency, inferring binding force under uncertain legitimacy before coordination proceeds.</p>
+			<p class="finding-meta"><span class="confidence-badge confidence-high">Verified</span></p>
+			<p class="finding-note">The emerging AI-diplomacy works are real but none develops the contested-authority framing; the IETF multi-agent delegation standards are mechanical only (tokens, scopes, attenuation, audit), distinct from contested legitimacy.</p>
+		</div>
+
 		<hr>
 
 		<h2>Cluster 16: Regulatory science</h2>
@@ -323,6 +337,35 @@
 			<p>A governance document can be structurally complete at authorship time and still lose effective authority during a single session. As operational history accumulates in an agent's context window, the governing specification is progressively displaced by accumulated content. The agent continues executing, but under the effective influence of its history rather than its governing document. The mechanism is content-driven, not length-driven: replacing history with governance reinsertion substantially restores compliance. No published AI governance framework identifies this as a distinct failure mode or proposes governance reinsertion as a design primitive.</p>
 			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
 			<p class="finding-note">Liu et al. (2026, arXiv:2605.08060) demonstrate empirically that expanding context window history degrades cooperative intent in multi-agent systems. The governance authority framing is the programme's extension of those empirical findings.</p>
+		</div>
+
+		<hr>
+
+		<h2>Cluster 17: Shadow AI governance</h2>
+
+		<div class="finding">
+			<h3 class="finding-title">Finding 39: Governance-convenience asymmetry in ungoverned AI use</h3>
+			<p>When an organisation leaves employee use of unsanctioned AI ungoverned, it captures the productivity benefit when the output is good while the accountability for failures is pushed onto the individual, on the reasoning that they were operating outside policy. This governance-convenience asymmetry is a characterisation built from settled legal principle, not a settled legal doctrine. Under the close-connection test for vicarious liability and the accountability principle in data protection law, an employer that tolerates and benefits from ungoverned AI use generally retains liability regardless of an internal prohibition, so a paper policy is a weak defence. No court has yet recognised the asymmetry itself as a rule, and organisational liability and individual discipline can coexist. The contribution is to name the asymmetry and its incentive structure: because the upside is shared but the risk is pushed down, the organisation has a weak incentive to bring the practice into the open, the "don't ask, don't tell governance" dynamic.</p>
+			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
+			<p class="finding-note">A characterisation built from settled law, not doctrine: the close-connection vicarious-liability line (Lister v Hesley Hall 2001; Mohamud v WM Morrison 2016; Various Claimants v WM Morrison 2020) and GDPR controller accountability (Articles 5(2) and 32) are cited and distinguished. No shadow-AI-specific ruling exists; the asymmetry is analysis, not a court finding.</p>
+		</div>
+
+		<div class="finding">
+			<h3 class="finding-title">Finding 45: The AI hiring-versus-enablement contradiction</h3>
+			<p>Organisations increasingly require AI fluency from new hires while under-providing sanctioned tools, training, and clear usage policy to the staff they already have. Large workforce surveys measure both halves of this contradiction, but they report them as separate population statistics rather than as a matched measure within the same organisations, so the contradiction is a defensible cross-source inference rather than a directly-observed within-firm gap. The evidence is nonetheless consistent across independent sources: high and rising employer demand for AI skills alongside low training provision and widespread use of unsanctioned tools. The more recent workforce evidence reframes the same gap as one of organisational rather than individual readiness: workers are ready and their organisations are not.</p>
+			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
+			<p class="finding-note">No single source measures the gap within the same organisations; the Microsoft/LinkedIn Work Trend Index carries both halves as separate population statistics, not a matched within-firm instrument. State the gap as a cross-source inference and do not attach a single headline percentage.</p>
+		</div>
+
+		<hr>
+
+		<h2>Cluster 18: People-decisions and reliability</h2>
+
+		<div class="finding">
+			<h3 class="finding-title">Finding 46: Reliability and fairness are non-subsuming governance axes in people-decisions</h3>
+			<p>In people-decisions such as hiring, promotion, performance review, and termination, human and algorithmic judgement fail in structurally different ways that are governed by different instruments. An algorithmic system's dominant observable failure mode is systematic bias: because a single decision function is applied repeatedly, its bias is roughly uniform across cases, visible in the aggregate, auditable by disparate-impact testing, and correctable in one place. Human judgement's dominant observable failure mode is idiosyncratic bias together with noise: equivalent cases receive materially different decisions depending on who decides and on mood, order, and fatigue, which is to say low inter-rater and intra-rater reliability. The decisive and neglected point is that the aggregate fairness audits which catch algorithmic macro-bias, demographic parity, disparate impact, and the four-fifths rule, are structurally blind to human micro-unreliability, because case-by-case noise distributes across groups and washes out in group means while still breaking equity for individuals. Reliability, meaning whether equivalent individuals are treated alike regardless of who evaluates them, and fairness, meaning distributional equity across groups, are therefore non-subsuming, co-equal governance dimensions: neither audit detects the other's characteristic failure.</p>
+			<p class="finding-meta"><span class="confidence-badge confidence-confirmed">Verified*</span></p>
+			<p class="finding-note">Not a claim that humans are more biased than AI; a claim about each side's dominant, observable, governable failure mode, keeping bias (directional) distinct from noise (variability). A synthesis bridging the human-judgement noise literature (Meehl; Kahneman, Sibony and Sunstein) and the algorithmic-fairness literature (Barocas and Selbst; Kleinberg et al.), which the finding cites and does not claim. Extends the reliability-not-accuracy line and the expert-fingerprint finding into people-decisions.</p>
 		</div>
 
 		<hr>
