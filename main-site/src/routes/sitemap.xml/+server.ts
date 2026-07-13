@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 export const prerender = true;
 
 const BASE = 'https://nuphirho.dev';
-const ROUTES = ['/', '/about', '/novel-findings', '/roadmap', '/words-of-meaning'];
+const ROUTES = ['/', '/about', '/business-card', '/novel-findings', '/roadmap', '/words-of-meaning'];
 
 export const GET: RequestHandler = () => {
 	const urls = ROUTES.map((r) => `  <url><loc>${BASE}${r}</loc></url>`);
