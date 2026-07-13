@@ -2,10 +2,12 @@
 	import '../app.css';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+	import { isBusinessCardPath } from './business-card/card.js';
 
 	const STORAGE_KEY = 'nuphirho-theme';
 	let theme = $state<'light' | 'dark'>('light');
 	let menuOpen = $state(false);
+	let immersive = $derived(isBusinessCardPath($page.url.pathname));
 
 	let { children } = $props();
 
@@ -45,6 +47,7 @@
 	{@html `<script type="application/ld+json">${websiteJsonLd}</script>`}
 </svelte:head>
 
+{#if !immersive}
 <a href="#main" class="skip-link">Skip to content</a>
 
 <header class="site-header">
@@ -82,11 +85,13 @@
 		>{theme === 'dark' ? 'Light' : 'Dark'}</button>
 	</div>
 </header>
+{/if}
 
-<main id="main" class="site-main" class:landing={$page.url.pathname === '/'}>
+<main id="main" class="site-main" class:landing={$page.url.pathname === '/'} class:business-card={immersive}>
 	{@render children()}
 </main>
 
+{#if !immersive}
 <footer class="site-footer">
 	<div class="container">
 		<span>&copy; 2026 Christo Zietsman</span>
@@ -99,3 +104,11 @@
 		</span>
 	</div>
 </footer>
+{/if}
+
+<style>
+	.site-main.business-card {
+		min-height: 100dvh;
+		padding: 0;
+	}
+</style>
