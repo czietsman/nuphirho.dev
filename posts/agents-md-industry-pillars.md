@@ -7,6 +7,9 @@ series_part: 1
 publish_date: 2026-07-20
 stop_slop: 41/50
 toulmin: Track A 6/6, Track B 4/6
+cover_image: agents-md-industry-pillars.png
+cover_image_prompt: |
+  A wall of plain text files stacked in rows, each slightly different, viewed straight on. Muted palette, slate blues and off-whites. One file in the foreground is slightly separated from the rest, not highlighted, just apart. Clean, technical, slightly clinical. No people, no screens, no colour accents.
 cover_post: |
   Over the past year, the practitioner community has converged on ten pillars for writing AGENTS.md, CLAUDE.md, and their equivalents: the instruction files that tell an AI coding agent how to operate in your repository.
 
