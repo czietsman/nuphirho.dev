@@ -1,8 +1,23 @@
 ---
 title: "Not all AI explanations build trust equally"
 slug: "ai-explanation-trust-structure"
+subtitle: "What a 2024 HCI study found about consensus, expertise, logic, and evidence"
 tags: [ai-governance, research]
-publish_date: 2026-08-14
+format: article
+cover_image: ai-explanation-trust-structure.png
+cover_image_prompt: |
+  A minimal hand-drawn image on plain paper of four narrow bridges of differing sturdiness spanning the same gap to a single point. Three are drawn with solid, confident lines. One is visibly thinner and more tentative than the rest. Muted palette, slate and off-white. No people, no screens, no colour accents. The image reads as a conceptual illustration of unequal structural support, not a technical diagram.
+cover_post: |
+  When you explain an AI output to someone, the type of explanation you reach for predicts how much trust it produces, and the pattern runs against most assumptions about persuasion.
+
+  A 2024 HCI study (Pareek et al., PACMHCI) tested four explanation types: consensual (most sources agree), expert (a recognised authority says so), logical (here is the reasoning), and empirical (here is the evidence).
+
+  Consensual was the weakest, by a wide margin. The other three were roughly twice as influential.
+
+  There is a negotiation-theory distinction that captures why: Chris Voss's difference between hearing "you're right" and hearing "that's right." Agreement without engagement gets you the former. Structural and empirical explanation gets you the latter.
+
+  New piece on what that means for how you explain AI output to people who need to decide how much to rely on it.
+publish_date: 2026-07-31
 linkedin_url:
 ---
 
@@ -10,17 +25,19 @@ When you present an AI output to someone (a colleague, a client, a stakeholder) 
 
 The type of explanation you give predicts the degree of trust it produces, and the relationship runs against most assumptions about persuasion.
 
-A study published in the Proceedings of the ACM on Human-Computer Interaction in November 2024 tested this directly. Saumya Pareek and colleagues at the University of Melbourne designed an experiment using an AI credibility assessment tool (a system that evaluates whether a claim is credible) and varied the type of explanation provided alongside the AI's output. The goal was to measure which explanation types produced the most trust and appropriate reliance in human users.
+Pareek, van Berkel, Velloso, and Goncalves tested this directly (Proceedings of the ACM on Human-Computer Interaction, Vol. 8, CSCW2, Article 383, November 2024; DOI 10.1145/3686922). The team, at the University of Melbourne, designed an experiment using an AI credibility assessment tool (a system that evaluates whether a claim is credible) and varied the type of explanation provided alongside the AI's output. The goal was to measure which explanation types produced the most trust and appropriate reliance in human users.
 
 The framework they used distinguishes four types of conceptualisation validations, a term drawn from Jaccard and Jacoby's foundational work on epistemic frameworks. A consensual validation tells the user that the claim is widely accepted or that most sources agree. An expert validation attributes the judgment to a recognised authority or specialist knowledge. An internal (logical) validation explains the reasoning: here is why the conclusion follows from the evidence. An empirical validation offers observable, verifiable evidence that supports the conclusion.
 
-The finding worth taking in is about which of these is weakest: consensual. The explanations that appealed to broad agreement or majority acceptance produced the lowest trust gains. The other three (expert attribution, logical reasoning, and empirical evidence) were roughly twice as influential. And among those three, there was not a large gap. Empirical evidence was generally strongest, but the main story is the distance between consensus and everything else.
+Of the four, consensual validation stands out as the weakest. The explanations that appealed to broad agreement or majority acceptance produced the lowest trust gains. The other three (expert attribution, logical reasoning, and empirical evidence) were roughly twice as influential. And among those three, there was not a large gap. Empirical evidence was generally strongest, but the main story is the distance between consensus and everything else.
 
 ---
 
 This is counter-intuitive if your mental model of persuasion is that popularity signals quality. In many domains, knowing that something is widely accepted is genuinely useful information: it suggests the claim has been tested by many people and survived. But in the specific context of AI-assisted decision-making, that signal appears to carry much less weight than evidence that the AI's conclusion can be explained structurally or grounded in observable facts.
 
 One possible explanation: consensual validation does not tell you why the AI reached its conclusion, or whether the reasoning would hold in this specific case. It tells you that the output agrees with something widely believed. For a user who is already uncertain about whether to trust the AI's judgment, "most sources agree" does not add the kind of resolution that "here is the evidence and here is the reasoning" adds.
+
+There is a useful distinction here from negotiation theory: Chris Voss's difference between hearing "you're right" and hearing "that's right." "You're right" is agreement offered to close a conversation, a social nod that does not require the other person to have engaged with the reasoning behind it. "That's right" is what someone says when they recognise their own situation reflected back accurately, and that recognition only follows from an explanation that actually engaged with the specifics. Consensual validation produces something closer to "you're right": agreement without engagement. Structural and empirical explanation is what gets you to "that's right."
 
 The second finding that matters for practice is the backfire effect among users who already distrusted the AI system. For those users, providing explanations in some conditions made things worse rather than better. The researchers describe this as a boomerang effect: an explanation that is intended to build trust can, for an already-distrustful user, read as further evidence that the system is trying to persuade rather than inform, reinforcing rather than reducing resistance.
 
