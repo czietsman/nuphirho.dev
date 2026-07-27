@@ -1,8 +1,25 @@
 ---
 title: "Measuring AI against humans who disagree with themselves"
 slug: "expert-reliability-baseline"
+subtitle: "What fingerprint examiner data says about the human expert standard"
 tags: [research, ai-governance]
-publish_date: 2026-08-07
+format: article
+cover_image: expert-reliability-baseline.png
+cover_image_prompt: |
+  A minimal hand-drawn image on plain paper of two side-by-side measurement readings on the same simple scale, each showing a slightly different value. Muted palette, slate and off-white. No people, no screens, no colour accents. The image reads as a conceptual illustration of inconsistency in measurement, not a technical diagram.
+cover_post: |
+  The implicit benchmark for AI performance is almost always: would a human expert get this right?
+
+  Reasonable. But how reliable is the human expert standard?
+
+  The clearest data is in fingerprint examination, treated as near-infallible by courts for decades. Two large-scale studies by Ulery and colleagues tested qualified examiners on real casework samples.
+
+  Intra-rater inconsistency: roughly ten per cent. One in ten categorical conclusions changed when the same examiner re-examined the same evidence seven months later, without knowing they had seen it before. Concentrated at the threshold: whether the evidence was clear enough to call.
+
+  If the human expert baseline is itself unstable at borderline cases, checking AI output against expert agreement is measuring two imperfect sources against each other.
+
+  New piece on what that means for validation.
+publish_date: 2026-07-29
 linkedin_url:
 ---
 
@@ -37,6 +54,14 @@ This is not an argument for trusting AI more. It is an argument for being more p
 The alternative frame is to separate the question of accuracy from the question of reliability. Accuracy asks: does the output match the right answer? Reliability asks: does the output hold up under repeated application to the same input, and does it remain stable when the surrounding context changes? For AI as for human experts, these are different properties, and a system can have one without the other.
 
 There is also a contextual-bias dimension worth naming. Research on fingerprint examiners given contextually biasing information (prior knowledge that a suspect had confessed, for example) found that at least some examiners reversed conclusions on evidence they had previously assessed, on the basis of context rather than the physical evidence. This is a known human failure mode: expert judgment is not context-free. AI systems have their own contextual sensitivity, of a different kind, but the general principle (that what surrounds the evidence affects how it is read) applies in both cases.
+
+---
+
+The Ulery data has a scope limit that matters here. It concerns a bounded, well-specified task: given two fingerprint images and a fixed protocol, decide whether they match. The examiner and the comparison are working from the same evidence, evaluated against the same class of question, repeated across many trials. That is what makes the inconsistency measurable at all.
+
+Most expert judgment in engineering does not work that way. When I review a large system I have worked on for months, my assessment draws on more than what is in front of me: prior decisions and why they were made, constraints that never made it into any document, the shape of the whole architecture held in memory rather than stated anywhere. An AI reviewing the same code at the point of the prompt has access to what is in the prompt and the repository, not to that accumulated context. That is a different problem from the one the Ulery studies expose. It is not that the AI is less consistent on a shared task. It is that the task is not actually shared: the human is drawing on information that was never given, and no amount of prompting fully closes that gap, because much of it is not the kind of thing that gets written down.
+
+The reliability question and the context question are separate failure modes, and they call for different responses. Where the task is genuinely bounded and the evidence genuinely shared, comparing AI output to expert agreement is the right frame, with the caveat this piece is making: expert agreement is not a stable ground truth either. Where the task depends on context the AI was never given, the gap is not about reliability at all. It is a scope gap, and the fix is not more scrutiny of the AI's answer. It is making sure the context that lives in the expert's head reaches the prompt in the first place.
 
 ---
 
