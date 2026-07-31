@@ -44,9 +44,9 @@ Alternatively, build via Docker if no local TeX installation is available:
 
 ### Notes
 
-The markdown file is published as a blog post on Hashnode with frontmatter
-and series navigation links. The conversion script strips these before
-rendering to LaTeX.
+The Markdown file is published on blog.nuphirho.dev with frontmatter and
+series navigation links. The conversion script strips these before rendering
+to LaTeX.
 
 arxiv.sty is a modified copy of the upstream arxiv-style template with
 small-caps removed from the title and abstract heading. It is tracked
