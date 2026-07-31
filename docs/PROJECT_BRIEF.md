@@ -54,7 +54,6 @@ Nu, phi, rho: Greek letters from physics and mathematics. Used as a gaming profi
 
 - Main site: nuphirho.dev (SvelteKit on Cloudflare Pages)
 - Blog: blog.nuphirho.dev (SvelteKit on Cloudflare Pages)
-- Cross-post: nuphirho on Dev.to
 - GitHub: czietsman (existing account, repo is czietsman/nuphirho.dev)
 - LinkedIn: christo-zietsman (existing profile)
 
@@ -76,8 +75,6 @@ Nu, phi, rho: Greek letters from physics and mathematics. Used as a gaming profi
 | Landing page hosting | Cloudflare Pages (nuphirho.dev) | Free |
 | Blog hosting | Cloudflare Pages + Workers (blog.nuphirho.dev) | Free |
 | Blog visitor counter | Cloudflare KV | Free (within limits) |
-| Cross-post | Dev.to (API, automated) | Free |
-| Cross-post | Medium (manual, URL import) | Free |
 | Amplification | LinkedIn | Free |
 
 The domain is the only cost. Everything else is enterprise-grade tooling at zero cost.
@@ -86,8 +83,6 @@ The domain is the only cost. Everything else is enterprise-grade tooling at zero
 
 - **GitHub (public):** The repo itself is a portfolio piece. Demonstrates the process openly. GitHub Actions are free and unlimited for public repos.
 - **SvelteKit + Cloudflare Pages:** Full prerender at build time. Zero cold-start latency. The Worker only handles the `/api/stats` endpoint. No tracking cookies, no third-party analytics.
-- **Dev.to:** REST API with simple API key auth. Built-in developer audience. Supports canonical URLs.
-- **Medium:** API is no longer issuing new integration tokens. Medium is a manual cross-post target using the "Import a story" URL feature. The pipeline handles this gracefully.
 - **Cloudflare:** Free tier includes DNS, CDN, SSL, Pages, Workers, and KV. Mature Terraform provider. Domain registered here so DNS, CDN, and registrar are in one place.
 - **Terraform:** Infrastructure as code. Cloudflare DNS and Pages configuration managed declaratively.
 
@@ -101,7 +96,7 @@ The domain is the only cost. Everything else is enterprise-grade tooling at zero
 
 ### Canonical URLs
 
-Always set to blog.nuphirho.dev. Every cross-posted article must reference the canonical URL on the blog subdomain. This protects SEO and ensures the blog builds authority over time.
+Always set canonical URLs to blog.nuphirho.dev so the first-party blog remains the authoritative source.
 
 ---
 
@@ -135,17 +130,10 @@ czietsman/nuphirho.dev
 ├── site/                         # Go template static site (legacy)
 ├── posts/                        # Markdown blog post source files
 ├── cmd/
-│   ├── publish/                  # Reconcile posts/ with Dev.to
 │   ├── notify/                   # Send Telegram notifications
-│   ├── notify-summary/           # Scheduled notification digest
-│   ├── site-build/               # Build Go template site
-│   └── validate-tags/            # Validate post tag values
+│   └── site-build/               # Build Go template site
 ├── internal/
-│   ├── devto/                    # Dev.to REST API client
-│   ├── frontmatter/              # Post metadata schema and parsing
-│   ├── hashnode/                 # Hashnode GraphQL API client
-│   ├── pipeline/                 # Publishing orchestration
-│   └── tags/                     # Tag validation
+│   └── frontmatter/              # Post metadata schema and parsing
 ├── terraform/                    # Cloudflare infrastructure as code
 ├── .github/workflows/            # CI/CD pipelines
 ├── docs/                         # Project brief and style guide

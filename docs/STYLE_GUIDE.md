@@ -215,14 +215,9 @@ This is a guide, not a rigid template. Let the content shape the structure.
 
 - blog.nuphirho.dev (SvelteKit on Cloudflare Pages)
 
-### Cross-post targets
-
-- Dev.to
-- Medium
-
 ### Canonical URL
 
-- Always set to blog.nuphirho.dev. Every cross-posted article must reference the canonical URL on the blog subdomain to protect SEO.
+- Always set to blog.nuphirho.dev so the first-party blog remains the authoritative source.
 
 ### Amplification
 
@@ -266,7 +261,7 @@ Use this checklist before publishing a post or merging a design or CSS change. T
 - [ ] `publish_date` set to the intended publication date (YYYY-MM-DD)
 - [ ] `slug` matches the filename and is unique across `posts/`
 - [ ] Required frontmatter fields present per `internal/frontmatter/frontmatter.go`
-- [ ] Post renders correctly on `blog.nuphirho.dev` before cross-posting
+- [ ] Post renders correctly on `blog.nuphirho.dev`
 
 ---
 
@@ -298,4 +293,4 @@ The tendency to work independently means posts could benefit from a second persp
 
 ## Re-evaluation
 
-This document should be re-evaluated when: the blog platform changes; a new cross-posting target is added or removed; the canonical URL changes; style patterns in published posts consistently diverge from the guidance here; or three months have elapsed since the last review, whichever comes first. Owner: the repo owner.
+This document should be re-evaluated when: the blog platform changes; the canonical URL changes; style patterns in published posts consistently diverge from the guidance here; or three months have elapsed since the last review, whichever comes first. Owner: the repo owner.

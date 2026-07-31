@@ -163,10 +163,6 @@
                 {
                   "label": "Blog",
                   "url": "https://blog.nuphirho.dev/the-go-to-market-bottleneck"
-                },
-                {
-                  "label": "Dev.to",
-                  "url": "https://dev.to/nuphirho/the-go-to-market-bottleneck-4ocj"
                 }
               ]
             }
@@ -272,10 +268,6 @@
                 {
                   "label": "Blog",
                   "url": "https://blog.nuphirho.dev/echo-chamber-ai-code-review-correlated-error"
-                },
-                {
-                  "label": "Dev.to",
-                  "url": "https://dev.to/nuphirho"
                 }
               ]
             }

@@ -26,14 +26,6 @@ jobs:
       - name: Run secret pattern tests
         run: bash tests/test-secret-patterns.sh
 
-      - name: Validate post tags
-        run: |
-          CHANGED_POSTS=$(git diff --name-only --diff-filter=ACM origin/main...HEAD -- 'posts/*.md')
-          if [ -n "$CHANGED_POSTS" ]; then
-            go build -o validate-tags ./cmd/validate-tags/
-            ./validate-tags --tags-file tags.json $CHANGED_POSTS
-          fi
-
       - name: Run Go tests (includes BDD specs)
         run: go test ./... -count=1
 
@@ -43,4 +35,3 @@ jobs:
       - name: Run mutation tests
         run: |
           $(go env GOPATH)/bin/go-mutesting --exec-timeout=20 ./internal/frontmatter
-          $(go env GOPATH)/bin/go-mutesting --exec-timeout=20 ./internal/tags
