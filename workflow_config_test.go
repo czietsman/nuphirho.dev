@@ -16,14 +16,37 @@ func TestWorkflowActionPins(t *testing.T) {
 		"cache-dependency-path: go.sum",
 	})
 
-	checkContains(t, ".github/workflows/publish.yml", []string{
-		"actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2",
-		"actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0",
-	})
-
 	checkContains(t, ".github/workflows/terraform.yml", []string{
 		"actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2",
 		"actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8",
+	})
+}
+
+func TestOnlyFirstPartyBlogIsPublished(t *testing.T) {
+	t.Parallel()
+
+	if _, err := os.Stat(".github/workflows/publish.yml"); !os.IsNotExist(err) {
+		t.Fatalf("external publishing workflow still exists")
+	}
+
+	checkContains(t, ".github/workflows/blog.yml", []string{
+		"paths:\n      - 'posts/**'\n      - 'blog/**'",
+		"schedule:\n    - cron: '0 5 * * *'",
+		"pages deploy .svelte-kit/cloudflare --project-name=nuphirho-blog",
+	})
+}
+
+func TestBlogDeploymentReportsStatusToTelegram(t *testing.T) {
+	t.Parallel()
+
+	checkContains(t, ".github/workflows/blog.yml", []string{
+		"name: Build notification tool",
+		"go build -o notify ./cmd/notify/",
+		"if: always() && github.event_name != 'pull_request'",
+		"TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}",
+		"TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}",
+		"DEPLOY_STATUS: ${{ job.status }}",
+		"./notify \"Blog deployment ${DEPLOY_STATUS}: ${RUN_URL}\"",
 	})
 }
 
@@ -49,17 +72,19 @@ func TestTerraformWorkflowCommentsRealPlanOutput(t *testing.T) {
 	}
 }
 
-func TestReadmeDescribesDraftPostsAsSkipped(t *testing.T) {
+func TestReadmeDescribesFirstPartyPublishing(t *testing.T) {
 	t.Parallel()
 
 	content := readFile(t, "README.md")
 
-	if strings.Contains(content, "pushed as unpublished drafts to both Hashnode and Dev.to") {
-		t.Fatalf("README still describes draft posts as unpublished platform drafts")
+	for _, externalPlatform := range []string{"Hashnode", "Dev.to", "cross-post"} {
+		if strings.Contains(content, externalPlatform) {
+			t.Fatalf("README still refers to external publishing platform %q", externalPlatform)
+		}
 	}
 
-	if !strings.Contains(content, "Posts with `draft: true` in the front matter are skipped by the publishing pipeline.") {
-		t.Fatalf("README does not describe draft posts as skipped")
+	if !strings.Contains(content, "Posts with `draft: true` in the front matter are excluded from the blog build.") {
+		t.Fatalf("README does not describe draft posts as excluded from the blog build")
 	}
 }
 

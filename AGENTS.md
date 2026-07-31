@@ -79,11 +79,11 @@ All written content, including commit messages and documentation, must follow `d
 Every post in `posts/` must include the frontmatter fields documented
 in `internal/frontmatter/frontmatter.go`. Pay particular attention to:
 
-- `publish_date` (YYYY-MM-DD): Controls when the pipeline publishes
+- `publish_date` (YYYY-MM-DD): Controls when the blog includes
   the post. Posts without `publish_date` publish immediately on merge.
   Posts with a future `publish_date` are skipped until that date. If
   a worker prompt specifies a publish date, set this field to the
-  target date. The publish cron runs at 05:00 UTC daily, so
+  target date. The blog deployment runs at 05:00 UTC daily, so
   time-of-day scheduling is not available.
 
 Before creating a post file, read at least two existing published
@@ -148,7 +148,7 @@ Run `terraform plan` and review the output before every `terraform apply`. Do no
 
 ## Why this matters
 
-This repository is a deliberate, high-stakes experiment. The author has chosen a public repository with a live publishing pipeline and real infrastructure as the environment for applying and testing engineering and security practices. The low error margin is intentional. It sharpens thinking and produces real signal. The constraints above are not theoretical — they reflect threat modeling applied directly to this system, and they parallel practices under evaluation in a professional context. Treat them accordingly.
+This repository is a deliberate, high-stakes experiment. The author has chosen a public repository with a live deployment pipeline and real infrastructure as the environment for applying and testing engineering and security practices. The low error margin is intentional. It sharpens thinking and produces real signal. The constraints above are not theoretical — they reflect threat modeling applied directly to this system, and they parallel practices under evaluation in a professional context. Treat them accordingly.
 
 ---
 

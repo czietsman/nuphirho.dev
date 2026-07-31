@@ -6,7 +6,7 @@ A technical blog by [Christo Zietsman](https://www.linkedin.com/in/christo-ziets
 
 ## What is this
 
-This is the source repository for [nuphirho.dev](https://nuphirho.dev), a technical blog about AI-assisted software delivery, engineering process, and technology innovation. The root domain is a SvelteKit static site served via Cloudflare Pages. The blog lives at [blog.nuphirho.dev](https://blog.nuphirho.dev), also a SvelteKit app on Cloudflare Pages, with posts cross-posted to Dev.to.
+This is the source repository for [nuphirho.dev](https://nuphirho.dev), a technical blog about AI-assisted software delivery, engineering process, and technology innovation. The root domain and [blog.nuphirho.dev](https://blog.nuphirho.dev) are SvelteKit applications served via Cloudflare Pages. Posts are published only to the first-party blog.
 
 The repository contains:
 
@@ -18,16 +18,9 @@ The repository contains:
   - **main-site/src/lib/Roadmap.svelte** -- Publishing calendar component
 - **posts/** -- Markdown blog post source files with YAML frontmatter
 - **cmd/** -- Go CLI tools
-  - **cmd/publish** -- Reconcile posts/ with Hashnode and Dev.to
   - **cmd/notify** -- Send Telegram notifications
-  - **cmd/notify-summary** -- Scheduled notification digest
-  - **cmd/validate-tags** -- Validate post tag values
 - **internal/** -- Shared Go packages
-  - **internal/hashnode** -- Hashnode GraphQL API client
-  - **internal/devto** -- Dev.to REST API client
   - **internal/frontmatter** -- Post metadata schema and parsing
-  - **internal/pipeline** -- Publishing orchestration logic
-  - **internal/tags** -- Tag validation
 - **terraform/** -- Cloudflare infrastructure as code (DNS, Pages projects, KV)
 - **.github/workflows/** -- GitHub Actions CI/CD pipelines
 - **prompts/** -- Reviewed prompt material, including dependency review briefs
@@ -55,7 +48,6 @@ AI assists in research, drafting, and refinement. The thinking, decisions, direc
 | Landing page | Cloudflare Pages (nuphirho.dev) |
 | Blog hosting | Cloudflare Pages + Workers (blog.nuphirho.dev) |
 | Blog visitor counter | Cloudflare KV |
-| Cross-post | Dev.to (automated) |
 | Amplification | LinkedIn |
 | Secret detection | Husky pre-push hook (grep-based) |
 | Telegram notifications | Manual or workflow dispatch via Telegram Bot API |
@@ -66,9 +58,8 @@ The domain is the only cost.
 
 | Workflow | Trigger | Purpose |
 |---|---|---|
-| `blog.yml` | Push to main, paths: `posts/**` `blog/**` | Build and deploy blog to Cloudflare Pages |
+| `blog.yml` | Post or blog changes; daily at 05:00 UTC; manual dispatch | Build and deploy the blog, then report the result to Telegram |
 | `main-site.yml` | Push to main, paths: `main-site/**` | Build and deploy main site to Cloudflare Pages |
-| `publish.yml` | Push to main, paths: `posts/**`; daily cron | Reconcile posts/ with Dev.to |
 | `terraform.yml` | Push/PR to main, paths: `terraform/**` | Plan and apply Cloudflare infrastructure |
 | `validate-pr.yml` | Pull requests | Run Go tests, linters, mutation testing |
 | `notify.yml` | Workflow dispatch | Send manual Telegram notification |
@@ -84,7 +75,7 @@ This installs [husky](https://typicode.github.io/husky/) and configures a `pre-p
 - AWS / R2 access key IDs (`AKIA...`)
 - GitHub token variants (`ghp_`, `github_pat_`, `gho_`, `ghu_`, `ghr_`, `ghs_`)
 - PEM private key headers
-- Assignments to known secret variables (`CLOUDFLARE_API_TOKEN`, `HASHNODE_TOKEN`, `DEVTO_API_KEY`, and others)
+- Assignments to known secret variables (`CLOUDFLARE_API_TOKEN` and others)
 - Generic secret patterns (`api_key`, `token`, `password`, etc. followed by long values)
 
 Paths listed in `.secretscanignore` are excluded from scanning. To bypass the hook for a known false positive, use `git push --no-verify`.
@@ -104,7 +95,7 @@ cd main-site && npm install && npm run dev
 
 Both apps use `@sveltejs/adapter-cloudflare` and prerender all pages at build time.
 
-### Go pipeline
+### Go tools
 
 ```bash
 go test ./...
@@ -129,9 +120,9 @@ Requires `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, and R2 backend credent
 
 ### Publishing
 
-Push changes to `posts/` on the `main` branch or run the workflow manually. The GitHub Actions pipeline scans the local `posts/` tree and reconciles it against Dev.to so missing posts are published and changed posts are updated.
+Push changes to `posts/` on the `main` branch or run the blog workflow manually. GitHub Actions builds the SvelteKit blog from the Markdown source and deploys it to the `nuphirho-blog` Cloudflare Pages project.
 
-Posts with `draft: true` in the front matter are skipped by the publishing pipeline. Posts with a future `publish_date` are skipped until that date arrives. The publish cron runs at 05:00 UTC daily, so time-of-day scheduling is not available.
+Posts with `draft: true` in the front matter are excluded from the blog build. Posts with a future `publish_date` remain excluded until that date arrives. The blog is rebuilt at 05:00 UTC daily so scheduled posts become visible without an additional commit. Time-of-day scheduling is not available.
 
 ### Notifications
 
@@ -143,7 +134,7 @@ go run ./cmd/notify "Post 4 is live. Monitor engagement."
 
 Or via the `Send Notification` GitHub Actions workflow using the `message` input.
 
-The scheduled publish run also sends a daily Telegram notification when there is something to report. That notification includes posts queued for tomorrow plus target-level publish changes from the scheduled run. Unchanged posts are not reported, and scheduled publish failures are summarised there instead of failing the workflow outright.
+Production blog workflow runs send the final deployment status and GitHub Actions run URL to Telegram. Pull-request preview deployments do not send notifications. Telegram delivery is non-blocking, so a notification failure does not change the blog deployment result.
 
 Required secrets:
 
