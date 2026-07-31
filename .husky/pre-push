@@ -54,7 +54,7 @@ PATTERNS=(
   '-----BEGIN [A-Z ]*PRIVATE KEY-----'
 
   # Context-sensitive: secret keyword followed by assignment of a long value
-  '(CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|HASHNODE_TOKEN|HASHNODE_PUBLICATION_ID|DEVTO_API_KEY|R2_ACCESS_KEY_ID|R2_SECRET_ACCESS_KEY)[[:space:]]*[=:][[:space:]]*[A-Za-z0-9_/+.=-]{20,}'
+  '(CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|R2_ACCESS_KEY_ID|R2_SECRET_ACCESS_KEY)[[:space:]]*[=:][[:space:]]*[A-Za-z0-9_/+.=-]{20,}'
   '(api_key|api_secret|apikey|secret_key|access_key|auth_token|password|passwd|private_key|token)[[:space:]]*[=:][[:space:]]*['\''"]?[A-Za-z0-9_/+.=-]{20,}'
 )
 

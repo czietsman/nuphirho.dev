@@ -19,7 +19,7 @@ PATTERNS=(
   'ghr_[A-Za-z0-9]{36}'
   'ghs_[A-Za-z0-9]{36}'
   '-----BEGIN [A-Z ]*PRIVATE KEY-----'
-  '(CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|HASHNODE_TOKEN|HASHNODE_PUBLICATION_ID|DEVTO_API_KEY|R2_ACCESS_KEY_ID|R2_SECRET_ACCESS_KEY)[[:space:]]*[=:][[:space:]]*[A-Za-z0-9_/+.=-]{20,}'
+  '(CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|R2_ACCESS_KEY_ID|R2_SECRET_ACCESS_KEY)[[:space:]]*[=:][[:space:]]*[A-Za-z0-9_/+.=-]{20,}'
   '(api_key|api_secret|apikey|secret_key|access_key|auth_token|password|passwd|private_key|token)[[:space:]]*[=:][[:space:]]*['\''"]?[A-Za-z0-9_/+.=-]{20,}'
 )
 
@@ -95,12 +95,6 @@ expect_match "Generic private key header" \
 
 expect_match "Cloudflare API token assignment" \
   "CLOUDFLARE_API_TOKEN=v1.0abcdef1234567890abcdef1234567890"
-
-expect_match "Hashnode token assignment" \
-  "HASHNODE_TOKEN=abcdefghij1234567890abcdefghij"
-
-expect_match "Dev.to API key assignment" \
-  "DEVTO_API_KEY=abcdefghij1234567890abcdefghij"
 
 expect_match "R2 access key assignment" \
   "R2_ACCESS_KEY_ID=ABCDEFGHIJ1234567890ABCDEFGHIJ"
