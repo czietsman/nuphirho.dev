@@ -2,7 +2,7 @@
 title: "AI gave me a citation. It does not exist. Here is what I do now."
 slug: "ai-citation-verification-habit"
 tags: [research, ai-assisted-development]
-publish_date: 2026-08-21
+publish_date: 2026-08-24
 linkedin_url:
 ---
 
