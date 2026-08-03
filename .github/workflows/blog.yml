@@ -74,4 +74,5 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           DEPLOY_STATUS: ${{ job.status }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: ./notify "Blog deployment ${DEPLOY_STATUS}: ${RUN_URL}"
+        run: |
+          ./notify "Blog deployment ${DEPLOY_STATUS}: ${RUN_URL}"
