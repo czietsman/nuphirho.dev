@@ -23,6 +23,11 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
+      - name: Validate workflow YAML files
+        run: |
+          go build -o validate-workflows ./cmd/validate-workflows/
+          ./validate-workflows .github/workflows
+
       - name: Run secret pattern tests
         run: bash tests/test-secret-patterns.sh
 
