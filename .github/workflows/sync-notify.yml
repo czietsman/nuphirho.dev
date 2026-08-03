@@ -5,10 +5,14 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: sync-notify
+  cancel-in-progress: true
+
 jobs:
   notify:
     name: Send Telegram notification
-    if: startsWith(github.ref, 'refs/heads/sync/')
+    if: startsWith(github.ref, 'refs/heads/sync/') && github.actor == 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
