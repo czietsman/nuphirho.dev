@@ -1,0 +1,32 @@
+name: Notify on sync branch
+
+on:
+  create:
+
+permissions: {}
+
+jobs:
+  notify:
+    name: Send Telegram notification
+    if: startsWith(github.ref, 'refs/heads/sync/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          go-version-file: go.mod
+
+      - name: Build notification tool
+        run: go build -o notify ./cmd/notify/
+
+      - name: Send notification
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          BRANCH: ${{ github.ref_name }}
+          BRANCH_URL: ${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}
+        run: |
+          ./notify "New sync branch: ${BRANCH} — ${BRANCH_URL}"
