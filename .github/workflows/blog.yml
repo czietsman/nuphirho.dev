@@ -10,6 +10,8 @@ on:
     paths:
       - 'posts/**'
       - 'blog/**'
+  schedule:
+    - cron: '0 5 * * *'
   workflow_dispatch:
 
 permissions: {}
@@ -51,3 +53,26 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           command: pages deploy .svelte-kit/cloudflare --project-name=nuphirho-blog${{ github.event_name == 'pull_request' && format(' --branch={0}', github.head_ref) || '' }}
           workingDirectory: blog
+
+      - name: Set up Go for notifications
+        if: always() && github.event_name != 'pull_request'
+        continue-on-error: true
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          go-version-file: go.mod
+
+      - name: Build notification tool
+        if: always() && github.event_name != 'pull_request'
+        continue-on-error: true
+        run: go build -o notify ./cmd/notify/
+
+      - name: Send deployment notification
+        if: always() && github.event_name != 'pull_request'
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DEPLOY_STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          ./notify "Blog deployment ${DEPLOY_STATUS}: ${RUN_URL}"

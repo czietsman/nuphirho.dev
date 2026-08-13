@@ -1,7 +1,7 @@
 # Changelog
 # 2026-03-06  Initial apply: blog CNAME, root A records, www CNAME
 # 2026-03-06  Migrate S3 backend endpoint to endpoints.s3
-# 2026-03-06  Set blog CNAME to DNS-only (Hashnode/Vercel requires unproxied)
+# 2026-03-06  Set blog CNAME to DNS-only for the original hosted platform
 # 2026-03-08  Point blog CNAME to GitHub Pages (static frontend)
 # 2026-06-06  Retarget blog CNAME to Cloudflare Pages (nuphirho-blog.pages.dev)
 # 2026-06-09  Revert blog CNAME to GitHub Pages pending Cloudflare Pages testing
