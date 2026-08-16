@@ -21,6 +21,7 @@ cover_post: |
   A governance document governs forward behaviour. The past is the past.
 
   New piece on a real implementation.
+linkedin_url: https://www.linkedin.com/pulse/adding-quality-layer-your-agentsmd-christo-zietsman-agfuf
 ---
 
 The previous post scored a real `claude init` output at 2/7 against the PromptQ structural quality framework. Five principles were either absent or only partially addressed. This post shows what adding them looks like, not as a set of instructions, but as a session account.
