@@ -7,7 +7,7 @@ publish_date: 2026-08-10
 stop_slop: 45/50
 toulmin: Track A 6/6, Track B 6/6
 notes: "Source: #535, working/blogger-handoff-ai-marketplace-first-task-27july2026.md. Individual reframe per #253 applied. Entirely first-person Director account, no external citations per 'what not to claim yet' guidance in #535 (the academic behavioural-design framing is gated on a separate, unreturned brief and deliberately left out). Company is referred to generically, not named, consistent with the freely-publishable classification confirmed for this issue. Folded in 28 July 2026: department allies already sending skills, plus the engineering-org contribution path (repo access, always a soft option, segmented separately since not company-wide applicable, valued for standards/perspective/schema collaboration rather than distribution). Trimmed 2 August 2026 from 3,113 to 2,888 characters to clear the LinkedIn post limit: compressed the auto-mode, marketplace, and engineering paragraphs, core argument unchanged. Corrected 2 August 2026: the auto-mode paragraph wrongly framed the distinction as hosted-versus-local model. Per Director, simplified to drop the hosted/local claim entirely rather than restate it: auto mode reduces approval decisions and removes a layer of risk, without specifying which. Holds at 2,817 characters."
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_most-ai-adoption-commentary-is-written-by-activity-7492468027838554113-1jAq
 ---
 
 Most AI-adoption commentary is written by and for software engineers. It talks about IDE integration, agent harnesses, prompt engineering. For most people in a business, none of that is the barrier.
