@@ -20,7 +20,7 @@ cover_post: |
 
   New piece on what that means for validation.
 publish_date: 2026-07-29
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-implicit-benchmark-for-ai-performance-activity-7488119373443006464-wiK6
 ---
 
 When people evaluate whether to trust an AI decision, the implicit comparison is almost always: would a human expert get this right? It is a reasonable place to start. But the question it rests on (how reliable is the human expert standard?) receives far less scrutiny than the AI's performance does.
