@@ -17,7 +17,7 @@ cover_post: |
   If someone can already export a report to Excel, why deny them the AI-mediated path to the same data? Often the AI-mediated path is the more governable one, not the less.
 
   New piece on restriction as safeguard versus restriction as control, and the one question that tells them apart.
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_there-is-a-kind-of-ai-resistance-nobody-names-ugcPost-7489712875616415745-ETQc/
 ---
 
 There is a kind of AI resistance nobody names properly. It is not fear, and it is not general scepticism, and it does not require the person holding it to avoid AI themselves. It comes from someone who is entirely comfortable with a purpose-built AI system, specified once and left to run autonomously against a defined task, but who is quietly opposed to a person reaching for AI directly, on their own initiative, against data and systems that are already theirs to use. Call it the resistance. It has the same punch as calling the other side of this story an ally, a term I have used before: naming who is being built with also names who is not.
