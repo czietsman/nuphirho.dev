@@ -24,7 +24,7 @@ cover_post: |
 stop_slop: 42/50
 toulmin: Track A 6/6, Track B 6/6
 cover_image: ai-bias-you-can-see.png
-linkedin_url:
+linkedin_url: https://www.linkedin.com/pulse/ai-bias-you-can-see-christo-zietsman-behaf
 ---
 
 In 2018 Amazon scrapped a resume-screening tool it had been quietly testing. The tool had learned from historical hiring data, and the historical data reflected a decade of patterns in a male-dominated industry. The result was a system that systematically downgraded applications from women. Amazon caught it, investigated it, and shut the project down.

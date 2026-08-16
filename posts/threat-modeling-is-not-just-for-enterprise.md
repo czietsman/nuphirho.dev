@@ -24,7 +24,7 @@ cover_post: |
 
   The defaults are a starting point, not a security posture. I have written up the method, the system, the findings, and what GitHub gives you for free.
 notes: Tag Adam Shostack (linkedin.com/in/shostack) when posting. Breaking single-tag rule deliberately. His four questions are cited in the body.
-linkedin_url:
+linkedin_url: https://www.linkedin.com/pulse/threat-modeling-just-enterprise-christo-zietsman-x2wcf
 ---
 
 I run a personal blog. It has a public GitHub repository, a live publishing pipeline, a custom domain on Cloudflare, and posts that publish automatically when I push markdown to main. It is not a bank. It is not a SaaS product. It does not hold customer data.
