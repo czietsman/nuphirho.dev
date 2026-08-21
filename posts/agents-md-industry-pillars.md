@@ -20,7 +20,7 @@ cover_post: |
   And there is a layer the pillars do not address at all.
 
   First post in a short series on what the industry has figured out about these files, and what it has not.
-linkedin_url:
+linkedin_url: https://www.linkedin.com/pulse/what-industry-has-figured-out-agentsmd-christo-zietsman-xwrsf
 ---
 
 Over the past year a quiet consensus has been forming around AGENTS.md, CLAUDE.md, and their equivalents: the instruction files that tell an AI coding agent how to operate in your repository.
