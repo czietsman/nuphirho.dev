@@ -7,7 +7,7 @@ publish_date: 2026-08-07
 stop_slop: 43/50
 toulmin: Track A 6/6, Track B 5/6
 notes: "Source: #521 (unblocked by #517 synthesis, decision #523). Individual reframe per #253 applied. Marquet citation D1-verified (see #521). AI-specific psychological-safety nuance deliberately kept vague (no author names, no arXiv ID, no exact percentages) since that literature is D1-PENDING per research-notes/so-synthesis-517-ai-adoption-psychological-safety-27july2026.md; framed as 'one recent study of a single firm found' per Director's calibration guidance in the #521 thread. Amol Sharma anecdote is single-author, attributed by name and role, not presented as data. Trimmed 2 August 2026 from 3,078 to 2,802 characters to clear the LinkedIn post limit: cut the USS Santa Fe retention/readiness detail and compressed the psychological-safety paragraph, core argument unchanged."
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_a-stripe-engineering-manager-amol-sharma-activity-7491380864220553216-dIz3
 ---
 
 A Stripe engineering manager, Amol Sharma, posted a number recently: proposal review and cross-team alignment went from about 40 per cent of his week to 70 to 80 per cent, over three years. Not because he took on more direct reports. Because execution got cheap and initiative got abundant, and nobody adjusted the review load to match.
