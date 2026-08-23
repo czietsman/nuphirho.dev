@@ -4,7 +4,7 @@ slug: ai-adoption-real-barrier-first-task
 platform: linkedin
 tags: [ai-assisted-development, organisational-design, personal-practice]
 publish_date: 2026-08-10
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_most-ai-adoption-commentary-is-written-by-activity-7492468027838554113-1jAq
 ---
 
 Most AI-adoption commentary is written by and for software engineers. It talks about IDE integration, agent harnesses, prompt engineering. For most people in a business, none of that is the barrier.

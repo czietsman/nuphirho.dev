@@ -18,7 +18,7 @@ cover_post: |
 
   New piece on what that means for how you explain AI output to people who need to decide how much to rely on it.
 publish_date: 2026-07-31
-linkedin_url:
+linkedin_url: https://www.linkedin.com/pulse/all-ai-explanations-build-trust-equally-christo-zietsman-0sksf
 ---
 
 When you present an AI output to someone (a colleague, a client, a stakeholder) you almost certainly add some kind of explanation. "The model says this because...", "it flagged this because the pattern matches...", "most systems like this would give the same answer." You are trying to help them evaluate the output and decide how much to rely on it.
