@@ -4,7 +4,7 @@ slug: judgment-becomes-the-bottleneck
 platform: linkedin
 tags: [ai-assisted-development, organisational-design, personal-practice]
 publish_date: 2026-08-07
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_a-stripe-engineering-manager-amol-sharma-activity-7491380864220553216-dIz3
 ---
 
 A Stripe engineering manager, Amol Sharma, posted a number recently: proposal review and cross-team alignment went from about 40 per cent of his week to 70 to 80 per cent, over three years. Not because he took on more direct reports. Because execution got cheap and initiative got abundant, and nobody adjusted the review load to match.

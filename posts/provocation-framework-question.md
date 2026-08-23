@@ -4,6 +4,7 @@ slug: provocation-framework-question
 platform: linkedin
 tags: [ai-governance]
 publish_date: 2026-07-24
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-framework-question-nobody-asks-when-activity-7486307433816965120-cr4A
 ---
 
 The framework question nobody asks: when it all falls apart, what do you do?
