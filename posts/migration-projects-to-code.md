@@ -20,6 +20,7 @@ cover_post: |
   What I found when I moved from Claude Projects to Claude Code: the workarounds were not accidental. They were specifications pointing at what was structurally missing.
 
   New piece on the transition, the knowledge loss, and why it had to happen.
+linkedin_url: https://www.linkedin.com/pulse/programme-applied-its-own-thesis-itself-christo-zietsman-fpoyf
 ---
 
 The programme I have spent months building studies what AI governance requires: provenance, versioning, and auditable change history. For most of that time, my own AI operating environment had none of those things.

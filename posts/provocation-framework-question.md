@@ -7,6 +7,7 @@ publish_date: 2026-07-24
 stop_slop: 46/50
 toulmin: 6/6
 notes: New stop-slop high watermark. No tag. Closes with direct challenge to reader. Part of provocation track sequence.
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-framework-question-nobody-asks-when-activity-7486307433816965120-cr4A
 ---
 
 The framework question nobody asks: when it all falls apart, what do you do?

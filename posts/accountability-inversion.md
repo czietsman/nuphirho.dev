@@ -12,6 +12,7 @@ sources:
   - "EU AI Act Articles 16 and 99: 5/5 verified"
   - "ASOP 56: D1-D5 confirmed via Director fetch 17 May 2026"
   - "FAA AC 20-115D: 5/5 verified"
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_every-profession-that-deploys-consequential-activity-7483770718703329280-DPH-
 ---
 
 Every profession that deploys consequential technology eventually
