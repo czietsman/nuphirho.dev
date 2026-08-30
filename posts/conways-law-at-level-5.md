@@ -1,5 +1,7 @@
 ---
 title: "Conway's Law at Level 5"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Conway's Law at Level 5". Draw an evolving role map with boxes "Science Officer" and "Blogger" sending misplaced work into a bright gap labelled "Missing boundary". A lively arrow adds "Dev Lead", after which responsibilities reconnect cleanly. Add rounded callouts: "The agents identified the gap", "The boundary shapes the system", and "A new role changes every relationship". A closing hand-lettered line at the bottom: "Design the organisation before its workarounds design you." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: conways-law-at-level-5
 publish_date: 2026-04-15
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7433557740825931776

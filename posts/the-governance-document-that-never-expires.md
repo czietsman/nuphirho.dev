@@ -6,18 +6,7 @@ format: article
 linkedin_url: https://www.linkedin.com/posts/christo-zietsman_you-wrote-a-system-prompt-or-an-agentsmd-ugcPost-7476401732361842688-zd9I/
 cover_image: the-governance-document-that-never-expires.png
 cover_image_prompt: |
-  Create an image: A wide, dark antique aeronautical chart in landscape format, the surface aged
-  and textured like a formal navigation document from an earlier era of aviation certification.
-  Across the centre and right two-thirds, fine gold line work traces airways, flight path
-  corridors, and route sectors: curved arcs, precise bearings, and formally bounded regions
-  suggesting an en-route or qualification chart. The line work is meticulous and hierarchical,
-  each boundary precisely drawn. Near the centre, one formally delineated region -- bounded by
-  the same precise gold lines as the surrounding structure -- is conspicuously empty, its interior
-  in deep, unbroken shadow while the flight paths around it remain illuminated and active. A warm
-  amber glow emanates from the route structure at the centre, fading to deep navy at all edges.
-  The empty region reads as uncharted territory within an otherwise precisely specified domain.
-  Aged parchment texture throughout. Panoramic composition with negative space on the left third
-  for visual balance. No text, no people, no faces. 16:9 aspect ratio.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The Governance Document That Never Expires". Draw a lifecycle flow from "Governance document" through three change triggers labelled "Model update", "Context change", and "Task expansion" to a decision gate: "Demonstrate equivalence?". Its paths end at "Remain valid" or "Revalidate". Add callouts: "Aviation places the burden on the deployer", "Static documents can be evaluated", and "0 of 34 documents declared revalidation triggers". Include a small source box: "Aviation qualification framework; arXiv:2604.21090; arXiv:2606.25120". A closing hand-lettered line at the bottom: "Authority should not persist by assumption." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly document, refresh, and aircraft-route icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   You wrote a system prompt. Or an AGENTS.md file. Or an AI policy document.
 

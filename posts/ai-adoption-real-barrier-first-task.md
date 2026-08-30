@@ -1,5 +1,7 @@
 ---
 title: "The real barrier to AI adoption is not fear. It is the first task."
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The real barrier to AI adoption is not fear. It is the first task.". Draw a threshold sequence: "Environment ready", "One real task", "Guided start", and "Useful result", then a wider path to "Shared skills" and "Department allies". Add rounded callouts: "Not a training deck", "Use the person's own task", and "Centralise briefly to learn what good looks like". Add a caveat box: "The early curator is a deliberate bottleneck". A closing hand-lettered line at the bottom: "Walk one person through one task that matters to them." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: ai-adoption-real-barrier-first-task
 platform: linkedin
 tags: [ai-assisted-development, organisational-design, personal-practice]

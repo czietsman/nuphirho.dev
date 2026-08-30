@@ -1,5 +1,7 @@
 ---
 title: "Gold In My Citation Framework"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Gold In My Citation Framework". Draw a five-step citation conveyor labelled "Resolve", "Trust", "Match", "Describe", and "Verify", feeding into a self-review loop labelled "PromptQ assessment" and then "Refine". Add callouts: "Verify overrides Trust", "Define edge cases", and "Declare re-evaluation triggers". A closing hand-lettered line at the bottom: "A gap in your own tool is a gold nugget." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly link, magnifier, and nugget icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: promptq-d1d5-use-case
 publish_date: 2026-06-08
 cover_image: promptq-d1d5-use-case.png

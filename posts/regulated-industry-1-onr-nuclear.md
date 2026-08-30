@@ -1,5 +1,7 @@
 ---
 title: "The UK nuclear regulator named the governance gap"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The UK nuclear regulator named the governance gap". Draw three stacked assurance blocks labelled "1. Requirements sufficiently defined", "2. Meets requirements at deployment", and "3. Continues to meet them", with the first block highlighted as the foundation and an empty toolbox beside it labelled "No assessment instrument". Add callouts: "Claims two and three depend on claim one" and "The obligation exists before the method". Include a small source box: "Office for Nuclear Regulation sandboxing report". A closing hand-lettered line at the bottom: "Defined requirements need a way to be tested for completeness." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly document and toolbox icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: regulated-industry-1-onr-nuclear
 publish_date: 2026-06-03
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7467472926229991424

@@ -1,5 +1,7 @@
 ---
 title: "The Architecture Story Inside the Claude for Legal Launch"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The Architecture Story Inside the Claude for Legal Launch". Draw a three-layer architecture: "Team governance layer" feeds "Practice skills", which feed "Legal review outputs". Place a colourful quality gate before community skills enter the middle layer. Add rounded callouts: "Quality checked at authorship", "Shared governance sits above each skill", and "A better executor cannot repair a weak specification". Add a source box: "Claude for Legal launch; arXiv:2604.21090". A closing hand-lettered line at the bottom: "The quality problem is upstream." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: architecture-story-inside-claude-legal-launch
 publish_date: 2026-05-14
 cover_image: architecture-story-inside-claude-legal-launch.png
@@ -7,6 +9,7 @@ tags:
   - ai-governance
   - promptq
   - specification-driven-development
+linkedin_url: https://www.linkedin.com/pulse/architecture-story-inside-claude-legal-launch-christo-zietsman-bijvf
 ---
 
 **Anthropic shipped something on Tuesday** that the legal tech press covered as a legal market story. It is not a legal market story.

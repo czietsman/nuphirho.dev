@@ -1,5 +1,7 @@
 ---
 title: "Everyone is using it"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Everyone is using it". Draw two parallel paths. The visible path says "No leadership signal" and "Official log: nothing". The hidden path says "Experiment", "Build skill", and "Better output" before rejoining at "Organisation celebrates the result". Add rounded callouts: "Silence does not stop use", "It drives capability underground", and "Open practice lets people improve together". A closing hand-lettered line at the bottom: "Create conditions for governed, shared learning." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: everyone-using-it
 publish_date: 2026-06-10
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470570677343944704

@@ -1,11 +1,14 @@
 ---
 title: "The Honest Answer to \"How Do I Get Into AI Ethics?\""
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The Honest Answer to 'How Do I Get Into AI Ethics?'". Draw a path from four document cards labelled "Risk", "Transparency", "Oversight", and "Current documentation" to a bright gap labelled "Missing instruments", then branch to "Policy", "Engineering", and "Both". Add callouts: "Read the actual rules" and "Let the gaps set the agenda". Include a small source box: "EU AI Act; Federal Reserve SR 26-2". A closing hand-lettered line at the bottom: "Start with the gap. That distance is the field." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly document icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: honest-answer-how-do-i-get-ai-ethics
 publish_date: 2026-05-22
 cover_image: honest-answer-how-do-i-get-ai-ethics.png
 tags:
   - ai-governance
   - personal-practice
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_someone-asked-me-how-to-get-into-ai-ethics-activity-7463476998145896448-3WLp
 ---
 
 **Someone asked me recently** how to get into AI ethics and governance. She is a good student, she said, and she is ready to do the work. She wanted to know where to start.

@@ -1,5 +1,7 @@
 ---
 title: "Amdahl's Law does not apply here"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Amdahl's Law does not apply here". Draw a comparison between a fixed pipeline labelled "Code 20% plus fixed remainder" and an expanding system where "Specify", "Build", "Verify", and "Communicate" all shrink while new activity branches appear. Add rounded callouts: "The bottleneck is shrinking too", "Quality improvements compound", and "Freed capacity creates new work". A closing hand-lettered line at the bottom: "Measure the operating mode, not one fixed task." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: amdahl-reframe
 publish_date: 2026-05-29
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7463661099272384512

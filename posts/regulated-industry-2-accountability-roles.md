@@ -1,10 +1,13 @@
 ---
 title: "AI governance has no Authorised Person"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "AI governance has no Authorised Person". Draw a comparison matrix with columns "Actuarial", "Pharmaceutical", "Aviation", "Nuclear", and "AI governance" against rows "Named individual", "External standard", and "Required sign-off"; the AI column contains three open question marks. Add callouts: "Personal accountability", "Authority management cannot override", and "Sign-off before deployment". Include a small source box: "ASOP 56; PIC/S GMP; aviation and nuclear assurance roles". A closing hand-lettered line at the bottom: "AI governance still has an institutional design gap." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly certificate and signature icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: regulated-industry-2-accountability-roles
 publish_date: 2026-07-08
 tags:
   - ai-governance
   - research
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_every-mature-regulated-sector-has-developed-activity-7480509228357423105-j8Vx
 ---
 
 Every mature regulated sector has developed a specific role for the person who is personally accountable for governance document quality. Not the team. Not the process. A named individual with authority, a defined standard, personal liability, and an external body that can hold them to it.

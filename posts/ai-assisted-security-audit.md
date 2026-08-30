@@ -1,5 +1,7 @@
 ---
 title: "AI-Assisted Security Audit"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "AI-Assisted Security Audit". Draw a division-of-labour flow: "Experienced question" enters a colourful codebase map, "AI traversal" traces services and trust boundaries, then "Proof of concept" and "Prioritised fix" complete the loop. Add rounded callouts: "AI brings breadth and speed", "Human judgement sets direction", and "Evidence makes findings trustworthy". Add a caveat box: "AI amplifies the expertise you bring". A closing hand-lettered line at the bottom: "Pair fast traversal with experienced judgement." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "ai-assisted-security-audit"
 draft: false
 tags: [security, ai, architecture, software-engineering, process]

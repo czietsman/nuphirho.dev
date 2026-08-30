@@ -1,5 +1,7 @@
 ---
 title: "The CEO does not use it"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The CEO does not use it". Draw a top-down signal flow. A leadership box labelled "Do not use AI" creates a ceiling across the organisation, while a bright capability arrow labelled "Courageous transformer" presses upward beneath it. Add rounded callouts: "A strategy document is not permission", "Leadership sets the ceiling", and "Transformation needs room to act". A closing hand-lettered line at the bottom: "Back the person who is prepared to drive the change." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: ceo-does-not-use-it
 publish_date: 2026-06-19
 linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-ceo-does-not-use-it-so-the-signal-is-activity-7475798186025078784-uq0o

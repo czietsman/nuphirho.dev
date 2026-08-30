@@ -1,5 +1,7 @@
 ---
 title: "The dumb policy was my fuel"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The dumb policy was my fuel". Draw a two-path risk balance: "Use AI badly" on one side, "Do not use AI" on the other, and a constructive centre path labelled "Handle both risks". Behind it, show a restrictive policy arrow diverting work into a dotted path labelled "Invisible practice". Add callouts: "A ban can hide the work", "Restrictions reveal leverage", and "Challenge rules that no longer hold". A closing hand-lettered line at the bottom: "Risk management must consider both directions." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly balance and policy-card icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: shadow-ai-policy-fuel
 publish_date: 2026-06-16
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470562380696055809

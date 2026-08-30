@@ -5,6 +5,8 @@ draft: false
 tags: ["ai", "code-review", "specifications", "bdd", "software-engineering"]
 series: "The Specification as Quality Gate"
 publish_date: 2026-03-22
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The Echo Chamber in Your Pipeline". Show a circular flow from "AI generator" to "Code" to "AI reviewer" and back, with both agents linked to "Same prior". Beside it, show a corrected flow grounded by an "Executable specification" before review. Add rounded callouts: "Correlated errors survive consensus", "Diversity reduces correlation", and "Ground truth breaks the circle". Add a small source box: "Vallecillos-Ruiz et al.; Mi et al.; Pappu et al.; SGCR". A closing hand-lettered line at the bottom: "Review needs diversity and an external reference." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 ---
 
 *This is Part 1 of a four-part series, "The Specification as Quality Gate." The series develops three hypotheses about executable specifications, AI code review, and what each is actually for. Parts 2, 3, and 4 will follow.*

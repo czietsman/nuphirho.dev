@@ -1,5 +1,7 @@
 ---
 title: "The Trust Barrier"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The Trust Barrier". Draw a before-and-after comparison: "Trust as feeling" with inconsistent review arrows, and "Trust as process" flowing through "Behavioural spec", "Mutation test", "API contract", and "Measured result". Add callouts: "Define correct before code", "Test the tests", and "Review against behaviour, not every line". Include a small source box: "Robert C. Martin posts discussed in the article". A closing hand-lettered line at the bottom: "Stop asking whether the code feels trustworthy. Ask whether it meets the spec." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly shield, checklist, and test-tube icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "the-trust-barrier"
 subtitle: "Why the path forward isn't trusting AI, but building a process that makes trust measurable"
 tags: [ai, process, bdd, trust, software-engineering]

@@ -5,6 +5,8 @@ draft: false
 tags: ["specifications", "testing", "ai", "bdd", "software-engineering", "formal-methods"]
 series: "The Specification as Quality Gate"
 publish_date: 2026-03-22
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "What Specifications Cannot Catch: A Proposed Taxonomy of the Residual". Draw a funnel labelled "Executable specification" catching expected-behaviour defects, with five colourful residual branches: "A Not yet specified", "B Too costly", "C Pre-execution unknowns", "D Structural properties", and "E Specification defects". Add rounded callouts: "The oracle is never complete" and "Different residuals need different controls". Add a caveat box: "Proposed taxonomy". A closing hand-lettered line at the bottom: "Name the residual before choosing the control." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 ---
 
 *This is Part 3 of a four-part series, "The Specification as Quality Gate." [Part 1](/echo-chamber-ai-code-review-correlated-error) developed the correlated error hypothesis. [Part 2](/executable-specifications-cynefin-domain-transition) grounded the argument in complexity science. This post maps what executable specifications cannot catch. Part 4 will follow.*

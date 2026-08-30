@@ -1,5 +1,7 @@
 ---
 title: "Wardley Was Right"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Wardley Was Right". Draw a layered comprehension stack: "Behavioural specifications" inside domains, "Contract tests" at boundaries, "Fitness functions" across the system, and "Observability" in production. Above it, place an open question box: "Who governs AI-generated specifications?" Add callouts: "Reading a billion lines is not a strategy", "Properties complement behaviours", and "The layers compose". Include a small source box: "Simon Wardley's public challenge discussed in the article". A closing hand-lettered line at the bottom: "Comprehension must live in verifiable artefacts." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly layer, boundary, and telescope icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: wardley-was-right
 publish_date: 2026-04-11
 cover_image: wardley-was-right.jpg
@@ -7,6 +9,7 @@ tags:
   - ai-assisted-development
   - agentic-development
   - software-engineering
+linkedin_url: https://www.linkedin.com/pulse/wardley-right-christo-zietsman-rni6f
 ---
 
 **Simon Wardley** changed the way I think about a problem I thought I had solved.

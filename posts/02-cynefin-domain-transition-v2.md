@@ -6,6 +6,8 @@ tags: ["cynefin", "specifications", "complexity", "ai", "software-engineering"]
 allow_emdash: true
 series: "The Specification as Quality Gate"
 publish_date: 2026-03-22
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "From Complex to Complicated: What Executable Specifications Actually Do". Draw two adjacent zones labelled "Complex" and "Complicated". Show an uncertain problem moving through "Probe", "Discover constraints", and "Encode specification" into a repeatable test loop. Add rounded callouts: "Discovery comes first", "Constraints make behaviour testable", and "AI lowers the cost of encoding". Add a caveat box: "Proposed interpretation, not an endorsed Cynefin position". A closing hand-lettered line at the bottom: "Turn discovered constraints into repeatable checks." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 ---
 
 *This is Part 2 of a four-part series, "The Specification as Quality Gate." [Part 1](/echo-chamber-ai-code-review-correlated-error) developed the correlated error hypothesis. This post grounds the specification-first argument in complexity science. Parts 3 and 4 will follow.*

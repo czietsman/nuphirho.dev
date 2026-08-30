@@ -1,5 +1,7 @@
 ---
 title: "The framework question nobody asks"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The framework question nobody asks". Draw a context thread flowing through "Momentum", "Rich context", and "Active work", then breaking at "Reboot", "Power loss", or "Cold Monday" before reaching a blank restart box. Add callouts: "Where did the context go?", "Can the work resume?", and "The agent cannot fix an absent framework". A closing hand-lettered line at the bottom: "Design for what happens when the thread breaks." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly thread, plug, and notebook icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: provocation-framework-question
 platform: linkedin
 tags: [ai-governance]

@@ -1,5 +1,7 @@
 ---
 title: "IEC 61508 and the governance document that never expires"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "IEC 61508 and the governance document that never expires". Draw a validity card labelled "Safety case" connected to three change triggers: "Component change", "Architecture change", and "Requirement change"; each trigger points to "Revalidate". Beside it, show an AI governance card continuing past the same triggers with a question mark. Add callouts: "Validity depends on assumptions", "The burden sits with the operator", and "Default to invalidation when assumptions change". Include a small source box: "IEC 61508". A closing hand-lettered line at the bottom: "Governance needs declared staleness triggers." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly refresh and document icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: regulated-industry-3-iec61508-epoch-limits
 publish_date: 2026-06-24
 linkedin_url: https://www.linkedin.com/posts/christo-zietsman_iec-61508-is-the-foundational-standard-for-activity-7475435798046371842-gAK2

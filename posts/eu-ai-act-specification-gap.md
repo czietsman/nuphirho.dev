@@ -1,9 +1,11 @@
 ---
 title: "The document that decides your compliance has no quality standard"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The document that decides your compliance has no quality standard". Draw an "Intended purpose specification" supporting a large "High-risk classification" decision, with a visible missing layer labelled "No structural completeness standard". Below, show five rounded criteria: "Purpose", "Scope", "Verification", "Consistency", and "Currency". Add stat callouts: "34 documents examined" and "0 revalidation triggers". Add a source box: "EU AI Act Articles 9, 13, 14, 16, 72; arXiv:2604.21090". A closing hand-lettered line at the bottom: "Define document quality before relying on the document." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "eu-ai-act-specification-gap"
 tags: [ai-governance, research]
 publish_date: 2026-07-15
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-eu-ai-act-uses-the-intended-purpose-specification-activity-7483045943085522944-DcI7
 ---
 
 The EU AI Act uses the intended purpose specification as the load-bearing document for high-risk classification. If your specification is ambiguous, the classification assessment is ambiguous. If it does not clearly exclude high-risk uses, you cannot self-certify that you have.

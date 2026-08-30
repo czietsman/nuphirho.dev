@@ -6,7 +6,7 @@ publish_date: 2026-08-05
 format: article
 subtitle: "On hiring, noise, and why the governable failure is not the one most people are watching"
 cover_image_prompt: |
-  A single document on a plain desk, clearly lit on one half, the other half in shadow from an unseen source. Muted palette, cool blues and greys. Still, institutional. No people, no screens, no colour accents.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "AI bias is the bias you can see". Draw a comparison between "Algorithmic bias" with cards "Systematic", "Aggregate", and "Auditable", and "Human interview variation" with cards "Case by case", "Reviewer dependent", and "Often invisible to aggregate audits". Connect both to a hiring decision icon. Add rounded callouts: "Passing a fairness audit is not individual consistency" and "The failure modes need different instruments". Add a caveat box: "Not a claim that human hiring is more biased overall". A closing hand-lettered line at the bottom: "Measure consistency as well as directional bias." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   The Amazon resume-screening tool that discriminated against women is the most cited AI bias story in hiring. It is also exactly what catchable failure looks like: systematic, measurable, visible in the aggregate, correctable in one place.
 

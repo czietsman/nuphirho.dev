@@ -1,5 +1,7 @@
 ---
 title: "The only variable that's changed is the speed"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The only variable that's changed is the speed". Draw a curve moving from "Rare skill, premium pay" through "AI automation" to "Scarcity becomes obsolescence", with a fast-moving clock icon beside it. Add callouts: "Disruption catches skilled people too", "Inflexibility is the risk", and "Move towards directing systems". Include a small source box: "Anthropic; IBM market data; San Francisco Standard". A closing hand-lettered line at the bottom: "Treat AI as a skill to develop while the window is open." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly code and clock icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: ibm-cobol-disruption
 publish_date: 2026-05-27
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7434504081445974016

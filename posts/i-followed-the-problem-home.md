@@ -1,10 +1,13 @@
 ---
 title: "I Followed the Problem Home"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "I Followed the Problem Home". Draw a connected chain labelled "Plausible output", "External specification", "Verification boundary", and "Right questions", with the specification breaking a circular validation loop. Add callouts: "Agreement is not correctness", "Specifications expose shared blindness", and "Tests still face the oracle problem". Include a small source box: "James Bach; Sextus Empiricus; Wardley; Catalini, Hui, and Wu". A closing hand-lettered line at the bottom: "Follow the problem until you need the people who live there." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly puzzle and document icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "i-followed-the-problem-home"
 tags: [ai-governance, epistemology, software-verification, collaboration]
 canonical: "https://blog.nuphirho.dev/i-followed-the-problem-home"
 publish_date: 2026-04-04
 cover_image: i-followed-the-problem-home.jpg
+linkedin_url: https://www.linkedin.com/pulse/i-followed-problem-home-christo-zietsman-qhhxf
 ---
 
 [James Bach](https://www.linkedin.com/in/james-bach-6188a811/) wrote that failing to detect a problem is not a measurement of non-problemness. He was responding to me. That exchange sent me somewhere I did not expect to go.

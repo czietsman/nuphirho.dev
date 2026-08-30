@@ -1,5 +1,7 @@
 ---
 title: "The IDE is the hardware now"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The IDE is the hardware now". Draw two workflow loops: "IDE: review and navigate" on the left, and "CLI: ask, test, observe, fix" on the right, with the second loop flowing without context switches. Add callouts: "The work moved", "Agents close the backend loop", and "Next: close the UI loop". A closing hand-lettered line at the bottom: "The question is not which IDE. It is where the work happens." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly terminal and navigation icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: ide-shift
 publish_date: 2026-05-25
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7464233265529253888

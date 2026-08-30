@@ -1,10 +1,13 @@
 ---
 title: "The policy made it to the developer. The knowledge did not."
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The policy made it to the developer. The knowledge did not.". Draw a flow from "Compliance knowledge" through a blunt document labelled "Handle PII accordingly" to "Developer", "Integration", and "Product architecture". Show missing context falling out between the first two steps. Beside it, show a better document with cards for "Data element", "Sensitivity", "Who may see it", and "When". Add callouts: "AI implements what is written" and "The gap begins at authorship". A closing hand-lettered line at the bottom: "Move the judgement into the delivery artefact." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: governance-delivery-gap
 publish_date: 2026-05-15
 tags:
   - ai-governance
   - software-engineering
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_think-about-the-sign-up-flow-for-almost-any-activity-7460940283082432512-JL-q
 ---
 
 Think about the sign-up flow for almost any product. Full name, email address, telephone number. Simple data. But the moment you ask what you can display, to whom, and under what circumstances, you are already in contested territory.

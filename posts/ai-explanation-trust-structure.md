@@ -6,7 +6,7 @@ tags: [ai-governance, research]
 format: article
 cover_image: ai-explanation-trust-structure.png
 cover_image_prompt: |
-  A minimal hand-drawn image on plain paper of four narrow bridges of differing sturdiness spanning the same gap to a single point. Three are drawn with solid, confident lines. One is visibly thinner and more tentative than the rest. Muted palette, slate and off-white. No people, no screens, no colour accents. The image reads as a conceptual illustration of unequal structural support, not a technical diagram.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Not all AI explanations build trust equally". Draw four explanation routes into a trust gauge: "Consensus", "Expert", "Logic", and "Evidence". Make the consensus route visibly weaker, while the other three reach roughly double its influence. Add rounded callouts: "Popularity is the weakest signal here", "Structure supports evaluation", and "Explain why, not only who agrees". Add a source box: "Pareek et al., PACMHCI, 2024". A closing hand-lettered line at the bottom: "Ground trust in reasoning or observable evidence." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   When you explain an AI output to someone, the type of explanation you reach for predicts how much trust it produces, and the pattern runs against most assumptions about persuasion.
 

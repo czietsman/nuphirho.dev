@@ -1,9 +1,12 @@
 ---
 title: "Structural Quality Gaps in AI Governance Prompts"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Structural Quality Gaps in AI Governance Prompts". Draw 34 document cards flowing through five labelled gates: "Success", "Assessment", "Verification", "Scope", and "Output", ending in a stat tile: "37% below the completeness threshold". Add a three-way classification diagram labelled "Task orchestration", "Behavioural governance", and "Architectural specification". Add callouts: "Same file format", "Three incompatible purposes", and "A tractable requirements problem". Include a small source box: "arXiv:2604.21090". A closing hand-lettered line at the bottom: "Evaluate governance structure at authorship time." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly document and gate icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "structural-quality-gaps-ai-governance-prompts"
 draft: false
 tags: [ai-governance, promptq, research]
 publish_date: 2026-04-24
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_promptq-activity-7454944332538675203-8XOE
 ---
 Most AI agent governance documents in production are structurally incomplete. That is not an observation. It is an empirical finding.
 

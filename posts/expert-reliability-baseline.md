@@ -6,7 +6,7 @@ tags: [research, ai-governance]
 format: article
 cover_image: expert-reliability-baseline.png
 cover_image_prompt: |
-  A minimal hand-drawn image on plain paper of two side-by-side measurement readings on the same simple scale, each showing a slightly different value. Muted palette, slate and off-white. No people, no screens, no colour accents. The image reads as a conceptual illustration of inconsistency in measurement, not a technical diagram.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Measuring AI against humans who disagree with themselves". Draw the same evidence card evaluated twice by the same expert, seven months apart, producing two different categorical results. Place both beside an AI output and a question mark labelled "What is the stable benchmark?". Add rounded callouts: "Roughly 10% intra-rater inconsistency", "Reversals cluster at the sufficiency threshold", and "Agreement is not ground truth". Add a source box: "Ulery et al. fingerprint examiner studies". A closing hand-lettered line at the bottom: "Check the underlying question, not only expert concurrence." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   The implicit benchmark for AI performance is almost always: would a human expert get this right?
 

@@ -3,6 +3,8 @@ title: "Agents Are Not Junior Engineers. Here Is What They Actually Are."
 slug: agent-trust-junior-engineer
 publish_date: 2026-06-12
 cover_image: agent-trust-junior-engineer.png
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Agents Are Not Junior Engineers. Here Is What They Actually Are." Draw a comparison matrix with columns "Junior engineer" and "AI agent", and rows "Reputation", "Learns from consequences", "Accountability", and "Scope". Mark the first column "Relational trust can grow" and the second "Controls must be structural". Below, show a guarded flow: "Explicit scope", "Evidence defined first", "Human gate", and "Reviewable record". Add a small source box: "Floridi and Sanders; Prause". A closing hand-lettered line at the bottom: "Build the architecture that makes trust unnecessary." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:ugcPost:7465647240980840448
 tags:
   - ai-governance

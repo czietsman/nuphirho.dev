@@ -1,5 +1,7 @@
 ---
 title: "Organisational factors get amplified by AI"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Organisational factors get amplified by AI". Draw a foundation labelled "Governance instructions" supporting "Culture", "Manager support", and "Governance maturity", with agent arrows amplifying the stack. Add stat tiles: "20,000 workers, 10 markets", "Organisational factors: 2x", and "Active agents: 15x, 18x in large enterprises". Add a caveat: "Having governance does not prove agents can execute it". Include a small source box: "Microsoft Work Trend Index 2026; PwC AI Jobs Barometer 2026". A closing hand-lettered line at the bottom: "Agent scale amplifies the instructions underneath it." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly building-block icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: microsoft-wti-2026
 publish_date: 2026-06-26
 linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-2026-microsoft-work-trend-index-surveyed-activity-7476160573760724992-jIlv

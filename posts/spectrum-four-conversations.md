@@ -1,5 +1,7 @@
 ---
 title: "Four conversations, four different worlds"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Four conversations, four different worlds". Draw a four-stop spectrum labelled "Building now", "Exploring", "AI prohibited", and "A different level of possibility", with each stop represented by a friendly speech-bubble icon and increasing colour. Add callouts: "Same day", "Very different starting points", and "Enablement must meet people where they are". A closing hand-lettered line at the bottom: "The AI conversation is happening in entirely different worlds." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly speech-bubble and compass icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: spectrum-four-conversations
 publish_date: 2026-06-10
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470575403691298817

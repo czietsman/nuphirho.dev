@@ -1,5 +1,7 @@
 ---
 title: "Process Over Technology: Starting With the Blog Itself"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Process Over Technology: Starting With the Blog Itself". Draw a build pipeline from "Why" through "Platform", "Infrastructure as code", "Publishing pipeline", and "Security defaults" to a small finished blog page. Add rounded callouts: "Three HTTPS layers", "Secrets stay outside code", "Scan at the git boundary", and "Domain about $12 per year". Add a caveat box: "AI assisted the build; process set the direction". A closing hand-lettered line at the bottom: "Good engineering is available when the process comes first." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "process-over-technology-starting-with-the-blog-itself"
 subtitle: "Building a blog with BDD specs, Terraform, and a CI/CD pipeline"
 tags: [process, engineering, ai, devops, infrastructure-as-code]

@@ -1,5 +1,7 @@
 ---
 title: "Honoured to receive the Disruptor Award at CyberSentriq's NOVA Awards"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Honoured to receive the Disruptor Award at CyberSentriq's NOVA Awards". Draw a central award certificate icon connected to three rounded boxes labelled "Ask why", "Push boundaries", and "Serve the team". Add callouts: "Growth is carried by people", "AI can help us improve", and "Recognition belongs to the wider team too". A closing hand-lettered line at the bottom: "Carry the momentum by helping others move forward." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly certificate, question-mark, and teamwork icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: nova-awards-disruptor-award
 platform: linkedin
 tags: [personal-practice, collaboration]
@@ -21,7 +23,7 @@ cover_post: |
 stop_slop: 43/50
 toulmin: Track A 5/6, Track B 4/6
 notes: "Source: nomination email from Kallie Robberts (People & Culture Manager, CyberSentriq), 6 August 2026, quoting Martina Fourie's nomination text in full. Quoted line ('He always pushes boundaries by asking why, why not?') is taken verbatim from that nomination. Mirrors the structure Jean Camargo used in his own Fortress Award post (quoting one line from his nomination, congratulating fellow winners, thanking nominators). Fellow winners named (Amanda Cruz, Eddie Monaghan, Jean Camargo, Duane Meyer) per the public CyberSentriq NOVA Awards announcement post and Jean's own post, both already public. cover_image is the Director's actual award certificate, extracted from the same nomination email and saved to pipeline/blog/static/nova-awards-disruptor-award.png; it is a real photo, not a generated image, so no cover_image_prompt field is set. format: article used solely to attach the cover_image per the template convention; cover_post and body are near-identical since the piece is already short and needed no separate teaser. Per Director instruction, the CPTO-approval requirement for CyberSentriq-referencing content was removed from posts/_template.md; this post carries no approval field as a result."
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_cybersentriq-novaawards-disruptor-activity-7495367130373279744-dc26
 ---
 
 Honoured, and genuinely humbled, to have received the Disruptor Award at CyberSentriq's NOVA Awards this quarter.

@@ -6,6 +6,8 @@ linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7464233594819911
 tags:
   - ai-assisted-development
   - software-engineering
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "10x the clarity". Draw a before-and-after comparison. On the left, an old gauge labelled "Output" with "Code", "Features", and "Bugs". On the right, a bright decision funnel labelled "Judgement" with "What to build", "Specify clearly", and "Verify the result". Show an AI multiplier amplifying the right-hand funnel. Add rounded callouts: "The axis has shifted" and "Capability expands; judgement stays human". A closing hand-lettered line at the bottom: "The scarce advantage is clarity, not typing speed." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 ---
 
 When was the last time you heard anyone talk about a 10x engineer?

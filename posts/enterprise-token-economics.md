@@ -1,5 +1,7 @@
 ---
 title: "The commercial model is the constraint"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The commercial model is the constraint". Draw a branching cost flow from "$4,000 in one week" to "100 engineers" and "$400,000 per week", then split into "Personal tier: capacity" and "Enterprise tier: controls plus cost". Add rounded callouts: "Regulated organisations need enterprise controls", "Better specifications can reduce token use", and "Pricing remains the larger constraint". A closing hand-lettered line at the bottom: "Enterprise AI needs economics that fit governed use." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: enterprise-token-economics
 publish_date: 2026-06-18
 linkedin_url: https://www.linkedin.com/posts/christo-zietsman_in-april-i-used-4000-of-enterprise-claude-activity-7473261470802305024-HlEY

@@ -1,11 +1,13 @@
 ---
 title: "Where aviation's framework breaks down, and where it does not"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Where aviation's framework breaks down, and where it does not". Draw a split diagram. On the left, "AI system" leads to "Statistical behaviour" and a broken traceability arrow labelled "Framework breaks down". On the right, "Governance document" leads to "Static human-authored artefact" and three checkable cards: "Linkage", "Validity boundary", and "Evidence architecture". Add a source box: "DO-178C; arXiv:2606.25120". A closing hand-lettered line at the bottom: "System limits do not erase document-level controls." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "aviation-li-2-separation"
 series: "aviation-specification-completeness"
 series_part: 2
 tags: [ai-governance, research]
 publish_date: 2026-07-09
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-aviation-certification-community-has-activity-7480871615862411266-0B0k
 ---
 
 The aviation certification community has been clear that its frameworks break down for AI systems. DO-178C, the standard governing aviation software certification for thirty years, requires bidirectional traceability: every requirement traces forward to a test and backward to a source requirement. A language model's behaviour is statistical rather than deterministic. You cannot trace an inference to a requirement. The framework breaks down.

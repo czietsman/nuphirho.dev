@@ -1,5 +1,7 @@
 ---
 title: "Treating Ideas as Releasable Software"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Treating Ideas as Releasable Software". Draw a circular release pipeline labelled "Hypothesis", "Challenge", "Targeted search", "Citation check", "Toulmin gate", and "Revision". Add callouts: "Search for the gap", "Verify against originals", and "Match rigour to stakes". A closing hand-lettered line at the bottom: "Treat important ideas like software worth releasing well." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly magnifier, checklist, and release icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "treating-ideas-as-releasable-software"
 draft: false
 tags: [ai, process, scientific-method]

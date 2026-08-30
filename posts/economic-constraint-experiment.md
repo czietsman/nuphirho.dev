@@ -1,5 +1,7 @@
 ---
 title: "The $20 experiment"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The $20 experiment". Draw a small budget meter feeding a four-step loop: "Precise hypothesis", "Scoped prompt", "Only needed context", and "Measure outcome and tokens". Add rounded callouts: "$20 monthly constraint", "Every session is an experiment", and "Better definition may need fewer tokens". Add a caveat box: "A hypothesis to test, not a settled result". A closing hand-lettered line at the bottom: "Use constraint as a forcing function for clarity." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: economic-constraint-experiment
 publish_date: 2026-06-23
 linkedin_url: https://www.linkedin.com/posts/christo-zietsman_my-personal-claude-subscription-costs-20-activity-7475073412969779200-9mfZ

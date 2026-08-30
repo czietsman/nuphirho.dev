@@ -1,5 +1,7 @@
 ---
 title: "When bash gets too wild: rewriting my publish pipeline in Go"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "When bash gets too wild: rewriting my publish pipeline in Go". Draw a before-and-after pipeline: tangled shell fragments labelled "Quotes", "Tags", and "Multiline YAML" transform into seven tidy Go package boxes feeding one publish command. Add stat tiles: "411 workflow lines to 117", "98 BDD scenarios", and "488 steps". Add callouts: "Validate before API calls", "Isolate publish failures", and "Test the pipeline logic". A closing hand-lettered line at the bottom: "Untestable pipelines earn the right to be rewritten." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly terminal, package, and test icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "when-bash-gets-too-wild-rewriting-publish-pipeline-go"
 subtitle: "How BDD specs, a Go rewrite, and 98 scenarios replaced 400 lines of fragile bash"
 tags: ["go", "bdd", "devops", "software-engineering", "blogging"]

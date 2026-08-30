@@ -10,7 +10,7 @@ stop_slop: 41/50
 toulmin: Track A 6/6, Track B 5/6
 cover_image: threat-modeling-is-not-just-for-enterprise.png
 cover_image_prompt: |
-  A minimal hand-drawn system diagram on plain paper: a few labelled boxes connected by directional arrows, one arrow marked with a small warning symbol. Muted palette, slate and off-white. No colour accents, no people, no screens, no corporate setting. The scale reads as a personal project, not an enterprise architecture.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Threat modeling is not just for enterprise". Draw a small blog system with boxes labelled "Developer", "GitHub Actions", "Cloudflare", and "Readers", connected across four trust boundaries. Add a STRIDE review loop labelled "Model", "Find", "Fix", and "Verify". Add callouts: "13 findings", "Pin Actions to SHAs", and "Grant least privilege". Include a small source box: "Adam Shostack's four questions; STRIDE". A closing hand-lettered line at the bottom: "Any system with a trust boundary can benefit from threat modelling." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly shield, repository, and cloud icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   I run a personal blog. It has a public GitHub repository, a publishing pipeline, and a custom domain on Cloudflare. It is not a bank.
 
@@ -163,4 +163,3 @@ The output of this exercise was not a document. It was a set of changes: Actions
 More usefully, it was a shift in how the system is understood. The public repository is not just "readable." It is a system where an adversary already knows which APIs the pipeline calls, which token names to look for, and which workflow triggers are in play. The threat model makes that explicit in a way that intuition alone does not.
 
 The input to this exercise was a targeted prompt. The output was a documented set of specific improvements, each traceable to a finding. For a personal project, that is a proportionate exchange.
-

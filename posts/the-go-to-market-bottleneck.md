@@ -1,5 +1,7 @@
 ---
 title: "The Go-to-Market Bottleneck"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The Go-to-Market Bottleneck". Draw a fast engineering lane labelled "Feature in a day" feeding into a delivery chain of rounded boxes: "Positioning", "Demo", "Pricing", "Support", "Partners", and "Governance", with the chain narrowing at human judgement steps. Add callouts: "Faster engineering exposes downstream constraints", "The product may not sell itself", and "Redesign the full delivery chain". A closing hand-lettered line at the bottom: "The delivery bottleneck is organisational, not only technical." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly feature-box, megaphone, and handshake icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "the-go-to-market-bottleneck"
 tags: [ai-assisted-development, go-to-market, enterprise-saas,
        product-strategy, delivery]

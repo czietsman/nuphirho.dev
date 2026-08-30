@@ -1,9 +1,12 @@
 ---
 title: "Learning the Map"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Learning the Map". Draw an expanding map that moves through "Physical spaces", "Game levels", "Codebases", "Business systems", and "AI-assisted exploration". Add a second map colliding with the first at a bright shared whiteboard labelled "Creative friction". Add rounded callouts: "Orient quickly", "Find the connections", and "Challenge the model". Add a caveat box: "AI explores quickly; genuine conviction still comes from people". A closing hand-lettered line at the bottom: "Learn the whole map, not only your corner." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: "learning-the-map"
 subtitle: "How spatial thinking, competitive gaming, and the right collaborators shaped my approach to software architecture"
 tags: [career, spatial-thinking, collaboration, ai, personal]
 publish_date: 2026-03-08
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_when-i-was-a-kid-my-family-would-walk-into-activity-7434636869704982529-McGh
 ---
 
 When I was a kid, my family would walk into a big mall and within minutes I'd have a mental map of the place. Not a conscious effort. Just something that happened. I knew where we were, how things connected, and how to get back. I didn't have a word for it at the time. I just assumed everyone's brain worked this way.

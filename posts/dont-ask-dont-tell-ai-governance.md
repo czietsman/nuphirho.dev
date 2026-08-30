@@ -7,7 +7,7 @@ format: article
 subtitle: "On the policy you signed, the one you did not, and what happens when something goes wrong"
 cover_image: dont-ask-dont-tell-ai-governance.png
 cover_image_prompt: |
-  A single sheet of paper on a plain desk, lit from the side, casting a long shadow. The paper is blank or barely legible. Muted palette, greens and greys. Still, institutional, slightly ominous. No people, no screens, no colour accents.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Don't ask, don't tell AI governance". Draw a loop where "Quiet AI use" produces "Productivity benefit" for the organisation, while a separate arrow sends "Accountability at failure" back to the individual. Break the loop with a bright governed path containing "Approved tools", "Communicated policy", "Oversight", and "Assurance". Add rounded callouts: "Value is captured quietly" and "Responsibility arrives later". A closing hand-lettered line at the bottom: "Match the demand for AI fluency with a governed way to use it." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   Your employer has a policy about AI tools. It exists somewhere. It applies to you.
 
@@ -18,7 +18,7 @@ cover_post: |
   The upside of your AI use was captured quietly. The accountability question arrives only at the point of failure.
 
   I have written a longer piece on the arrangement, what that document actually is in practice, and what the incident scenario looks like from the individual's side.
-linkedin_url:
+linkedin_url: https://www.linkedin.com/pulse/dont-ask-tell-ai-governance-christo-zietsman-icpnf
 ---
 
 There is a way to check whether your organisation's AI governance is real or theoretical. Look at its current job postings.

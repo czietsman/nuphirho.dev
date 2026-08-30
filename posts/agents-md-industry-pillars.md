@@ -9,7 +9,7 @@ stop_slop: 41/50
 toulmin: Track A 6/6, Track B 4/6
 cover_image: agents-md-industry-pillars.png
 cover_image_prompt: |
-  A wall of plain text files stacked in rows, each slightly different, viewed straight on. Muted palette, slate blues and off-whites. One file in the foreground is slightly separated from the rest, not highlighted, just apart. Clean, technical, slightly clinical. No people, no screens, no colour accents.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "What the industry has figured out about AGENTS.md". Draw three grouped stacks of rounded instruction cards labelled "Organisation", "Functional content", and "Safety and security", together holding ten small pillar icons. Beside them, place an open outlined space labelled "Quality layer". Add callouts: "Practice has converged", "Direct evidence is still thin", and "One layer remains unaddressed". A closing hand-lettered line at the bottom: "Functional guidance is established; quality governance is not." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   Over the past year, the practitioner community has converged on ten pillars for writing AGENTS.md, CLAUDE.md, and their equivalents: the instruction files that tell an AI coding agent how to operate in your repository.
 

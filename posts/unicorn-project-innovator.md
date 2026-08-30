@@ -1,5 +1,7 @@
 ---
 title: "The innovator's job"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The innovator's job". Draw a path labelled "Follow the work" winding through three rounded obstacles: "Policy", "Embedded belief", and "People who built it", then reaching "Changed paradigm". Add callouts: "Ideas are cheap", "Understand why the restriction exists", and "Innovate with people, not around them". Include a small source box: "Gene Kim, The Unicorn Project". A closing hand-lettered line at the bottom: "The tool is not the constraint. The paradigm may be." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly path, policy, and lightbulb icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: unicorn-project-innovator
 publish_date: 2026-06-22
 linkedin_url: https://www.linkedin.com/posts/christo-zietsman_gene-kim-wrote-about-the-innovators-job-activity-7474711022646296576-HZdK

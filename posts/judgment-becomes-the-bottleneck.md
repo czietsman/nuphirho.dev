@@ -1,5 +1,7 @@
 ---
 title: "When execution gets cheap, judgment becomes the bottleneck"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "When execution gets cheap, judgment becomes the bottleneck". Draw a wide lane labelled "Cheap execution" narrowing into "Human judgement", then splitting into "Author compresses" and "Decision authority moves down". Add callouts: "More output relocates review work", "Use one-pagers", and "Decide where the information is". Include a small source box: "Amol Sharma; L. David Marquet; Amy Edmondson". A closing hand-lettered line at the bottom: "When the constraint moves to you, redesign the decision flow." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly funnel and decision icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: judgment-becomes-the-bottleneck
 platform: linkedin
 tags: [ai-assisted-development, organisational-design, personal-practice]

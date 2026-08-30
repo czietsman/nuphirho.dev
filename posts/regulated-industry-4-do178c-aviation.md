@@ -1,8 +1,10 @@
 ---
 title: "Instructions versus specifications"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Instructions versus specifications". Draw a side-by-side comparison: "Instruction" points only to "Do this", while "Specification" flows through "Done looks like", "Verify it", and "Show evidence". Add callouts: "Intent is not a quality gate", "Traceability makes claims testable", and "Probabilistic systems limit the analogy". Include a small source box: "DO-178C". A closing hand-lettered line at the bottom: "Define what done means and how you will know." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly instruction-card and checklist icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: regulated-industry-4-do178c-aviation
 publish_date: 2026-07-01
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_aviation-software-has-been-certified-against-activity-7477972513012998144-Z1R-
 tags:
   - ai-governance
   - research

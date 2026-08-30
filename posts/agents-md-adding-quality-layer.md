@@ -10,7 +10,7 @@ toulmin: Track A 6/6, Track B 5/6
 format: article
 cover_image: agents-md-adding-quality-layer.png
 cover_image_prompt: |
-  Two versions of the same text document shown side by side, the right one visibly longer and more complete. Plain background, viewed straight on. Muted palette, slate blues and off-whites. Clinical, technical. No people, no screens, no colour accents.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "Adding the quality layer to your AGENTS.md". Draw a before-and-after pair of instruction documents. The first is labelled "Functional layer". The second adds seven colourful rounded tabs: "Purpose", "Measurement", "Authority", "Data integrity", "Quality control", "Consistency", and "Adaptation". Connect them with a lively arrow labelled "Discuss with the codebase in hand". Add callouts: "Govern forward behaviour" and "Measure the intended outcome". A closing hand-lettered line at the bottom: "Add the rules that let an agent judge its own work." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   The previous post scored a real claude init output at 2/7 on PromptQ's structural quality framework. Five principles were either absent or partially addressed.
 

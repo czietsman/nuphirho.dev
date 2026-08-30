@@ -10,7 +10,7 @@ toulmin: Track A 6/6, Track B 4/6
 format: article
 cover_image: agents-md-quality-layer.png
 cover_image_prompt: |
-  A single text file open on a plain surface, the upper section filled with structured content, the lower portion conspicuously empty, as if the author stopped mid-document. Muted palette, slate and off-white. Clean, functional, slightly clinical. No people, no screens, no colour accents.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The layer missing from every AGENTS.md". Draw a two-layer document. The upper layer, "Functional", contains "Architecture", "Tasks", "Conventions", and "Commands". The lower layer, "Quality", contains "Success", "Rubric", "Scope", "Data", "Gate", and "Staleness". Add rounded callouts: "Instructions say what to do" and "Governance says what good looks like". A closing hand-lettered line at the bottom: "A useful file needs both layers." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   Here is a real CLAUDE.md file. Architecture documented. Common tasks specified. Conventions explicit. Validation commands named. CI/CD described.
 
@@ -89,4 +89,3 @@ Here is what is missing.
 None of this is a criticism of the file or of `claude init`. The functional layer is exactly what the tool can infer from the repository: architecture, tasks, conventions, commands. The quality layer cannot be inferred. It requires deliberate authorship.
 
 The industry's ten pillars address the functional layer comprehensively. No pillar addresses the quality layer. Survey published guidance from Anthropic, OpenAI, community guides, and practitioner blogs: assessment rubric, quality gate, and internal consistency requirements appear nowhere. Contextual currency appears as a maintenance reminder, not as a structural element the document must carry.
-

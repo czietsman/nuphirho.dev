@@ -1,10 +1,13 @@
 ---
 title: "The guardian agent problem is solvable"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The guardian agent problem is solvable". Draw a governance specification feeding a guardian mechanism through three rounded gates: "Verifiable claims", "Precise human boundary", and "Staleness conditions". Beside it, show five small Article 14 cards: "Understand limits", "Watch automation bias", "Interpret output", "Disregard output", and "Intervene or halt". Add callouts: "The guardian inherits the specification's quality ceiling" and "37% fell below the structural threshold". Add a source box: "EU AI Act Article 14; governance document study". A closing hand-lettered line at the bottom: "Solve the specification before automating oversight." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: guardian-agent-solvable
 publish_date: 2026-05-12
 tags:
   - ai-governance
   - agentic-development
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_article-14-of-the-eu-ai-act-requires-that-activity-7459853119565250561-T3zZ
 ---
 
 Article 14 of the EU AI Act requires that a human overseer of a high-risk AI system can do five things: understand the system's capacities and limitations, remain aware of automation bias, correctly interpret its output, decide not to use or disregard output, and intervene or halt the system when required.

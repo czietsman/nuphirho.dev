@@ -12,6 +12,8 @@ sources:
   - "EU AI Act Articles 16 and 99: 5/5 verified"
   - "ASOP 56: D1-D5 confirmed via Director fetch 17 May 2026"
   - "FAA AC 20-115D: 5/5 verified"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The accountability inversion". Draw two opposing columns: "Technical knowledge" above a specification document with "No personal liability", and "Nominal accountability" above an approval stamp with "Limited technical depth". Bridge the gap with a colourful role card carrying four labels: "Named individual", "Technical depth", "Personal liability", and "External standard". Add a small source box: "EU AI Act; ASOP 56; FAA AC 20-115D". A closing hand-lettered line at the bottom: "Join knowledge and accountability in one governed role." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 linkedin_url: https://www.linkedin.com/posts/christo-zietsman_every-profession-that-deploys-consequential-activity-7483770718703329280-DPH-
 ---
 
@@ -52,4 +54,3 @@ In your organisation, who is the appointed actuary for your AI
 governance documents? Who has the technical knowledge and the
 personal liability? If you cannot name that person, you have the
 inversion.
-

@@ -9,7 +9,7 @@ stop_slop: 41/50
 toulmin: Track A 6/6, Track B 6/6
 cover_image: migration-projects-to-code.png
 cover_image_prompt: |
-  Two workspaces side by side: the left scattered with loose notes and no clear structure, the right with a single open notebook, organised and indexed. Muted palette, warm grey and off-white. No people, no screens, no digital elements, no colour accents.
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The programme applied its own thesis to itself". Draw a before-and-after comparison: "Projects: trust by assertion" with loose documents and manual transfers, and "Repository: trust by provenance" with a versioned file tree and linked handovers. Connect them with "Structural upgrade, knowledge loss". Add callouts: "Workarounds revealed missing specifications", "Shared files replace manual transfer", and "Git records change". Add a caveat: "Tacit calibration does not automatically transfer". A closing hand-lettered line at the bottom: "The operating environment has to live up to the specification." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly folder and history icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 cover_post: |
   I have spent months building a research programme that studies what AI governance requires: provenance, versioning, and auditable change history.
 

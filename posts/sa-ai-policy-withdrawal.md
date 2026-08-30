@@ -1,10 +1,13 @@
 ---
 title: "South Africa's AI policy and the verification step that was not there"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "South Africa's AI policy and the verification step that was not there". Draw a document passing through "Draft", "Departmental review", "Cabinet", and "Public comment", while a missing side gate labelled "Citation verification" lets fabricated references pass. Add stat tiles: "Live for 16 days" and "Two officials suspended". Add callouts: "Political approval is not a quality gate" and "Plausibility is not accuracy". Include a small source box: "News24 reporting; ministerial and parliamentary statements". A closing hand-lettered line at the bottom: "Verify before acceptance, while correction is still possible." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly document, magnifier, and gate icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: sa-ai-policy-withdrawal
 publish_date: 2026-05-07
 tags:
   - ai-governance
   - research
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_south-africas-draft-national-artificial-activity-7458051767365357568-QbuB
 ---
 
 South Africa's Draft National Artificial Intelligence Policy was withdrawn on 26 April 2026. It had been live for sixteen days.

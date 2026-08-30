@@ -1,5 +1,7 @@
 ---
 title: "The Stoics already had two words for this"
+cover_image_prompt: >-
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The Stoics already had two words for this". Draw two linked rounded circles: "Prohairesis: chooses and acts" and "Hegemonikon: governs and can override", with the second above the first and a clear review arrow between them. Add callouts: "Different jobs", "Acting is not oversight", and "A structural echo, not historical lineage". A closing hand-lettered line at the bottom: "Do not give the acting faculty authority over its own oversight." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly choice and shield icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: prohairesis-hegemonikon-human-on-the-loop
 platform: linkedin
 tags: [ai-governance, research]
@@ -7,7 +9,7 @@ publish_date: 2026-08-19
 stop_slop: 43/50
 toulmin: Track A 5/6, Track B 5/6
 notes: "Source: #590, findings/so-novel-findings-registry.md F6 (Stoic prohairesis applied to prompt/governance design) and F7 (Stoic hegemonikon as governance-layer analogy), one pairing chosen per the issue's guidance rather than all four candidate pairings. Framed explicitly as structural echo, not lineage or prophecy, per the issue's constraint."
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-stoics-split-the-mind-into-faculties-share-7494724939732697088-6Ly1/
 ---
 
 The Stoics split the mind into faculties, and two of them map onto a distinction agentic systems engineering has been quietly rediscovering under new names. Prohairesis is the faculty of choice, the deliberate response to circumstances you did not choose and cannot control. Hegemonikon is the governing faculty, the part that coordinates everything else without performing any of it directly.

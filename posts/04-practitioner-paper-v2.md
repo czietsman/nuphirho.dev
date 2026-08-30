@@ -5,6 +5,8 @@ draft: false
 tags: ["ai", "code-review", "specifications", "software-engineering", "bdd", "cynefin", "formal-methods"]
 series: "The Specification as Quality Gate"
 publish_date: 2026-03-22
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The Specification as Quality Gate: Three Hypotheses on AI-Assisted Code Review". Build a three-panel architecture: "Correlated error" shows a circular generator-reviewer loop, "Domain transition" shows discovered constraints becoming executable tests, and "Residual taxonomy" shows five branches after the gate. Connect all three into "Specification gate", "Automated checks", and "Residual review". Add rounded callouts: "External grounding", "Repeatable constraints", and "Targeted review". A closing hand-lettered line at the bottom: "The implication is an architecture, not a prohibition." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 ---
 
 *This is Part 4 of a four-part series, "The Specification as Quality Gate." [Part 1](/echo-chamber-ai-code-review-correlated-error) developed the correlated error hypothesis. [Part 2](/executable-specifications-cynefin-domain-transition) grounded the argument in complexity science. [Part 3](/what-specifications-cannot-catch-residual-defect-taxonomy) mapped what specifications cannot catch. This post is the complete argument.*

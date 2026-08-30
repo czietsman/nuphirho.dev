@@ -1,5 +1,7 @@
 ---
 title: "The premium has moved"
+cover_image_prompt: |
+  A full explainer infographic in the style of a colourful, cheerful, hand-drawn line-art poster on light cream paper. Title at the top in friendly hand-lettered text: "The premium has moved". Draw a before-and-after value stack. Before: "Brief", "Build", and "Judgement" bundled inside an agency retainer. After AI: "Build cost collapses" while "Direction", "Pushback", and "Knowing what good looks like" remain as a bright judgement layer. Add rounded callouts: "Execution became cheap", "Thinking did not", and "Savings alone are not differentiation". A closing hand-lettered line at the bottom: "Own the thinking, then use AI to raise the game." Bright coral, turquoise, sunny yellow, leaf green, sky blue, and warm orange accents, with dark legible lettering, rounded boxes, lively arrows, and friendly icons. Happy, welcoming, and energetic; not institutional, clinical, or ominous. No people, no photographic elements, no logos, and no watermark.
 slug: commercial-model-risk
 publish_date: 2026-06-13
 linkedin_url: https://www.linkedin.com/feed/update/urn:li:share:7470559185521438720
