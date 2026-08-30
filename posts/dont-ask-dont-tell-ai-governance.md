@@ -18,7 +18,7 @@ cover_post: |
   The upside of your AI use was captured quietly. The accountability question arrives only at the point of failure.
 
   I have written a longer piece on the arrangement, what that document actually is in practice, and what the incident scenario looks like from the individual's side.
-linkedin_url:
+linkedin_url: https://www.linkedin.com/pulse/dont-ask-tell-ai-governance-christo-zietsman-icpnf
 ---
 
 There is a way to check whether your organisation's AI governance is real or theoretical. Look at its current job postings.

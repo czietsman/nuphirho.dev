@@ -5,7 +5,7 @@ series: "aviation-specification-completeness"
 series_part: 2
 tags: [ai-governance, research]
 publish_date: 2026-07-09
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-aviation-certification-community-has-activity-7480871615862411266-0B0k
 ---
 
 The aviation certification community has been clear that its frameworks break down for AI systems. DO-178C, the standard governing aviation software certification for thirty years, requires bidirectional traceability: every requirement traces forward to a test and backward to a source requirement. A language model's behaviour is statistical rather than deterministic. You cannot trace an inference to a requirement. The framework breaks down.

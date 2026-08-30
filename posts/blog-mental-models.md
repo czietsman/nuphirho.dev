@@ -4,6 +4,7 @@ slug: "learning-the-map"
 subtitle: "How spatial thinking, competitive gaming, and the right collaborators shaped my approach to software architecture"
 tags: [career, spatial-thinking, collaboration, ai, personal]
 publish_date: 2026-03-08
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_when-i-was-a-kid-my-family-would-walk-into-activity-7434636869704982529-McGh
 ---
 
 When I was a kid, my family would walk into a big mall and within minutes I'd have a mental map of the place. Not a conscious effort. Just something that happened. I knew where we were, how things connected, and how to get back. I didn't have a word for it at the time. I just assumed everyone's brain worked this way.

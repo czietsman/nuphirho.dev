@@ -18,7 +18,7 @@ cover_post: |
   Congratulations to my fellow winners, Amanda Cruz, Eddie Monaghan, Jean Camargo and Duane Meyer, and thank you to everyone who took the time to nominate a colleague.
 
   #CyberSentriq #NOVAAwards #Disruptor
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_cybersentriq-novaawards-disruptor-activity-7495367130373279744-dc26
 ---
 
 Honoured, and genuinely humbled, to have received the Disruptor Award at CyberSentriq's NOVA Awards this quarter.

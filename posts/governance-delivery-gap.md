@@ -5,6 +5,7 @@ publish_date: 2026-05-15
 tags:
   - ai-governance
   - software-engineering
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_think-about-the-sign-up-flow-for-almost-any-activity-7460940283082432512-JL-q
 ---
 
 Think about the sign-up flow for almost any product. Full name, email address, telephone number. Simple data. But the moment you ask what you can display, to whom, and under what circumstances, you are already in contested territory.

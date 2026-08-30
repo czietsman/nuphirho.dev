@@ -5,7 +5,7 @@ series: "aviation-specification-completeness"
 series_part: 4
 tags: [ai-governance, research]
 publish_date: 2026-07-13
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_aviations-software-certification-tradition-activity-7482321167232471041-vvvt
 ---
 
 Aviation's software certification tradition has three operational lessons for AI governance practice. None requires replicating the aviation machinery. Each requires a decision about defaults.

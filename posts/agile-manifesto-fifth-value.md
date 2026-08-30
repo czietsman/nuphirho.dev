@@ -4,6 +4,7 @@ slug: agile-manifesto-fifth-value
 platform: linkedin
 tags: [ai-assisted-development, organisational-design]
 publish_date: 2026-08-17
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-agile-manifesto-was-right-in-2001-comprehensive-activity-7495004742755082240-B5zN
 ---
 
 The Agile Manifesto was right in 2001.
