@@ -5,7 +5,7 @@ series: "aviation-specification-completeness"
 series_part: 3
 tags: [ai-governance, research]
 publish_date: 2026-07-10
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_if-the-absence-of-structural-completeness-activity-7481234003728015360-9v1A
 ---
 
 If the absence of structural completeness requirements for AI governance documents were limited to one sector or one regulatory tradition, you might explain it as a jurisdiction-specific oversight.

@@ -5,6 +5,7 @@ publish_date: 2026-05-12
 tags:
   - ai-governance
   - agentic-development
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_article-14-of-the-eu-ai-act-requires-that-activity-7459853119565250561-T3zZ
 ---
 
 Article 14 of the EU AI Act requires that a human overseer of a high-risk AI system can do five things: understand the system's capacities and limitations, remain aware of automation bias, correctly interpret its output, decide not to use or disregard output, and intervene or halt the system when required.

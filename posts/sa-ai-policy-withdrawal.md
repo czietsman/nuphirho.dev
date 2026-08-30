@@ -5,6 +5,7 @@ publish_date: 2026-05-07
 tags:
   - ai-governance
   - research
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_south-africas-draft-national-artificial-activity-7458051767365357568-QbuB
 ---
 
 South Africa's Draft National Artificial Intelligence Policy was withdrawn on 26 April 2026. It had been live for sixteen days.

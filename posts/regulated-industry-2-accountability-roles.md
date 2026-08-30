@@ -5,6 +5,7 @@ publish_date: 2026-07-08
 tags:
   - ai-governance
   - research
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_every-mature-regulated-sector-has-developed-activity-7480509228357423105-j8Vx
 ---
 
 Every mature regulated sector has developed a specific role for the person who is personally accountable for governance document quality. Not the team. Not the process. A named individual with authority, a defined standard, personal liability, and an external body that can hold them to it.

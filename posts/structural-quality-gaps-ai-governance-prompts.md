@@ -4,6 +4,7 @@ slug: "structural-quality-gaps-ai-governance-prompts"
 draft: false
 tags: [ai-governance, promptq, research]
 publish_date: 2026-04-24
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_promptq-activity-7454944332538675203-8XOE
 ---
 Most AI agent governance documents in production are structurally incomplete. That is not an observation. It is an empirical finding.
 
