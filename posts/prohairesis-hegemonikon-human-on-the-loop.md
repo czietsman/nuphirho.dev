@@ -7,7 +7,7 @@ publish_date: 2026-08-19
 stop_slop: 43/50
 toulmin: Track A 5/6, Track B 5/6
 notes: "Source: #590, findings/so-novel-findings-registry.md F6 (Stoic prohairesis applied to prompt/governance design) and F7 (Stoic hegemonikon as governance-layer analogy), one pairing chosen per the issue's guidance rather than all four candidate pairings. Framed explicitly as structural echo, not lineage or prophecy, per the issue's constraint."
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-stoics-split-the-mind-into-faculties-share-7494724939732697088-6Ly1/
 ---
 
 The Stoics split the mind into faculties, and two of them map onto a distinction agentic systems engineering has been quietly rediscovering under new names. Prohairesis is the faculty of choice, the deliberate response to circumstances you did not choose and cannot control. Hegemonikon is the governing faculty, the part that coordinates everything else without performing any of it directly.

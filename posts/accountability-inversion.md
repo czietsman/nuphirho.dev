@@ -52,4 +52,3 @@ In your organisation, who is the appointed actuary for your AI
 governance documents? Who has the technical knowledge and the
 personal liability? If you cannot name that person, you have the
 inversion.
-

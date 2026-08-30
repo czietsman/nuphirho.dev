@@ -163,4 +163,3 @@ The output of this exercise was not a document. It was a set of changes: Actions
 More usefully, it was a shift in how the system is understood. The public repository is not just "readable." It is a system where an adversary already knows which APIs the pipeline calls, which token names to look for, and which workflow triggers are in play. The threat model makes that explicit in a way that intuition alone does not.
 
 The input to this exercise was a targeted prompt. The output was a documented set of specific improvements, each traceable to a finding. For a personal project, that is a proportionate exchange.
-

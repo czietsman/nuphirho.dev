@@ -2,7 +2,7 @@
 title: "What business process can AI genuinely not assist with?"
 slug: ai-category-essentially-empty
 publish_date: 2026-07-03
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_what-business-process-can-ai-genuinely-not-activity-7478697288559693824-NyVd
 tags:
   - ai-assisted-development
   - personal-practice
