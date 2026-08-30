@@ -7,6 +7,7 @@ tags:
   - ai-assisted-development
   - agentic-development
   - software-engineering
+linkedin_url: https://www.linkedin.com/pulse/wardley-right-christo-zietsman-rni6f
 ---
 
 **Simon Wardley** changed the way I think about a problem I thought I had solved.

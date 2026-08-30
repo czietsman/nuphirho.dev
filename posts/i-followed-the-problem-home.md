@@ -5,6 +5,7 @@ tags: [ai-governance, epistemology, software-verification, collaboration]
 canonical: "https://blog.nuphirho.dev/i-followed-the-problem-home"
 publish_date: 2026-04-04
 cover_image: i-followed-the-problem-home.jpg
+linkedin_url: https://www.linkedin.com/pulse/i-followed-problem-home-christo-zietsman-qhhxf
 ---
 
 [James Bach](https://www.linkedin.com/in/james-bach-6188a811/) wrote that failing to detect a problem is not a measurement of non-problemness. He was responding to me. That exchange sent me somewhere I did not expect to go.

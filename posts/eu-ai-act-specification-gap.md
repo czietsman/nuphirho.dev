@@ -3,7 +3,7 @@ title: "The document that decides your compliance has no quality standard"
 slug: "eu-ai-act-specification-gap"
 tags: [ai-governance, research]
 publish_date: 2026-07-15
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_the-eu-ai-act-uses-the-intended-purpose-specification-activity-7483045943085522944-DcI7
 ---
 
 The EU AI Act uses the intended purpose specification as the load-bearing document for high-risk classification. If your specification is ambiguous, the classification assessment is ambiguous. If it does not clearly exclude high-risk uses, you cannot self-certify that you have.

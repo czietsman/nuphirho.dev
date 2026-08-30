@@ -7,6 +7,7 @@ tags:
   - ai-governance
   - promptq
   - specification-driven-development
+linkedin_url: https://www.linkedin.com/pulse/architecture-story-inside-claude-legal-launch-christo-zietsman-bijvf
 ---
 
 **Anthropic shipped something on Tuesday** that the legal tech press covered as a legal market story. It is not a legal market story.

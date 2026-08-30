@@ -6,6 +6,7 @@ cover_image: honest-answer-how-do-i-get-ai-ethics.png
 tags:
   - ai-governance
   - personal-practice
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_someone-asked-me-how-to-get-into-ai-ethics-activity-7463476998145896448-3WLp
 ---
 
 **Someone asked me recently** how to get into AI ethics and governance. She is a good student, she said, and she is ready to do the work. She wanted to know where to start.

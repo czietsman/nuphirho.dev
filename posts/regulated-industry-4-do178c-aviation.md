@@ -2,7 +2,7 @@
 title: "Instructions versus specifications"
 slug: regulated-industry-4-do178c-aviation
 publish_date: 2026-07-01
-linkedin_url:
+linkedin_url: https://www.linkedin.com/posts/christo-zietsman_aviation-software-has-been-certified-against-activity-7477972513012998144-Z1R-
 tags:
   - ai-governance
   - research

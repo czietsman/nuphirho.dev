@@ -89,4 +89,3 @@ Here is what is missing.
 None of this is a criticism of the file or of `claude init`. The functional layer is exactly what the tool can infer from the repository: architecture, tasks, conventions, commands. The quality layer cannot be inferred. It requires deliberate authorship.
 
 The industry's ten pillars address the functional layer comprehensively. No pillar addresses the quality layer. Survey published guidance from Anthropic, OpenAI, community guides, and practitioner blogs: assessment rubric, quality gate, and internal consistency requirements appear nowhere. Contextual currency appears as a maintenance reminder, not as a structural element the document must carry.
-
