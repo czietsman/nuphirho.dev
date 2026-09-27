@@ -1,0 +1,79 @@
+# Commit this as .github/dependabot.yml (replace the GitHub starter stub).
+# Empty package-ecosystem is invalid and Dependabot will ignore the file.
+#
+# Ecosystems match czietsman/nuphirho.dev:
+#   npm        blog/          SvelteKit blog (marked, highlight.js, js-yaml, …)
+#   npm        main-site/     SvelteKit landing page
+#   npm        /              husky only
+#   gomod      /              pipeline tools
+#   github-actions  /         pinned workflow actions
+#   terraform  /terraform     Cloudflare provider
+#
+# Python experiment requirements are omitted on purpose: they are research
+# corpora, not production. Add them later with interval: monthly if wanted.
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /blog
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      blog-production:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      blog-development:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /main-site
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      main-site-production:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      main-site-development:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: terraform
+    directory: /terraform
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
