@@ -10,15 +10,15 @@
     "test": "svelte-kit sync && vitest run"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.0.0",
-    "@sveltejs/adapter-cloudflare": "^7.0.0",
-    "@sveltejs/kit": "^2.70.1",
-    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@cloudflare/workers-types": "^5.20260924.1",
+    "@sveltejs/adapter-cloudflare": "^7.2.9",
+    "@sveltejs/kit": "^2.70.3",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/svelte": "^5.4.2",
     "jsdom": "^29.1.1",
-    "svelte": "^5.0.0",
-    "vite": "^8.0.0",
+    "svelte": "^5.57.1",
+    "vite": "^8.3.1",
     "vitest": "^4.1.11"
   },
   "dependencies": {
