@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { marked } from 'marked';
 import { isPostVisible, resolveCoverImage, buildMeta } from './posts.js';
 
 describe('isPostVisible', () => {
@@ -74,5 +75,15 @@ describe('buildMeta', () => {
 	it('leaves linkedinUrl undefined when linkedin_url frontmatter is empty', () => {
 		const meta = buildMeta({ title: 'Title', publish_date: '2026-01-01', linkedin_url: '' }, 'slug', 'content');
 		expect(meta.linkedinUrl).toBeUndefined();
+	});
+});
+
+describe('heading rendering', () => {
+	it('renders inline markdown in the heading and derives a slug id from its text', () => {
+		expect(marked.parse('## Hello `World`')).toBe('<h2 id="hello-world">Hello <code>World</code></h2>\n');
+	});
+
+	it('decodes numeric entities before slugifying', () => {
+		expect(marked.parse("### Don't panic")).toBe('<h3 id="dont-panic">Don&#39;t panic</h3>\n');
 	});
 });
