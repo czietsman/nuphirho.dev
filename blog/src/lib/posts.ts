@@ -25,8 +25,8 @@ marked.use(markedHighlight({
 
 marked.use({
 	renderer: {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		heading(this: any, text: string, depth: number) {
+		heading({ tokens, depth }) {
+			const text = this.parser.parseInline(tokens);
 			const id = slugifyHeading(text);
 			return `<h${depth} id="${id}">${text}</h${depth}>\n`;
 		}
