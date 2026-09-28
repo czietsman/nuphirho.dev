@@ -1,3 +1,6 @@
+# Changelog
+# 2026-09-28  Redirect www.nuphirho.dev to nuphirho.dev with a zone redirect rule
+
 resource "cloudflare_pages_project" "main" {
   account_id        = var.cloudflare_account_id
   name              = "nuphirho-main"
