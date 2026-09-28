@@ -1,9 +1,16 @@
 # Changelog
 # 2026-06-06  Cloudflare Pages project + KV namespace for blog.nuphirho.dev
+# 2026-09-28  Preview deployments get their own KV namespace, so they no
+#             longer read or write the production visit counts
 
 resource "cloudflare_workers_kv_namespace" "blog_analytics" {
   account_id = var.cloudflare_account_id
   title      = "blog-analytics"
+}
+
+resource "cloudflare_workers_kv_namespace" "blog_analytics_preview" {
+  account_id = var.cloudflare_account_id
+  title      = "blog-analytics-preview"
 }
 
 resource "cloudflare_pages_project" "blog" {
@@ -19,7 +26,7 @@ resource "cloudflare_pages_project" "blog" {
     }
     preview {
       kv_namespaces = {
-        BLOG_ANALYTICS = cloudflare_workers_kv_namespace.blog_analytics.id
+        BLOG_ANALYTICS = cloudflare_workers_kv_namespace.blog_analytics_preview.id
       }
     }
   }
