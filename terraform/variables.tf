@@ -1,5 +1,5 @@
 variable "cloudflare_api_token" {
-  description = "Cloudflare API token with DNS edit permissions for nuphirho.dev"
+  description = "Cloudflare API token for nuphirho.dev: edits DNS records, redirect rules and email routing on the zone, and Pages projects and Workers KV on the account"
   type        = string
   sensitive   = true
 }
