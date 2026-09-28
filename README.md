@@ -58,11 +58,12 @@ The domain is the only cost.
 
 | Workflow | Trigger | Purpose |
 |---|---|---|
-| `blog.yml` | Post or blog changes; daily at 05:00 UTC; manual dispatch | Build and deploy the blog, then report the result to Telegram |
-| `main-site.yml` | Push to main, paths: `main-site/**` | Build and deploy main site to Cloudflare Pages |
-| `terraform.yml` | Push/PR to main, paths: `terraform/**` | Plan and apply Cloudflare infrastructure |
+| `blog.yml` | Post or blog changes; daily at 05:00 UTC; manual dispatch | Run the blog unit tests, build and deploy the blog, then report the result to Telegram. Dependabot pull requests skip the preview deploy because they cannot read deployment secrets |
+| `main-site.yml` | Push/PR to main, paths: `main-site/**` | Run the main site unit tests and build it; pushes to main also deploy to Cloudflare Pages |
+| `terraform.yml` | Push/PR to main, paths: `terraform/**` | Plan and apply Cloudflare infrastructure; the plan is posted to the pull request only when a plan ran |
 | `validate-pr.yml` | Pull requests | Run Go tests, linters, mutation testing |
 | `notify.yml` | Workflow dispatch | Send manual Telegram notification |
+| `sync-notify.yml` | Creation of a `sync/**` branch by `github-actions[bot]` | Send a Telegram notification with the branch and create-PR links |
 
 ## Development setup
 
@@ -92,6 +93,8 @@ bash tests/test-secret-patterns.sh
 cd blog && npm install && npm run dev
 cd main-site && npm install && npm run dev
 ```
+
+Run each app's unit tests with `npm test` in `blog/` or `main-site/`. CI runs them on every pull request that touches the app.
 
 Both apps use `@sveltejs/adapter-cloudflare` and prerender all pages at build time.
 
