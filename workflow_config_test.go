@@ -18,7 +18,7 @@ func TestWorkflowActionPins(t *testing.T) {
 
 	checkContains(t, ".github/workflows/terraform.yml", []string{
 		"actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1",
-		"actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8",
+		"actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0",
 	})
 }
 
