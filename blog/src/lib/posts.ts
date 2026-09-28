@@ -90,14 +90,30 @@ function buildToc(content: string): TocEntry[] {
 		.filter((t): t is { type: 'heading'; depth: number; text: string; raw: string } =>
 			t.type === 'heading' && (t as { depth: number }).depth === 2
 		)
-		.map((t) => ({
-			id: slugifyHeading(t.text),
-			text: t.text,
-		}));
+		.map((t) => {
+			const html = marked.parseInline(t.text) as string;
+			return { id: slugifyHeading(html), text: plainText(html) };
+		});
+}
+
+const NAMED_ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
+
+function plainText(html: string): string {
+	return html
+		.replace(/<[^>]+>/g, '')
+		.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+		.replace(/&([a-z]+);/g, (entity, name) => NAMED_ENTITIES[name] ?? entity);
 }
 
 function stripManualSeriesNav(html: string): string {
 	return html.replace(/<p><em>Series:[\s\S]*?<\/p>/g, '');
+}
+
+export function renderMarkdown(content: string): { html: string; toc: TocEntry[] } {
+	return {
+		html: stripManualSeriesNav(marked.parse(convertEmbeds(content)) as string),
+		toc: buildToc(content),
+	};
 }
 
 const SITE_ORIGIN = 'https://blog.nuphirho.dev';
@@ -198,8 +214,7 @@ export async function getPost(slug: string): Promise<Post | null> {
 
 	return {
 		...target.meta,
-		html: stripManualSeriesNav(marked.parse(convertEmbeds(target.content)) as string),
-		toc: buildToc(target.content),
+		...renderMarkdown(target.content),
 		prevInSeries,
 		nextInSeries,
 	};
