@@ -21,7 +21,7 @@ The repository contains:
   - **cmd/notify** -- Send Telegram notifications
 - **internal/** -- Shared Go packages
   - **internal/frontmatter** -- Post metadata schema and parsing
-- **terraform/** -- Cloudflare infrastructure as code (DNS, Pages projects, KV)
+- **terraform/** -- Cloudflare infrastructure as code (DNS, Pages projects, KV, email routing, www redirect)
 - **.github/workflows/** -- GitHub Actions CI/CD pipelines
 - **prompts/** -- Reviewed prompt material, including dependency review briefs
 - **specs/** -- BDD feature files describing pipeline behaviour

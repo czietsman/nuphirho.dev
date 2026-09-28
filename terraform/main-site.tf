@@ -15,3 +15,27 @@ resource "cloudflare_pages_domain" "main_www" {
   project_name = cloudflare_pages_project.main.name
   name         = "www.nuphirho.dev"
 }
+
+resource "cloudflare_ruleset" "www_redirect" {
+  zone_id     = data.cloudflare_zone.nuphirho.id
+  name        = "Redirect www to apex"
+  description = "Permanently redirect www.nuphirho.dev to nuphirho.dev, keeping path and query string"
+  kind        = "zone"
+  phase       = "http_request_dynamic_redirect"
+
+  rules = [{
+    ref         = "www_to_apex"
+    description = "www.nuphirho.dev to nuphirho.dev"
+    expression  = "(http.host eq \"www.nuphirho.dev\")"
+    action      = "redirect"
+    action_parameters = {
+      from_value = {
+        status_code           = 301
+        preserve_query_string = true
+        target_url = {
+          expression = "concat(\"https://nuphirho.dev\", http.request.uri.path)"
+        }
+      }
+    }
+  }]
+}
