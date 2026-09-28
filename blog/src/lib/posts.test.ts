@@ -136,6 +136,17 @@ describe('renderMarkdown', () => {
 		expect(toc.map((entry) => entry.id)).toEqual(anchors);
 	});
 
+	it('drops inline HTML tags from table of contents text and anchor ids', () => {
+		const { html, toc } = renderMarkdown('## Hello <span class="x">world</span>');
+		expect(toc).toEqual([{ id: 'hello-world', text: 'Hello world' }]);
+		expect(html).toContain('<h2 id="hello-world">');
+	});
+
+	it('limits anchor ids to lowercase letters, digits and hyphens', () => {
+		const { toc } = renderMarkdown(['## a <scr<script>ipt> b', '## "Quotes" & <em>tags</em>', '## Émigré café'].join('\n\n'));
+		for (const entry of toc) expect(entry.id).toMatch(/^[a-z0-9-]*$/);
+	});
+
 	it('shows table of contents text without markdown syntax or HTML entities', () => {
 		const { toc } = renderMarkdown(
 			['## Using `npm ci` in CI', '## Read [the docs](https://example.com) first', "## Don't panic", '## Q&A'].join('\n\n')
