@@ -1,14 +1,21 @@
 import matter from 'gray-matter';
-import { marked } from 'marked';
+import { marked, type Token, type Tokens } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 
+// Plain text is read from the inline tokens rather than stripped out of rendered HTML.
+function inlineText(tokens: Token[]): string {
+	return tokens
+		.map((t) => {
+			if (t.type === 'html') return '';
+			if ('tokens' in t && t.tokens) return inlineText(t.tokens);
+			return 'text' in t ? t.text : '';
+		})
+		.join('');
+}
+
 function slugifyHeading(text: string): string {
 	return text
-		.replace(/<[^>]+>/g, '')                                          // strip HTML tags
-		.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))  // decode numeric entities
-		.replace(/&[a-z]+;/g, '')                                         // strip remaining named entities
-		.replace(/[`*_~[\]()]/g, '')                                      // strip inline markdown
 		.toLowerCase()
 		.replace(/[^a-z0-9\s-]/g, '')
 		.trim()
@@ -26,9 +33,8 @@ marked.use(markedHighlight({
 marked.use({
 	renderer: {
 		heading({ tokens, depth }) {
-			const text = this.parser.parseInline(tokens);
-			const id = slugifyHeading(text);
-			return `<h${depth} id="${id}">${text}</h${depth}>\n`;
+			const id = slugifyHeading(inlineText(tokens));
+			return `<h${depth} id="${id}">${this.parser.parseInline(tokens)}</h${depth}>\n`;
 		}
 	}
 });
@@ -87,22 +93,11 @@ function readingTimeMinutes(content: string): number {
 function buildToc(content: string): TocEntry[] {
 	const tokens = marked.lexer(content);
 	return tokens
-		.filter((t): t is { type: 'heading'; depth: number; text: string; raw: string } =>
-			t.type === 'heading' && (t as { depth: number }).depth === 2
-		)
+		.filter((t): t is Tokens.Heading => t.type === 'heading' && t.depth === 2)
 		.map((t) => {
-			const html = marked.parseInline(t.text) as string;
-			return { id: slugifyHeading(html), text: plainText(html) };
+			const text = inlineText(t.tokens);
+			return { id: slugifyHeading(text), text };
 		});
-}
-
-const NAMED_ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
-
-function plainText(html: string): string {
-	return html
-		.replace(/<[^>]+>/g, '')
-		.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
-		.replace(/&([a-z]+);/g, (entity, name) => NAMED_ENTITIES[name] ?? entity);
 }
 
 function stripManualSeriesNav(html: string): string {
