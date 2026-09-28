@@ -144,3 +144,62 @@ func readFile(t *testing.T, path string) string {
 	}
 	return string(content)
 }
+
+func TestBlogWorkflowRunsUnitTestsBeforeBuilding(t *testing.T) {
+	t.Parallel()
+
+	content := readFile(t, ".github/workflows/blog.yml")
+	checkOrder(t, ".github/workflows/blog.yml", content, []string{
+		"run: npm ci",
+		"- name: Test\n        run: npm test\n        working-directory: blog",
+		"run: npm run build",
+	})
+}
+
+func TestBlogPreviewDeploySkipsDependabot(t *testing.T) {
+	t.Parallel()
+
+	checkContains(t, ".github/workflows/blog.yml", []string{
+		"- name: Deploy to Cloudflare Pages\n        if: github.actor != 'dependabot[bot]'",
+	})
+}
+
+func TestMainSiteWorkflowValidatesPullRequests(t *testing.T) {
+	t.Parallel()
+
+	content := readFile(t, ".github/workflows/main-site.yml")
+	checkContains(t, ".github/workflows/main-site.yml", []string{
+		"pull_request:\n    branches: [main]\n    paths: ['main-site/**']",
+		"- name: Deploy to Cloudflare Pages\n        if: github.event_name != 'pull_request'",
+	})
+	checkOrder(t, ".github/workflows/main-site.yml", content, []string{
+		"run: npm ci",
+		"- name: Test\n        run: npm test\n        working-directory: main-site",
+		"run: npm run build",
+		"- name: Deploy to Cloudflare Pages",
+	})
+}
+
+func TestTerraformPlanCommentRequiresAPlan(t *testing.T) {
+	t.Parallel()
+
+	checkContains(t, ".github/workflows/terraform.yml", []string{
+		"- name: Comment PR with plan\n        if: github.event_name == 'pull_request' && always() && steps.plan.outcome == 'success'",
+	})
+}
+
+func checkOrder(t *testing.T, path, content string, fragments []string) {
+	t.Helper()
+
+	last := -1
+	for _, fragment := range fragments {
+		i := strings.Index(content, fragment)
+		if i < 0 {
+			t.Fatalf("%s missing %q", path, fragment)
+		}
+		if i < last {
+			t.Fatalf("%s has %q out of order", path, fragment)
+		}
+		last = i
+	}
+}
