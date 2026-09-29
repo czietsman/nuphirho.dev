@@ -1,0 +1,4 @@
+Contact: mailto:contact@nuphirho.dev
+Expires: 2027-09-29T00:00:00Z
+Preferred-Languages: en
+Canonical: https://blog.nuphirho.dev/.well-known/security.txt
