@@ -69,7 +69,9 @@ jobs:
       - name: Build notification tool
         if: always() && github.event_name != 'pull_request'
         continue-on-error: true
-        run: go build -o notify ./cmd/notify/
+        run: |
+          go build -o notify ./cmd/notify/
+          go build -o deploy-summary ./cmd/deploy-summary/
 
       - name: Send deployment notification
         if: always() && github.event_name != 'pull_request'
@@ -80,4 +82,4 @@ jobs:
           DEPLOY_STATUS: ${{ job.status }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          ./notify "Blog deployment ${DEPLOY_STATUS}: ${RUN_URL}"
+          ./notify "$(./deploy-summary -status "${DEPLOY_STATUS}" -run-url "${RUN_URL}" posts)"
