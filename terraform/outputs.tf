@@ -4,16 +4,16 @@ output "zone_id" {
 }
 
 output "blog_record" {
-  description = "Blog subdomain DNS record"
-  value       = cloudflare_record.blog.hostname
+  description = "Blog subdomain DNS record name"
+  value       = cloudflare_dns_record.blog.name
 }
 
 output "root_record" {
-  description = "Root domain CNAME record for Cloudflare Pages"
-  value       = cloudflare_record.root.hostname
+  description = "Root domain CNAME record name for Cloudflare Pages"
+  value       = cloudflare_dns_record.root.name
 }
 
 output "www_record" {
-  description = "www subdomain CNAME record"
-  value       = cloudflare_record.www.hostname
+  description = "www subdomain CNAME record name"
+  value       = cloudflare_dns_record.www.name
 }

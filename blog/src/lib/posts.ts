@@ -1,14 +1,21 @@
 import matter from 'gray-matter';
-import { marked } from 'marked';
+import { marked, type Token, type Tokens } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 
+// Plain text is read from the inline tokens rather than stripped out of rendered HTML.
+function inlineText(tokens: Token[]): string {
+	return tokens
+		.map((t) => {
+			if (t.type === 'html') return '';
+			if ('tokens' in t && t.tokens) return inlineText(t.tokens);
+			return 'text' in t ? t.text : '';
+		})
+		.join('');
+}
+
 function slugifyHeading(text: string): string {
 	return text
-		.replace(/<[^>]+>/g, '')                                          // strip HTML tags
-		.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))  // decode numeric entities
-		.replace(/&[a-z]+;/g, '')                                         // strip remaining named entities
-		.replace(/[`*_~[\]()]/g, '')                                      // strip inline markdown
 		.toLowerCase()
 		.replace(/[^a-z0-9\s-]/g, '')
 		.trim()
@@ -25,10 +32,9 @@ marked.use(markedHighlight({
 
 marked.use({
 	renderer: {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		heading(this: any, text: string, depth: number) {
-			const id = slugifyHeading(text);
-			return `<h${depth} id="${id}">${text}</h${depth}>\n`;
+		heading({ tokens, depth }) {
+			const id = slugifyHeading(inlineText(tokens));
+			return `<h${depth} id="${id}">${this.parser.parseInline(tokens)}</h${depth}>\n`;
 		}
 	}
 });
@@ -87,17 +93,22 @@ function readingTimeMinutes(content: string): number {
 function buildToc(content: string): TocEntry[] {
 	const tokens = marked.lexer(content);
 	return tokens
-		.filter((t): t is { type: 'heading'; depth: number; text: string; raw: string } =>
-			t.type === 'heading' && (t as { depth: number }).depth === 2
-		)
-		.map((t) => ({
-			id: slugifyHeading(t.text),
-			text: t.text,
-		}));
+		.filter((t): t is Tokens.Heading => t.type === 'heading' && t.depth === 2)
+		.map((t) => {
+			const text = inlineText(t.tokens);
+			return { id: slugifyHeading(text), text };
+		});
 }
 
 function stripManualSeriesNav(html: string): string {
 	return html.replace(/<p><em>Series:[\s\S]*?<\/p>/g, '');
+}
+
+export function renderMarkdown(content: string): { html: string; toc: TocEntry[] } {
+	return {
+		html: stripManualSeriesNav(marked.parse(convertEmbeds(content)) as string),
+		toc: buildToc(content),
+	};
 }
 
 const SITE_ORIGIN = 'https://blog.nuphirho.dev';
@@ -198,8 +209,7 @@ export async function getPost(slug: string): Promise<Post | null> {
 
 	return {
 		...target.meta,
-		html: stripManualSeriesNav(marked.parse(convertEmbeds(target.content)) as string),
-		toc: buildToc(target.content),
+		...renderMarkdown(target.content),
 		prevInSeries,
 		nextInSeries,
 	};

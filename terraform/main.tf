@@ -8,14 +8,16 @@
 # 2026-06-09  Switch blog CNAME to Cloudflare Pages (testing passed)
 # 2026-03-26  Add MX, SPF, DMARC for Cloudflare Email Routing
 # 2026-06-26  Switch root and www DNS from GitHub Pages to Cloudflare Pages (nuphirho-main)
+# 2026-09-28  Migrate to Cloudflare provider v5: cloudflare_record becomes
+#             cloudflare_dns_record (moved blocks), block syntax becomes attributes
 
 terraform {
-  required_version = ">= 1.0"
+  required_version = ">= 1.8"
 
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.0"
+      version = "~> 5.26"
     }
   }
 
@@ -40,11 +42,13 @@ provider "cloudflare" {
 }
 
 data "cloudflare_zone" "nuphirho" {
-  name = "nuphirho.dev"
+  filter = {
+    name = "nuphirho.dev"
+  }
 }
 
 # Blog subdomain CNAME to Cloudflare Pages
-resource "cloudflare_record" "blog" {
+resource "cloudflare_dns_record" "blog" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "blog"
   content = "nuphirho-blog.pages.dev"
@@ -53,8 +57,13 @@ resource "cloudflare_record" "blog" {
   ttl     = 1 # Auto when proxied
 }
 
+moved {
+  from = cloudflare_record.blog
+  to   = cloudflare_dns_record.blog
+}
+
 # Root domain CNAME to Cloudflare Pages
-resource "cloudflare_record" "root" {
+resource "cloudflare_dns_record" "root" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "@"
   content = "nuphirho-main.pages.dev"
@@ -63,14 +72,24 @@ resource "cloudflare_record" "root" {
   ttl     = 1 # Auto when proxied
 }
 
+moved {
+  from = cloudflare_record.root
+  to   = cloudflare_dns_record.root
+}
+
 # www CNAME to Cloudflare Pages
-resource "cloudflare_record" "www" {
+resource "cloudflare_dns_record" "www" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "www"
   content = "nuphirho-main.pages.dev"
   type    = "CNAME"
   proxied = true
   ttl     = 1 # Auto when proxied
+}
+
+moved {
+  from = cloudflare_record.www
+  to   = cloudflare_dns_record.www
 }
 
 # ── Email Routing (Cloudflare) ────────────────────────────────────────
@@ -84,7 +103,7 @@ locals {
   }
 }
 
-resource "cloudflare_record" "mx" {
+resource "cloudflare_dns_record" "mx" {
   for_each = local.cloudflare_mx_records
 
   zone_id  = data.cloudflare_zone.nuphirho.id
@@ -96,8 +115,13 @@ resource "cloudflare_record" "mx" {
   ttl      = 1
 }
 
+moved {
+  from = cloudflare_record.mx
+  to   = cloudflare_dns_record.mx
+}
+
 # SPF record authorising Cloudflare Email Routing
-resource "cloudflare_record" "spf" {
+resource "cloudflare_dns_record" "spf" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "@"
   content = "v=spf1 include:_spf.mx.cloudflare.net ~all"
@@ -106,14 +130,24 @@ resource "cloudflare_record" "spf" {
   ttl     = 1
 }
 
+moved {
+  from = cloudflare_record.spf
+  to   = cloudflare_dns_record.spf
+}
+
 # DMARC policy (quarantine; upgrade to reject after monitoring)
-resource "cloudflare_record" "dmarc" {
+resource "cloudflare_dns_record" "dmarc" {
   zone_id = data.cloudflare_zone.nuphirho.id
   name    = "_dmarc"
   content = "v=DMARC1; p=quarantine; rua=mailto:christo@nuphirho.dev"
   type    = "TXT"
   proxied = false
   ttl     = 1
+}
+
+moved {
+  from = cloudflare_record.dmarc
+  to   = cloudflare_dns_record.dmarc
 }
 
 # ── Email Routing Rules ───────────────────────────────────────
@@ -132,14 +166,14 @@ resource "cloudflare_email_routing_rule" "users" {
   name    = "Forward ${each.key}@nuphirho.dev"
   enabled = true
 
-  matcher {
+  matchers = [{
     type  = "literal"
     field = "to"
     value = "${each.key}@nuphirho.dev"
-  }
+  }]
 
-  action {
+  actions = [{
     type  = "forward"
     value = [each.value]
-  }
+  }]
 }

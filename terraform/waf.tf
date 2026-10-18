@@ -7,7 +7,7 @@ resource "cloudflare_ruleset" "public_probe_blocking" {
   kind        = "zone"
   phase       = "http_request_firewall_custom"
 
-  rules {
+  rules = [{
     ref         = "block_known_public_site_probes"
     description = "Block environment, Git, and WordPress probes on apex and www"
     action      = "block"
@@ -20,5 +20,5 @@ resource "cloudflare_ruleset" "public_probe_blocking" {
         starts_with(lower(http.request.uri.path), "/wp-admin/")
       ))
     EOT
-  }
+  }]
 }
