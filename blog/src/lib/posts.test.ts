@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { isPostVisible, resolveCoverImage, buildMeta } from './posts.js';
+import { marked } from 'marked';
+import { isPostVisible, resolveCoverImage, buildMeta, renderMarkdown } from './posts.js';
 
 describe('isPostVisible', () => {
 	const today = '2026-06-25';
@@ -74,5 +75,87 @@ describe('buildMeta', () => {
 	it('leaves linkedinUrl undefined when linkedin_url frontmatter is empty', () => {
 		const meta = buildMeta({ title: 'Title', publish_date: '2026-01-01', linkedin_url: '' }, 'slug', 'content');
 		expect(meta.linkedinUrl).toBeUndefined();
+	});
+});
+
+describe('heading rendering', () => {
+	it('renders inline markdown in the heading and derives a slug id from its text', () => {
+		expect(marked.parse('## Hello `World`')).toBe('<h2 id="hello-world">Hello <code>World</code></h2>\n');
+	});
+
+	it('decodes numeric entities before slugifying', () => {
+		expect(marked.parse("### Don't panic")).toBe('<h3 id="dont-panic">Don&#39;t panic</h3>\n');
+	});
+});
+
+describe('renderMarkdown', () => {
+	it('converts an embed line into a linked figure', () => {
+		const { html } = renderMarkdown('%[https://twitter.com/example/status/1]');
+		expect(html).toContain(
+			'<figure class="embed"><a href="https://twitter.com/example/status/1" rel="noopener noreferrer" target="_blank">https://twitter.com/example/status/1</a></figure>'
+		);
+	});
+
+	it('removes a manually written series navigation paragraph', () => {
+		const { html } = renderMarkdown('*Series: Part 1 of 3*\n\nBody text.');
+		expect(html).not.toContain('Series:');
+		expect(html).toContain('<p>Body text.</p>');
+	});
+
+	it('highlights fenced code in a known language', () => {
+		const { html } = renderMarkdown('```typescript\nconst x = 1;\n```');
+		expect(html).toContain('<code class="hljs language-typescript">');
+		expect(html).toContain('<span class="hljs-keyword">const</span>');
+	});
+
+	it('escapes fenced code in an unknown language instead of failing', () => {
+		const { html } = renderMarkdown('```nosuchlanguage\n<script>alert(1)</script>\n```');
+		expect(html).toContain('&lt;script&gt;');
+		expect(html).not.toContain('<script>');
+	});
+
+	it('lists only second-level headings in the table of contents', () => {
+		const { toc } = renderMarkdown('# Title\n\n## First\n\n### Nested\n\n## Second');
+		expect(toc).toEqual([
+			{ id: 'first', text: 'First' },
+			{ id: 'second', text: 'Second' }
+		]);
+	});
+
+	it('gives every table of contents entry an id that matches a rendered heading anchor', () => {
+		const { html, toc } = renderMarkdown(
+			[
+				'## Using `npm ci` in CI',
+				'## Read [the docs](https://example.com) first',
+				'## *Emphasis* and **strong**',
+				"## Don't panic",
+				'## Q&A'
+			].join('\n\n')
+		);
+		const anchors = [...html.matchAll(/<h2 id="([^"]*)">/g)].map((m) => m[1]);
+		expect(toc.map((entry) => entry.id)).toEqual(anchors);
+	});
+
+	it('drops inline HTML tags from table of contents text and anchor ids', () => {
+		const { html, toc } = renderMarkdown('## Hello <span class="x">world</span>');
+		expect(toc).toEqual([{ id: 'hello-world', text: 'Hello world' }]);
+		expect(html).toContain('<h2 id="hello-world">');
+	});
+
+	it('limits anchor ids to lowercase letters, digits and hyphens', () => {
+		const { toc } = renderMarkdown(['## a <scr<script>ipt> b', '## "Quotes" & <em>tags</em>', '## Émigré café'].join('\n\n'));
+		for (const entry of toc) expect(entry.id).toMatch(/^[a-z0-9-]*$/);
+	});
+
+	it('shows table of contents text without markdown syntax or HTML entities', () => {
+		const { toc } = renderMarkdown(
+			['## Using `npm ci` in CI', '## Read [the docs](https://example.com) first', "## Don't panic", '## Q&A'].join('\n\n')
+		);
+		expect(toc.map((entry) => entry.text)).toEqual([
+			'Using npm ci in CI',
+			'Read the docs first',
+			"Don't panic",
+			'Q&A'
+		]);
 	});
 });
