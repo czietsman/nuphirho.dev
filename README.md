@@ -147,3 +147,35 @@ Required secrets:
 ## Licence
 
 Content (posts, documentation) is copyright Christo Zietsman. Code (Terraform, workflows, scripts) is MIT licensed.
+
+### Public site WAF
+
+`terraform/waf.tf` manages one zone entry point in
+`http_request_firewall_custom`, with one blocking rule for `nuphirho.dev`
+and `www.nuphirho.dev`. It targets only root-level `.env` files and dotted
+variants, Git metadata, and WordPress login, admin, and XML-RPC probes.
+Other paths and subdomains remain outside this rule, including authentication,
+API endpoints, `/.well-known`, static assets, and unknown routes.
+
+The rule uses exact sets, `lower`, and `starts_with`, with no regular expressions
+or paid managed rules. See [Cloudflare custom rule availability](https://developers.cloudflare.com/waf/custom-rules/)
+and [Terraform configuration and permissions](https://developers.cloudflare.com/terraform/additional-configurations/waf-custom-rules/).
+The existing `CLOUDFLARE_API_TOKEN` needs Zone WAF Edit for this zone
+(the API documentation calls this `Zone WAF Write`), alongside its existing
+permissions. No new secret is required. The token's current permissions have
+not been verified locally.
+
+Before rollout, confirm that no other dashboard or Terraform resource owns this
+zone's custom firewall phase. If an entry point already exists, import and
+preserve its rules before planning. Review the authenticated CI plan before
+merging: this change should add one ruleset without changing DNS, Pages, or
+Auth0 resources. Merging a change under `terraform/` to `main` triggers the
+existing workflow's automatic apply. Do not merge before that review.
+
+Run the local predicate safety checks with `cd terraform && go test waf_test.go`,
+then `terraform init -backend=false`, `terraform fmt -check`, and
+`terraform validate`. The local checks cover host boundaries, probe paths, and
+legitimate routes; the Cloudflare API validates the expression on deployment.
+After applying, check public pages and authentication, confirm a probe receives
+403, and inspect Security Events. To roll back, set the rule's `enabled` to
+`false`, review the plan, and apply through the same workflow.
