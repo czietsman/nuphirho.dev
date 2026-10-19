@@ -42,11 +42,12 @@ func TestBlogDeploymentReportsStatusToTelegram(t *testing.T) {
 	checkContains(t, ".github/workflows/blog.yml", []string{
 		"name: Build notification tool",
 		"go build -o notify ./cmd/notify/",
+		"go build -o deploy-summary ./cmd/deploy-summary/",
 		"if: always() && github.event_name != 'pull_request'",
 		"TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}",
 		"TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}",
 		"DEPLOY_STATUS: ${{ job.status }}",
-		"./notify \"Blog deployment ${DEPLOY_STATUS}: ${RUN_URL}\"",
+		"./notify \"$(./deploy-summary -status \"${DEPLOY_STATUS}\" -run-url \"${RUN_URL}\" posts)\"",
 	})
 }
 
