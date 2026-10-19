@@ -19,8 +19,8 @@ Feature: Publish only to the first-party blog
   Scenario: A production deployment reports its status
     Given a production blog deployment was attempted
     When the blog deployment workflow finishes
-    Then Telegram receives the final job status
-    And the message includes the GitHub Actions run URL
+    Then Telegram receives the posts that went live today and the queued posts
+    And a deployment that did not succeed includes the GitHub Actions run URL
 
   Scenario: A pull-request preview does not send a Telegram notification
     Given a pull-request blog preview was attempted
