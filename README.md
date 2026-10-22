@@ -179,3 +179,7 @@ legitimate routes; the Cloudflare API validates the expression on deployment.
 After applying, check public pages and authentication, confirm a probe receives
 403, and inspect Security Events. To roll back, set the rule's `enabled` to
 `false`, review the plan, and apply through the same workflow.
+
+### Node.js security baseline
+
+Local development uses Node.js 24.22.1 or a newer patched 24.x release (`.node-version`). Build and deployment workflows pin Node.js 22.23.4, preserving their existing release line while including the 21 October 2026 security fixes. Cloudflare Pages and Workers serve the deployed apps; these Node.js versions cover build and deployment tooling.
