@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
 
@@ -35,7 +35,7 @@
 	});
 
 	$effect(() => {
-		const path = $page.url.pathname;
+		const path = page.url.pathname;
 		fetch('/api/stats', {
 			method: 'POST',
 			headers: { 'content-type': 'application/json' },
@@ -48,7 +48,7 @@
 	<meta property="og:site_name" content="nuphirho" />
 	<meta property="og:locale" content="en_GB" />
 	<meta name="twitter:card" content="summary" />
-	<link rel="canonical" href="https://blog.nuphirho.dev{$page.url.pathname}" />
+	<link rel="canonical" href="https://blog.nuphirho.dev{page.url.pathname}" />
 	<link rel="alternate" type="application/rss+xml" title="nuphirho" href="https://blog.nuphirho.dev/rss.xml" />
 </svelte:head>
 
@@ -71,9 +71,9 @@
 		</button>
 
 		<nav class="site-nav" class:active={menuOpen} aria-label="Main navigation">
-			<a href="/about" aria-current={$page.url.pathname === '/about' ? 'page' : undefined} onclick={closeMenu}>This Blog</a>
+			<a href="/about" aria-current={page.url.pathname === '/about' ? 'page' : undefined} onclick={closeMenu}>This Blog</a>
 			<a href="https://nuphirho.dev/words-of-meaning" onclick={closeMenu}>Words</a>
-			<a href="/" aria-current={$page.url.pathname === '/' ? 'page' : undefined} onclick={closeMenu}>Posts</a>
+			<a href="/" aria-current={page.url.pathname === '/' ? 'page' : undefined} onclick={closeMenu}>Posts</a>
 		</nav>
 
 		<button id="theme-toggle" class="theme-toggle" type="button" onclick={toggle}
