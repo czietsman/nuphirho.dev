@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Roadmap from '$lib/Roadmap.svelte';
-	import calendarData from '$lib/calendar-data.json';
+	import Roadmap from '#lib/Roadmap.svelte';
+	import calendarData from '#lib/calendar-data.json';
 </script>
 
 <svelte:head>

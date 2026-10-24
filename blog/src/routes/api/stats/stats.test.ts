@@ -1,5 +1,17 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { POST } from './+server';
+
+// adapter-cloudflare 8 no longer passes platform.env per request; bindings
+// are read from cloudflare:workers, so the stand-in KV is installed there.
+const bindings = vi.hoisted(() => ({ env: {} as { BLOG_ANALYTICS?: unknown } }));
+vi.mock('cloudflare:workers', () => ({
+	get env() {
+		return bindings.env;
+	}
+}));
+afterEach(() => {
+	bindings.env = {};
+});
 
 // A stand-in for the BLOG_ANALYTICS KV namespace.
 function fakeKV(initial: Record<string, string> = {}) {
@@ -16,7 +28,8 @@ function fakeKV(initial: Record<string, string> = {}) {
 async function post(host: string, kv: ReturnType<typeof fakeKV>, path = '/some-post') {
 	const url = new URL(`https://${host}/api/stats`);
 	const request = new Request(url, { method: 'POST', body: JSON.stringify({ path }) });
-	const response = await POST({ request, url, platform: { env: { BLOG_ANALYTICS: kv } } } as never);
+	bindings.env = { BLOG_ANALYTICS: kv };
+	const response = await POST({ request, url } as never);
 	return (await response.json()) as { count?: number; error?: string };
 }
 

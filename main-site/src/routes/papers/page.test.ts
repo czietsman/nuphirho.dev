@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { describe, expect, it } from 'vitest';
-import type { ExternalPaper, ProgrammePaper } from '$lib/papers.js';
+import type { ExternalPaper, ProgrammePaper } from '#lib/papers.ts';
 import Page from './+page.svelte';
 
 const programmePaper: ProgrammePaper = {
