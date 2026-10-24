@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { papers, type Paper } from '$lib/papers.js';
+	import { papers, type Paper } from '#lib/papers.ts';
 
 	interface Erratum {
 		date: string;

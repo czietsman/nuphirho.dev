@@ -1,5 +1,5 @@
 import type { EntryGenerator } from './$types';
-import { getAllPosts } from '$lib/posts';
+import { getAllPosts } from '#lib/posts.ts';
 
 export const prerender = true;
 

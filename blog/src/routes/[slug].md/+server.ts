@@ -1,5 +1,5 @@
 import type { RequestHandler, EntryGenerator } from './$types';
-import { getAllPosts, getPostMarkdown } from '$lib/posts';
+import { getAllPosts, getPostMarkdown } from '#lib/posts.ts';
 import { error } from '@sveltejs/kit';
 
 export const prerender = true;
