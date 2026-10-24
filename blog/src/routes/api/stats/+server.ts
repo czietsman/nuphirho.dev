@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { env } from 'cloudflare:workers';
 
 // Only the canonical host counts. The Pages alias and every preview deployment
 // serve this same endpoint, and a visit there must not move the production
@@ -9,7 +10,7 @@ const COUNTING_HOST = 'blog.nuphirho.dev';
 // Counts are approximate by design. KV has no atomic increment, so two visits
 // landing at the same moment can record one. At this blog's traffic that is
 // rare and harmless, and not worth a separate datastore.
-export const POST: RequestHandler = async ({ request, url, platform }) => {
+export const POST: RequestHandler = async ({ request, url }) => {
 	let path: unknown;
 	try {
 		({ path } = await request.json());
@@ -21,7 +22,9 @@ export const POST: RequestHandler = async ({ request, url, platform }) => {
 		return json({ error: 'invalid path' }, { status: 400 });
 	}
 
-	const kv = platform?.env?.BLOG_ANALYTICS;
+	// adapter-cloudflare 8 no longer passes platform.env; bindings come from
+	// cloudflare:workers.
+	const kv = (env as { BLOG_ANALYTICS?: KVNamespace }).BLOG_ANALYTICS;
 	if (!kv) {
 		return json({ count: 0 });
 	}

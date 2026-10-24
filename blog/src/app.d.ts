@@ -1,10 +1,6 @@
 declare global {
 	namespace App {
-		interface Platform {
-			env: {
-				BLOG_ANALYTICS: KVNamespace;
-			};
-		}
+		// interface Platform {}
 	}
 }
 

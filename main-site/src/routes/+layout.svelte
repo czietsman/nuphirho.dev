@@ -1,13 +1,13 @@
 <script lang="ts">
 	import '../app.css';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { isBusinessCardPath } from './business-card/card.js';
 
 	const STORAGE_KEY = 'nuphirho-theme';
 	let theme = $state<'light' | 'dark'>('light');
 	let menuOpen = $state(false);
-	let immersive = $derived(isBusinessCardPath($page.url.pathname));
+	let immersive = $derived(isBusinessCardPath(page.url.pathname));
 
 	let { children } = $props();
 
@@ -43,7 +43,7 @@
 	<meta property="og:site_name" content="nuphirho" />
 	<meta property="og:locale" content="en_GB" />
 	<meta name="twitter:card" content="summary" />
-	<link rel="canonical" href="https://nuphirho.dev{$page.url.pathname}" />
+	<link rel="canonical" href="https://nuphirho.dev{page.url.pathname}" />
 	{@html `<script type="application/ld+json">${websiteJsonLd}</script>`}
 </svelte:head>
 
@@ -68,12 +68,12 @@
 		</button>
 
 		<nav class="site-nav" class:active={menuOpen} id="site-nav" aria-label="Main navigation">
-			<a href="/about" aria-current={$page.url.pathname === '/about' ? 'page' : undefined} onclick={closeMenu}>Who am I</a>
-			<a href="/words-of-meaning" aria-current={$page.url.pathname === '/words-of-meaning' ? 'page' : undefined} onclick={closeMenu}>Words</a>
+			<a href="/about" aria-current={page.url.pathname === '/about' ? 'page' : undefined} onclick={closeMenu}>Who am I</a>
+			<a href="/words-of-meaning" aria-current={page.url.pathname === '/words-of-meaning' ? 'page' : undefined} onclick={closeMenu}>Words</a>
 			<a href="https://promptq.ai" target="_blank" rel="noopener">PromptQ</a>
 			<a href="https://blog.nuphirho.dev">Blog</a>
-			<a href="/novel-findings" aria-current={$page.url.pathname === '/novel-findings' ? 'page' : undefined} onclick={closeMenu}>Novel Findings</a>
-			<a href="/papers" aria-current={$page.url.pathname === '/papers' ? 'page' : undefined} onclick={closeMenu}>Papers</a>
+			<a href="/novel-findings" aria-current={page.url.pathname === '/novel-findings' ? 'page' : undefined} onclick={closeMenu}>Novel Findings</a>
+			<a href="/papers" aria-current={page.url.pathname === '/papers' ? 'page' : undefined} onclick={closeMenu}>Papers</a>
 		</nav>
 
 		<button
@@ -87,7 +87,7 @@
 </header>
 {/if}
 
-<main id="main" class="site-main" class:landing={$page.url.pathname === '/'} class:business-card={immersive}>
+<main id="main" class="site-main" class:landing={page.url.pathname === '/'} class:business-card={immersive}>
 	{@render children()}
 </main>
 
