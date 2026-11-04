@@ -9,9 +9,9 @@ cover_image_prompt: |
 linkedin_url:
 ---
 
-A reader of the series introduction suggested a test I had not thought of. Ask what happens when the executive and the AI-supported recommendation disagree. Can the executive say what would make them reject it, and are there real examples where they have?
+What happens when an executive and an AI-supported recommendation disagree? Can the executive say what would make them reject it, and are there real examples where they have?
 
-I think that is the right place to look, because it shows whether authority is still exercised, which an org chart cannot. The override path existing matters. Whether people can use it normally matters more.
+A reader suggested that test to me, and I think it is the right place to look, because it shows whether authority is still exercised, which an org chart cannot. The override path existing matters. Whether people can use it normally matters more.
 
 The EU AI Act points the same way, for high-risk systems only. Those are the systems it regulates this way, and I am using its wording as a standard to measure against, not as a rule about decisions in general. Article 14 says the people assigned to oversee such a system must be enabled to decide not to use it, or to disregard, override or reverse its output, and to intervene or stop it. It also says they must be enabled to stay aware of the tendency to rely too much on what the system produces, which it names automation bias.
 
