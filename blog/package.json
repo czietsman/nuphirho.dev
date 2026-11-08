@@ -23,7 +23,7 @@
     "svelte": "^5.57.3",
     "vite": "^8.3.6",
     "vitest": "^5.1.0",
-    "wrangler": "^4.157.0"
+    "wrangler": "^4.158.0"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
