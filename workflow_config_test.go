@@ -11,7 +11,7 @@ func TestWorkflowActionPins(t *testing.T) {
 
 	checkContains(t, ".github/workflows/validate-pr.yml", []string{
 		"actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1",
-		"actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0",
+		"actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7.1.0",
 		"cache: true",
 		"cache-dependency-path: go.sum",
 	})
@@ -120,7 +120,7 @@ func TestGoVersionSupportsPinnedMutationTool(t *testing.T) {
 
 	content := readFile(t, "go.mod")
 
-	if !strings.Contains(content, "go 1.26.11") {
+	if !strings.Contains(content, "go 1.27.4") {
 		t.Fatalf("go.mod does not declare the minimum Go version required for the pinned mutation tool")
 	}
 }
