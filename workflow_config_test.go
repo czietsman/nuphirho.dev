@@ -120,7 +120,7 @@ func TestGoVersionSupportsPinnedMutationTool(t *testing.T) {
 
 	content := readFile(t, "go.mod")
 
-	if !strings.Contains(content, "go 1.25.5") {
+	if !strings.Contains(content, "go 1.26.11") {
 		t.Fatalf("go.mod does not declare the minimum Go version required for the pinned mutation tool")
 	}
 }
