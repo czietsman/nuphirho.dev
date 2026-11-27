@@ -182,4 +182,4 @@ After applying, check public pages and authentication, confirm a probe receives
 
 ### Node.js security baseline
 
-Local development uses Node.js 24.22.1 or a newer patched 24.x release (`.node-version`). Build and deployment workflows pin Node.js 22.23.4, preserving their existing release line while including the 21 October 2026 security fixes. Cloudflare Pages and Workers serve the deployed apps; these Node.js versions cover build and deployment tooling.
+Local development (`.node-version`) and the build and deployment workflows use Node.js 26.13.1. Cloudflare Pages and Workers serve the deployed apps; these Node.js versions cover build and deployment tooling.

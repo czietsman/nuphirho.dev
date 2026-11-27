@@ -31,6 +31,9 @@ updates:
         update-types:
           - minor
           - patch
+    # adapter-cloudflare 8.0.3 and later build the server bundle for workerd, so the node:fs post loading fails at prerender. Held at 8.0.2 until posts load another way.
+    ignore:
+      - dependency-name: "@sveltejs/adapter-cloudflare"
 
   - package-ecosystem: npm
     directory: /main-site
@@ -49,6 +52,13 @@ updates:
         update-types:
           - minor
           - patch
+    # TypeScript 7 is outside the peer range of SvelteKit and svelte-check.
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      # adapter-cloudflare 9 removes Cloudflare Pages support, so it means moving the site to Workers.
+      - dependency-name: "@sveltejs/adapter-cloudflare"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: npm
     directory: /
